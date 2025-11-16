@@ -105,6 +105,10 @@
 	= 'title'
 /]
 
+[query private titlesElement(eObject : EObject) : String
+	= 'titles'
+/]
+
 
 [query public translationDomain(authentication : LocalAuthenticationSystem) : String
 	= authentication.authenticationPrefix().toLowerCase()
@@ -252,12 +256,20 @@
 	= controller.labelsContainedId().concat('.').concat(controller.cancelElement())
 /]
 
+[query public cancelTitleContainedId(controller : Controller) : String
+	= controller.titlesContainedId().concat('.').concat(controller.cancelElement())
+/]
+
 [query public captionContainedId(controller : Controller) : String
 	= controller.id().concat('.').concat(controller.captionElement())
 /]
 
 [query public clearLabelContainedId(controller : Controller) : String
 	= controller.labelsContainedId().concat('.').concat(controller.clearElement())
+/]
+
+[query public clearTitleContainedId(controller : Controller) : String
+	= controller.titlesContainedId().concat('.').concat(controller.clearElement())
 /]
 
 [query private labelsContainedId(controller : Controller) : String
@@ -268,8 +280,20 @@
 	= controller.labelsContainedId().concat('.').concat(controller.saveElement())
 /]
 
+[query public saveTitleContainedId(controller : Controller) : String
+	= controller.titlesContainedId().concat('.').concat(controller.saveElement())
+/]
+
 [query public searchLabelContainedId(controller : Controller) : String
 	= controller.labelsContainedId().concat('.').concat(controller.searchElement())
+/]
+
+[query public searchTitleContainedId(controller : Controller) : String
+	= controller.titlesContainedId().concat('.').concat(controller.searchElement())
+/]
+
+[query private titlesContainedId(controller : Controller) : String
+	= controller.id().concat('.').concat(controller.titlesElement())
 /]
 
 [query public translationDomain(controller : Controller) : String
@@ -293,8 +317,16 @@
 	= unit.labelsContainedId().concat('.').concat(unit.cancelElement())
 /]
 
+[query public cancelTitleContainedId(unit : ContentUnit) : String
+	= unit.titlesContainedId().concat('.').concat(unit.cancelElement())
+/]
+
 [query public clearLabelContainedId(unit : ContentUnit) : String
 	= unit.labelsContainedId().concat('.').concat(unit.clearElement())
+/]
+
+[query public clearTitleContainedId(unit : ContentUnit) : String
+	= unit.titlesContainedId().concat('.').concat(unit.clearElement())
 /]
 
 [query private containedId(unit : ContentUnit) : String
@@ -349,8 +381,16 @@
 	= unit.labelsContainedId().concat('.').concat(unit.saveElement())
 /]
 
+[query public saveTitleContainedId(unit : ContentUnit) : String
+	= unit.titlesContainedId().concat('.').concat(unit.saveElement())
+/]
+
 [query public searchLabelContainedId(unit : ContentUnit) : String
 	= unit.labelsContainedId().concat('.').concat(unit.searchElement())
+/]
+
+[query public searchTitleContainedId(unit : ContentUnit) : String
+	= unit.titlesContainedId().concat('.').concat(unit.searchElement())
 /]
 
 [query public successMessageId(unit : ContentUnit) : String
@@ -359,6 +399,10 @@
 
 [query public translationDomain(unit : ContentUnit) : String
 	= unit.controller.translationDomain()
+/]
+
+[query private titlesContainedId(unit : ContentUnit) : String
+	= unit.containedId().concat('.').concat(unit.titlesElement())
 /]
 
 

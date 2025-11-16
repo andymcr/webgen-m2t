@@ -38,25 +38,45 @@
 	[/if]
   <div[if (unit.hasFiltersControlClass())] class="[unit.filtersControlClass()/]"[/if]>
    <button type="submit" name="[unit.searchId()/]"[if (unit.hasFiltersActionClass())]
- class="[unit.filtersActionClass()/]"[/if] title="{{ '[unit.searchLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}">[if (unit.hasSearchIcon())]
-<i class="[unit.searchIcon()/]"></i>[else]
-{{ '[unit.searchLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}[/if]</button>
+ class="[unit.filtersActionClass()/]"[/if][if (unit.hasSearchTitle())]
+ [unit.searchTitleAttribute()/][/if]>[unit.searchContent()/]</button>
    <button type="submit" name="[unit.clearId()/]"[if (unit.hasFiltersActionClass())]
- class="[unit.filtersActionClass()/]"[/if] title="{{ '[unit.clearLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}">[if (unit.hasClearIcon())]
-<i class="[unit.clearIcon()/]"></i>[else]
-{{ '[unit.clearLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}[/if]</button>
+ class="[unit.filtersActionClass()/]"[/if][if (unit.hasClearTitle())]
+ [unit.clearTitleAttribute()/][/if]>[unit.clearContent()/]</button>
   </div>
- {{ form_row([unit.filterFormInstanceParameter()/]._token) }}
  {{ form_end([unit.filterFormInstanceParameter()/], {'render_rest': false}) }}
 </div>
 [/if]
 [/template]
  
+[template private clearContent(unit : CollectionUnit) post(trim())]
+[if (unit.hasClearIcon())]
+<i class="[unit.clearIcon()/]"></i>
+[else]
+{{ '[unit.clearLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}
+[/if]
+[/template]
+
 [template private clearLabelId(unit : CollectionUnit) post(trim())]
 [if (unit.hasCustomClearLabel())]
 [unit.clearLabelContainedId()/]
 [else]
 [unit.controller.rootController.clearLabelContainedId()/]
+[/if]
+[/template]
+
+[template private clearTitleAttribute(unit : CollectionUnit) post(trim())]
+title="{{ [if (unit.hasCustomClearTitle())]
+'[unit.clearTitleContainedId()/]'[else]
+'[unit.controller.rootController.clearTitleContainedId()/]'[/if]
+ | trans({}, '[unit.translationDomain()/]') }}"
+[/template]
+
+[template private searchContent(unit : CollectionUnit) post(trim())]
+[if (unit.hasSearchIcon())]
+<i class="[unit.searchIcon()/]"></i>
+[else]
+{{ '[unit.searchLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}
 [/if]
 [/template]
 
@@ -66,6 +86,13 @@
 [else]
 [unit.controller.rootController.searchLabelContainedId()/]
 [/if]
+[/template]
+
+[template private searchTitleAttribute(unit : CollectionUnit) post(trim())]
+title="{{ [if (unit.hasCustomSearchTitle())]
+'[unit.searchTitleContainedId()/]'[else]
+'[unit.controller.rootController.searchTitleContainedId()/]'[/if]
+ | trans({}, '[unit.translationDomain()/]') }}"
 [/template]
 
 
