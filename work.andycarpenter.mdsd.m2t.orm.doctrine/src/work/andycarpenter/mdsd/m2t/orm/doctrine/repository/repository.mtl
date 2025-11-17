@@ -331,7 +331,7 @@ public function create([entity.createParameters()/], $flush = false): [repositor
 
 [template private createParameters(entity : Entity) post(trim())]
 [for (attribute : Attribute | entity.createFeatures()) separator(', ')]
-[attribute.implementationType()/] $[attribute.instanceName()/][if (not attribute.isRequired)] = null[/if][/for]
+[attribute.implementationType()/][if (not attribute.isRequired)]|null[/if] $[attribute.instanceName()/][if (not attribute.isRequired)] = null[/if][/for]
 [/template]
 
 [template private documentCreateParameters(entity : Entity) post(trim())]
