@@ -484,7 +484,6 @@ public function [selection.builderMethodName()/]([selection.formals()/]): QueryB
 ->distinct()
 [/if]
 [if (selection.hasSelectPath() or selection.hasFormals())]
-
 	[if (selection.uriPathKeys()->notEmpty())]
 	[let routingEntity : Entity = selection.selectionType()]
 		[for (key : Attribute | selection.uriPathKeys())]
