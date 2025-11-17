@@ -410,7 +410,12 @@ public function findAllBuilder(): QueryBuilder
 public function [selection.methodName/]([selection.formals()/]): [selection.returnType()/]
 {
 [if (selection.limit = 1)]
+	[if (selection.hasCondition() or selection.hasSelectPath())]
+    $queryBuilder = $this->createQueryBuilder('[selection.definedBy.serves.selectName()/]');
+    return $queryBuilder
+	[else]
     return $this->createQueryBuilder('[selection.definedBy.serves.selectName()/]')
+	[/if]
         [selection.selectionCode(security)/]
         ->getQuery()
         ->getOneOrNullResult();
