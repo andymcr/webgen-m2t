@@ -48,7 +48,7 @@ class [association.autocompleteTypeClassName()/] extends AbstractType
 [else]
             'multiple' => true,
 [/if]
-            'searchable_fields' => [searchType.searchFields()/],
+            'searchable_fields' => ['['/][association.searchFields(searchType)/][']'/],
 [if (association.displayedOn.isAuthorised())]
             'security' => [association.displayedOn.authorisation.authorisationExpression()/],
 [/if]
@@ -63,9 +63,16 @@ class [association.autocompleteTypeClassName()/] extends AbstractType
 [/file]
 [/template]
 
-[template private searchFields(searchType : Entity) post(trim())]
-['['/] [for (key : Attribute | searchType.uriPathKeys() ) separator(', ')]
-'[key.searchPath(searchType)/]'[/for] [']'/]
+[template private searchFields(association : UnitAssociation, searchType : Entity)
+	?(association.autocompleteKeys->notEmpty()) post(trim())]
+[for (key : Attribute | association.autocompleteKeys) separator(', ')]
+'[key.searchPath(searchType)/]'[/for]
+[/template]
+
+[template private searchFields(association : UnitAssociation, searchType : Entity)
+	?(association.autocompleteKeys->isEmpty()) post(trim())]
+[for (key : Attribute | searchType.uriPathKeys()) separator(', ')]
+'[key.searchPath(searchType)/]'[/for]
 [/template]
 
 [query private searchPath(key : Attribute, searchType : Entity) : String
