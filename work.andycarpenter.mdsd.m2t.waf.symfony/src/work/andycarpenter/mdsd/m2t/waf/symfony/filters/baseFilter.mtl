@@ -16,25 +16,36 @@ use ReflectionClass;
 use Symfony\Component\Form\Form;
 
 
+/**
+ * @template T of object
+ */
 abstract class [model.filterBaseClassName()/] implements [model.filterInterfaceClassName()/]
 {
     /**
      * Name of the filter.
+     *
+     * @var string $name
      */
     private string $name = '';
 
     /**
      * Selection alias of the entity containing the filtered feature.
+     *
+     * @var string $entityAliasName
      */
     private string $entityAliasName = '';
 
     /**
      * Name of the feature that is filtered.
+     *
+     * @var string $featureName
      */
     private string $featureName = '';
 
      /**
      * Reflector used to access filter data.
+     *
+     * @var ReflectionClass<T> $dataReflector
      */
     protected ReflectionClass $dataReflector;
 
@@ -42,7 +53,7 @@ abstract class [model.filterBaseClassName()/] implements [model.filterInterfaceC
      * @param string $name
      * @param string $entityAliasName
      * @param string $featureName
-     * @param string $filterDataClass
+     * @param class-string<T> $filterDataClass
      */
     public function __construct(string $name, string $entityAliasName, string $featureName, string $filterDataClass)
     {

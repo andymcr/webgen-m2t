@@ -20,6 +20,10 @@ use [model.filterNamespace()/]\[model.filterBaseClassName()/];
 use Doctrine\ORM\QueryBuilder;
 
 
+/**
+ * @template T of object
+ * @extends [model.filterBaseClassName()/]<T>
+ */
 class [model.filterClassName(model.filterName())/] extends [model.filterBaseClassName()/]
 {
     /**
@@ -30,7 +34,7 @@ class [model.filterClassName(model.filterName())/] extends [model.filterBaseClas
     public function apply(QueryBuilder [model.builderInstanceVariable()/], Object $filterData): void
     {
         [model.builderInstanceVariable()/]->andWhere(
-            [model.builderInstanceVariable()/]->expr()->equals(
+            [model.builderInstanceVariable()/]->expr()->eq(
                 $this->getEntityAliasName() . '.' . $this->getFeatureName(),
                 ':' . $this->getName()));
         $reflectionProperty = $this->dataReflector->getProperty($this->getName());
