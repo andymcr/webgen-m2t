@@ -24,7 +24,7 @@
 [unit.securityAnnotation()/]
 [/if]
 [unit.routeAttribute()/]
-public function [unit.actionName()/]()
+public function [unit.actionName()/](): Response
 {
 [if (controller.partOf.siteProperties.staticUnitsEditable)]
    [unit.instanceVariable()/] = $this->get('app.service.staticText')->find('[unit.uniqueName()/]');
