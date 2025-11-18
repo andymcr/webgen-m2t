@@ -31,14 +31,11 @@ class [unit.filterEntityClassName()/]
 [/file]
 [/template]
 
-[template private filterVariable(filter : CollectionFilter)
-	? (filter.oclIsTypeOf(TextFilter)) post(trim())]
-[let textFilter : TextFilter = filter.oclAsType(TextFilter)]
+[template private filterVariable(filter : CollectionFilter) post(trim())]
 /**
  * @var [filter.attribute.documentationType()/]|null $[filter.fieldPropertyName()/]
  */
 protected ?[filter.attribute.implementationType()/] $[filter.fieldPropertyName()/] = null;
-[/let]
 [/template]
 
 [template private getMethod(filter : CollectionFilter) post(trim())]
