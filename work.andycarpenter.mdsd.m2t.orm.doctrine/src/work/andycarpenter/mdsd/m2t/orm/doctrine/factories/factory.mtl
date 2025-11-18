@@ -11,54 +11,21 @@
 namespace [entity.factoriesNamespace()/];
 
 use [entity.modelsNamespace()/]\[entity.modelClassName()/];
-use Zenstruck\Foundry\RepositoryProxy;
-use Zenstruck\Foundry\PersistentProxyObjectFactory;
-use Zenstruck\Foundry\Proxy;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 
 /**
- * @extends PersistentProxyObjectFactory<[entity.modelClassName()/]>
- *
- * @method static [entity.modelClassName()/]|Proxy createOne(array $attributes = ['['/][']'/])
- * @method static [entity.modelClassName()/]['['/][']'/]|Proxy['['/][']'/] createMany(int $number, array|callable $attributes = ['['/][']'/])
- * @method static [entity.modelClassName()/]['['/][']'/]&Proxy['['/][']'/] createSequence(array|callable $sequence)
- * @method static [entity.modelClassName()/]|Proxy find(object|array|mixed $criteria)
- * @method static [entity.modelClassName()/]|Proxy findOrCreate(array $attributes)
- * @method static [entity.modelClassName()/]|Proxy first(string $sortedField = 'id')
- * @method static [entity.modelClassName()/]|Proxy last(string $sortedField = 'id')
- * @method static [entity.modelClassName()/]|Proxy random(array $attributes = ['['/][']'/])
- * @method static [entity.modelClassName()/]|Proxy randomOrCreate(array $attributes = ['['/][']'/]))
- * @method static [entity.modelClassName()/]['['/][']'/]|Proxy['['/][']'/] all()
- * @method static [entity.modelClassName()/]['['/][']'/]|Proxy['['/][']'/] findBy(array $attributes)
- * @method static [entity.modelClassName()/]['['/][']'/]|Proxy['['/][']'/] randomSet(int $number, array $attributes = ['['/][']'/]))
- * @method static [entity.modelClassName()/]['['/][']'/]|Proxy['['/][']'/] randomRange(int $min, int $max, array $attributes = ['['/][']'/]))
- * @method static [entity.repository.repositoryClassName()/]|RepositoryProxy repository()
- * @method [entity.modelClassName()/]|Proxy create(array|callable $attributes = ['['/][']'/])
- *
- * @phpstan-method static [entity.modelClassName()/]&Proxy createOne(array $attributes = ['['/][']'/])
- * @phpstan-method static [entity.modelClassName()/]['['/][']'/]&Proxy['['/][']'/] createMany(int $number, array|callable $attributes = ['['/][']'/])
- * @phpstan-method static [entity.modelClassName()/]['['/][']'/]&Proxy['['/][']'/] createSequence(array|callable $sequence)
- * @phpstan-method static [entity.modelClassName()/]&Proxy find(object|array|mixed $criteria)
- * @phpstan-method static [entity.modelClassName()/]&Proxy findOrCreate(array $attributes)
- * @phpstan-method static [entity.modelClassName()/]&Proxy first(string $sortedField = 'id')
- * @phpstan-method static [entity.modelClassName()/]&Proxy last(string $sortedField = 'id')
- * @phpstan-method static [entity.modelClassName()/]&Proxy random(array $attributes = ['['/][']'/])
- * @phpstan-method static [entity.modelClassName()/]&Proxy randomOrCreate(array $attributes = ['['/][']'/])
- * @phpstan-method static [entity.modelClassName()/]['['/][']'/]&Proxy['['/][']'/] all()
- * @phpstan-method static [entity.modelClassName()/]['['/][']'/]&Proxy['['/][']'/] findBy(array $attributes)
- * @phpstan-method static [entity.modelClassName()/]['['/][']'/]&Proxy['['/][']'/] randomSet(int $number, array $attributes = ['['/][']'/])
- * @phpstan-method static [entity.modelClassName()/]['['/][']'/]&Proxy['['/][']'/] randomRange(int $min, int $max, array $attributes = ['['/][']'/])
- * @phpstan-method [entity.modelClassName()/]&Proxy create(array|callable $attributes = ['['/][']'/])
+ * @extends PersistentObjectFactory<[entity.modelClassName()/]>
  */
-class [entity.factoryClassName()/] extends PersistentProxyObjectFactory
+class [entity.factoryClassName()/] extends PersistentObjectFactory
 {
     [comment entity.constructorMethod()/]
+
+    [entity.classMethod()/]
 
     [entity.defaultsMethod()/]
 
     [comment entity.initializeMethod()/]
-
-    [entity.classMethod()/]
 }
 [/file]
 [/template]
@@ -70,13 +37,20 @@ public function __construct()
 }
 [/template]
 
+[template private classMethod(entity : Entity) post(trim())]
+    public static function class(): string
+    {
+        return [entity.modelClassName()/]::class;
+    }
+[/template]
+
 [template private defaultsMethod(entity : Entity) post(trim())]
 /**
- * @inheritdoc ModelFactory
- * 
- * @return array<string, mixed>
- **/
-protected function getDefaults(): array
+ * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories
+ *
+ * @todo add your default values here
+ */
+protected function defaults(): array|callable
 {
     return ['['/]
 [for (attribute : Attribute | entity.attributes)]
@@ -115,18 +89,13 @@ self::faker()->text()
 [/template]
 
 [template private initializeMethod(entity : Entity) post(trim())]
-protected static function initialize(): self
-{
-    return $this;
-}
-[/template]
-
-[template private classMethod(entity : Entity) post(trim())]
 /**
- * @link ModelFactory
+ * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
  */
-protected static function getClass(): string
+protected function initialize(): static
 {
-    return [entity.modelClassName()/]::class;
+    return $this
+        // ->afterInstantiate(function(Post $post): void {})
+    ;
 }
 [/template]
