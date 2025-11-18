@@ -134,14 +134,15 @@ $[variable.formal.name/][if (not variable.childFeature.oclIsUndefined())]
 			else
 				association.childFeature.pathAccessor()
 			endif)
+		.concat('()')
 /]
 
 [query private pathAccessor(attribute : AttributePathElement) : String
-	= '->'.concat(attribute.attribute.getMethodName())
+	= '->'.concat(attribute.attribute.getMethodName()).concat('()')
 /]
 
 [query private pathAccessor(resource : ResourcePathElement) : String
-	= '->'.concat(resource.resource.getMethodName())
+	= '->'.concat(resource.resource.getMethodName()).concat('()')
 /]
 
 [template public controllerExpression(expression : Expression, accessor : String, parentAccessor : String)
