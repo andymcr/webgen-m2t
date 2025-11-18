@@ -28,7 +28,7 @@ interface [model.filterInterfaceClassName()/]
      * @param QueryBuilder [model.builderInstanceVariable()/]
      * @param Object $filterData
      */
-    public function apply(QueryBuilder $queryBuilder, Object $filterData): void;
+    public function apply(QueryBuilder [model.builderInstanceVariable()/], Object $filterData): void;
 }
 [/file]
 [/template]

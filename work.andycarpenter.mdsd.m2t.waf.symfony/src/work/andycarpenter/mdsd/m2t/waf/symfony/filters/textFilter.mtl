@@ -27,15 +27,15 @@ class [model.filterClassName(model.filterName())/] extends [model.filterBaseClas
      * @param QueryBuilder [model.builderInstanceVariable()/]
      * @param Object $filterData
      */
-    public function apply(QueryBuilder $queryBuilder, Object $filterData): void
+    public function apply(QueryBuilder [model.builderInstanceVariable()/], Object $filterData): void
     {
-        $queryBuilder->andWhere(
-            $queryBuilder->expr()->like(
+        [model.builderInstanceVariable()/]->andWhere(
+            [model.builderInstanceVariable()/]->expr()->like(
                 $this->getEntityAliasName() . '.' . $this->getFeatureName(),
                 ':' . $this->getName()));
         $reflectionProperty = $this->dataReflector->getProperty($this->getName());
         $value = $reflectionProperty->getValue($filterData);
-        $queryBuilder->setParameter($this->getName(), strpos($value, '%') ? $value : '%' . $value . '%');
+        [model.builderInstanceVariable()/]->setParameter($this->getName(), strpos($value, '%') ? $value : '%' . $value . '%');
     }
 }
 [/file]
