@@ -161,6 +161,13 @@ class [repository.repositoryClassName()/] extends [repository.baseRepositoryClas
 [/template]
 
 [template private useStatements(repository : Repository, security : SecurityModel) post(trim())]
+[if (security.authentication.userModel.repository = repository)]
+	[if (security.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
+	[let localAuthentication : LocalAuthenticationSystem = security.authentication.oclAsType(LocalAuthenticationSystem)]
+use [repository.modelsNamespace()/]\[localAuthentication.authenticationModel.modelClassName()/];
+	[/let]
+	[/if]
+[/if]
 [if (repository.serves.attributes->notEmpty())]
 use [repository.modelsNamespace()/]\[repository.serves.modelClassName()/];
 [/if]
@@ -181,20 +188,21 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
 [/if]
 [/template]
 
-[template private getCurrentUserMethod(repository : Repository, security : SecurityModel) post(trim())]
+[template private getCurrentUserMethod(repository : Repository, security : SecurityModel)
+	?(security.authentication.oclIsTypeOf(LocalAuthenticationSystem)) post(trim())]
+[let localAuthentication : LocalAuthenticationSystem = security.authentication.oclAsType(LocalAuthenticationSystem)]
 /**
  * @return [security.authentication.userModel.modelClassName()/]
  *
  */
 public function getCurrentUser(): ?[security.authentication.userModel.modelClassName()/]
 {
+    /** @var [localAuthentication.authenticationModel.modelClassName()/]|null $user */
     $user = $this->security->getUser();
     if (is_null($user)) {
         return null;
     }
 
-[if (security.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
-[let localAuthentication : LocalAuthenticationSystem = security.authentication.oclAsType(LocalAuthenticationSystem)]
     $queryBuilder = $this->createQueryBuilder('[repository.serves.selectName()/]');
     $[repository.repositoryInstanceName()/] = $queryBuilder
         ->where($queryBuilder->expr()->eq('[repository.serves.selectName()/].[localAuthentication.authenticationKey.modelPropertyName()/]', ':[localAuthentication.authenticationKey.name/]'))
@@ -204,10 +212,8 @@ public function getCurrentUser(): ?[security.authentication.userModel.modelClass
         throw new \Exception();
     }
     return $[repository.repositoryInstanceName()/];
-[/let]
-[else]
-[/if]
 }
+[/let]
 [/template]
 
 [template private upgradePasswordMethod(repository : Repository) post(trim())]
