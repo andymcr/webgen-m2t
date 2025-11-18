@@ -18,15 +18,15 @@ use Doctrine\ORM\QueryBuilder;
 trait [model.filterTraitName()/]
 {
     /**
-     * @var array $filters
+     * @var array<[model.filterInterfaceClassName()/]> $filters
      */
     private array $filters = array();
 
     /**
      *
-     * @param FilterInterface $filter
+     * @param [model.filterInterfaceClassName()/] $filter
      */
-    protected function addFilter(FilterInterface $filter): void
+    protected function addFilter([model.filterInterfaceClassName()/] $filter): void
     {
         $this->filters['['/][']'/] = $filter;
     }
