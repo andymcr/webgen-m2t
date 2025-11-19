@@ -374,11 +374,11 @@ protected \DateTimeInterface $created;
 [/if]
 [if (entity.partOf.timestampUpdates)]
 /**
- * @var \DateTimeInterface $updated
+ * @var \DateTimeInterface|null $updated
  */
 #['['/]ORM\Column(type: "datetime", nullable: true)[']'/]
 #['['/]Gedmo\Timestampable(on: "update")[']'/]
-protected \DateTimeInterface $updated;
+protected \DateTimeInterface|null $updated;
 [/if]
 [/template]
 
