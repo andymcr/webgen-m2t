@@ -38,12 +38,12 @@ class [ormModel.collectionUniqueClassName()/] extends Constraint
     /**
       * @param array<int, string> $fields
       * @param string $parentProperty
-      * @param string collectionProperty
+      * @param string $collectionProperty
       * @param array<int, string>|null $groups
       * @param mixed|null $payload
       **/
     #['['/]HasNamedArguments[']'/]
-    public function __construct(array $fields, string $parentProperty, string $collectionProperty, array $groups = null, mixed $payload = null)
+    public function __construct(array $fields, string $parentProperty, string $collectionProperty, array|null $groups = null, mixed $payload = null)
     {
         parent::__construct(['['/][']'/], $groups, $payload);
         $this->fields = $fields;
@@ -58,9 +58,9 @@ class [ormModel.collectionUniqueClassName()/] extends Constraint
      * This method should return one or more of the constants
      * Constraint::CLASS_CONSTRAINT and Constraint::PROPERTY_CONSTRAINT.
      *
-     * @return string|string['['/][']'/] One or more constant values
+     * @return string|array<string> One or more constant values
      */
-    public function getTargets(): string
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
