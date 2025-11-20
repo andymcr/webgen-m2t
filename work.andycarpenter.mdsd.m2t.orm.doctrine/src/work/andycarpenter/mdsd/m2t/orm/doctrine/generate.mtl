@@ -14,6 +14,8 @@
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::serialize::normalize/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::test::entityTests/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::test::repositoryTests/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::validation::UniqueCollectionConstraint/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::validation::UniqueCollectionValidator/]
 
 
 [template public doctrine(model : OrmModel, wafModel : WafModel, supportTranslation : Boolean)]
@@ -30,4 +32,8 @@
 
 [model.entities->select(e | not e.implementsResetPasswordInterface).modelTests()/]
 [comment model.repositories.repositoryTests(wafModel.security)/]
+
+[model.uniqueCollectionConstraint()/]
+[model.uniqueCollectionValidator()/]
+
 [/template]
