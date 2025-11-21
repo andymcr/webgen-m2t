@@ -95,7 +95,11 @@ endif
 
 [query public documentationType(feature : Feature) : String
 	= if feature.isSingleton then
-			feature.implementationType()
+			if feature.isEmailFeature then
+				'non-empty-string'
+			else
+				feature.implementationType()
+			endif
 		else
 			if feature.implementationType() = 'array' then
 				feature.implementationType().concat('<int, ').concat(feature.elementType()).concat('>')

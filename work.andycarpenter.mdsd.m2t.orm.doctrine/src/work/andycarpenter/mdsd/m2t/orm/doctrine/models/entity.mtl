@@ -549,6 +549,8 @@ new \DateTimeImmutable()
 	[else]
 null
 	[/if]
+[elseif (attribute.isEmailFeature)]
+'a@b.c'
 [elseif (attribute.isEnumerationFeature)]
 0
 [elseif (attribute.isFloatFeature)]
