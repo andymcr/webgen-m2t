@@ -1,0 +1,12 @@
+[comment encoding = UTF-8 /]
+[module components(
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::components::collectionComponent/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::components::collectionTemplate/]
+
+
+[template public components(model : WafModel)]
+[model.distinctCollectionFilters().collectionComponent()/]
+[model.distinctCollectionFilters().collectionTemplate()/]
+[/template]

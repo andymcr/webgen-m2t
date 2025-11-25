@@ -57,6 +57,14 @@
 	= authentication.templatesDirectory().concat('/').concat(authentication.authenticationTemplate())
 /]
 
+[query public componentSourceDirectory(eObject : EObject) : String
+	= eObject.twigSourceDirectory().concat('/').concat('Components')
+/]
+
+[query public componentTemplateDirectory(eObject : EObject) : String
+	= eObject.templatesDirectory().concat('/').concat('components')
+/]
+
 [query public configDirectory(eObject : EObject) : String
 	= 'config'
 /]
@@ -172,6 +180,10 @@
 	= 'translations'
 /]
 
+[query public twigSourceDirectory(eObject : EObject) : String
+	= eObject.sourceDirectory().concat('/').concat('Twig')
+/]
+
 [query public twigExtensionsDirectory(eObject : EObject) : String
 	= eObject.extensionsDirectory().concat('/').concat('Twig')
 /]
@@ -229,6 +241,14 @@
 	= eObject.appNamespace().concat('\\').concat('Service')
 /]
 
+[query public twigNamespace(eObject : EObject) : String
+	= eObject.appNamespace().concat('\\').concat('Twig')
+/]
+
+[query public twigComponentsNamespace(eObject : EObject) : String
+	= eObject.twigNamespace().concat('\\').concat('Components')
+/]
+
 [query public twigExtensionsNamespace(eObject : EObject) : String
 	= eObject.extensionsNamespace().concat('\\').concat('Twig')
 /]
@@ -242,6 +262,19 @@
 	= association.formDirectory().concat('/')
 		.concat(association.autocompleteTypeClassName())
 		.concat(association.executableExtension())
+/]
+
+[query public componentSourceFilename(unit : CollectionUnit) : String
+	= unit.componentSourceDirectory().concat('/')
+		.concat(unit.componentClassName())
+		.concat(unit.executableExtension())
+/]
+
+[query public componentTemplateFilename(unit : CollectionUnit) : String
+	= unit.componentTemplateDirectory().concat('/')
+		.concat(unit.componentClassName())
+		.concat(unit.htmlExtension())
+		.concat(unit.twigExtension())
 /]
 
 [query public controllerFilename(authentication : LocalAuthenticationSystem, model : WafModel) : String

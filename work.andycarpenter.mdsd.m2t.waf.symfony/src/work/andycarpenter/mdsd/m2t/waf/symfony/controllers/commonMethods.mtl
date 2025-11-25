@@ -36,7 +36,7 @@ Request $request[if (controller.hasRouteParameters())]
 
 [template public actionMethodFormals(unit : DynamicUnit) post(trim())]
 [let controller : Controller = unit.controller]
-[if (unit.isFormUnit or controller.hasCollectionFilters() or controller.hasCollectionFilters() or controller.hasPagination())]
+[if (unit.isFormUnit or controller.hasCollectionFilters() or controller.hasPagination())]
 Request $request[if (unit.hasRouteParameters())]
 , [/if][/if]
 [unit.routeParameterList(true)/]

@@ -45,6 +45,9 @@
 [unit.routeAttribute()/]
 public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
+[if (unit.contentType.name = 'Talk')]
+    return $this->render('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]');
+[else]
 [if (unit.controller.isMultiPage())]
 	[if (unit.isConditionallyDisplayed())]
     $parameters = ['['/][']'/];
@@ -71,6 +74,7 @@ $parameters[else]['['/]
     [unit.selectCode()/]
 [/if]
     return $this->renderPage([unit.renderMethodActuals()/]);
+[/if]
 [/if]
 }
 [/template]
@@ -153,9 +157,9 @@ $this->[unit.filter.selection.definedBy.repositoryInstanceName()/]->[unit.findMe
 	 ? ((unit.hasPagination() or unit.hasCollectionFilters())) post(trim())]
 [if (not unit.selection.oclIsUndefined())]
 	[if (unit.filter.oclIsUndefined())]
-[unit.builderInstanceVariable()/] = $this->[unit.selection.definedBy.repositoryInstanceName()/]->[unit.builderMethodName(selection)/]([unit.selectionParameters()/]);
+[unit.builderInstanceVariable()/] = [unit.getContentRepository()/]->[unit.builderMethodName(selection)/]([unit.selectionParameters()/]);
 	[else]
-[unit.builderInstanceVariable()/] = $this->[unit.filter.selection.definedBy.repositoryInstanceName()/]->[unit.builderMethodName(filter)/]([unit.selectionParameters()/]);
+[unit.builderInstanceVariable()/] = [unit.getContentRepository()/]->[unit.builderMethodName(filter)/]([unit.selectionParameters()/]);
 	[/if]
 [else]
 [unit.builderInstanceVariable()/] = [unit.getContentRepository()/]->findAll[unit.builderSuffix()/]();

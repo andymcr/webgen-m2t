@@ -60,6 +60,10 @@
 	= 'Autocomplete'.concat(eObject.typeSuffix())
 /]
 
+[query public componentSuffix(eObject : EObject) : String
+	= 'Component'
+/]
+
 [query public filterSuffix(eObject : EObject) : String
 	= 'Filter'
 /]
@@ -99,6 +103,16 @@
 		->sortedBy(u | u.name)
 /]
 
+
+[query public componentClassName(unit : CollectionUnit) : String
+	= if unit.uiModel().distinctCollectionFilters()
+				->select(u  | u.contentType = unit.contentType)
+				->size() = 1 then
+			unit.contentType.pluralisedName
+		else
+			unit.controllerName().concat(unit.contentType.pluralisedName.toUpperFirst())
+		endif.concat(unit.searchSuffix())
+/]
 
 [query public controllerName(resource : Resource) : String
 	= resource.name

@@ -96,14 +96,5 @@
 {% block metas %}
 <meta name="turbo-cache-control" content="no-preview">
 {% endblock %}
-[elseif (unit.oclIsKindOf(CollectionUnit))]
-[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)] 
-	[if (collectionUnit.hasCollectionFilters() and collectionUnit.filtersUseAutoSubmit)]
-{% block metas %}
-<meta name="turbo-refresh-method" content="morph">
-<meta name="turbo-refresh-scroll" content="preserve">
-{% endblock %}
-	[/if]
-[/let]
 [/if]
 [/template]

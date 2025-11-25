@@ -28,7 +28,6 @@
 [template public unitView(unit : ContentUnit)
 	? (unit.oclIsKindOf(CardsUnit)) post(trim())]
 [let cardsUnit : CardsUnit = unit.oclAsType(CardsUnit)]
-[let accessor : String = cardsUnit.instanceParameter()]
 [file(cardsUnit.templateFilename(), false)]
 [if (unit.controller.isMultiPage())]
 [unit.templateStart()/]
@@ -39,43 +38,33 @@
 <section [if (cardsUnit.hasSectionClass())] class="[cardsUnit.sectionClass()/]" [/if]id="[cardsUnit.instanceParameter()/]">
 <h4[if (cardsUnit.hasCaptionClass() or cardsUnit.omitCaption)]
  class="[if (cardsUnit.hasCaptionClass())][cardsUnit.captionClass()/][if (cardsUnit.omitCaption)] [/if][/if][if (cardsUnit.omitCaption)]hidden[/if]"[/if]>[cardsUnit.unitTitle()/]</h4>
-[if (cardsUnit.hasCollectionFilters())]
- [cardsUnit.unitFilters()/]
-[/if]
 [if ((cardsUnit.hasGeneralActions() or cardsUnit.hasTargetActions() or cardsUnit.hasContainerActions()) and cardsUnit.containerActionsPlacement <> ContainerActionsPlacement::Below)]
  [cardsUnit.unitActions()/]
 [/if]
-[if (cardsUnit.hasPagination()
-	and not cardsUnit.selection.oclIsUndefined())]
- <turbo-frame id="[unit.templateName()/]-{{ [cardsUnit.instanceParameter()/].currentPage }}" target="_top">
-[/if]
- [cardsUnit.unitContent(accessor)/]
-[if (cardsUnit.hasPagination()
-	and not cardsUnit.selection.oclIsUndefined())]
- </turbo-frame>
-[/if]
-[if ((cardsUnit.hasGeneralActions() or cardsUnit.hasContainerActions()) and cardsUnit.containerActionsPlacement = ContainerActionsPlacement::Below)]
- [cardsUnit.unitActions()/]
-[/if]
+ {{ component('[cardsUnit.componentClassName()/]') }}
 </section>
 [if (unit.controller.isMultiPage())]
 {% endblock %}
 [/if]
 [/file]
 [/let]
-[/let]
 [/template]
 
-[template private unitContent(unit : ContentUnit, accessor : String)
-	? (unit.oclIsKindOf(CardsUnit)) post(trim())]
+[template public unitContent(unit : ContentUnit)
+	?(unit.oclIsKindOf(CardsUnit)) post(trim())]
 [let cardsUnit : CardsUnit = unit.oclAsType(CardsUnit)]
+[let accessor : String = cardsUnit.instanceParameter()]
 [let variable : String = cardsUnit.contentType.instanceName()]
 [if (cardsUnit.hasGroupedResults())]
 {% set [cardsUnit.selection.grouping->first().name/] = null %}
 [else]
-<div[if (cardsUnit.hasContentClass())] class="[cardsUnit.contentClass()/]"[/if]>
+<div[if (cardsUnit.hasContentClass())] class="[cardsUnit.contentClass()/]"[/if] data-controller="appear">
 [/if]
-{% for [variable/] in [accessor/] %}
+{% if page > 1 %}
+ <div id="[unit.templateName()/]-{{ page - 1 }}-{{ pageSize }}"[if (cardsUnit.hasCardClass())] class="[cardsUnit.cardClass()/]"[/if]>
+ </div>
+{% endif %}
+{% for [variable/] in this.[accessor/] %}
 [if (cardsUnit.hasGroupedResults())]
 {% if [cardsUnit.selection.grouping->first().name/] != [variable/].enteredIn.title %}
  {% if [cardsUnit.selection.grouping->first().name/] is not null %}
@@ -83,10 +72,10 @@
  {% endif %}
 {% set [cardsUnit.selection.grouping->first().name/] = [variable/].enteredIn.title %}
 <h5>{{ [variable/].enteredIn.title }}</h5>
-<div[if (cardsUnit.hasContentClass())] class="[cardsUnit.contentClass()/]"[/if]>
+<div[if (cardsUnit.hasContentClass())] class="[cardsUnit.contentClass()/]"[/if]" data-controller="appear">
 {% endif%}
 [/if]
- <div[if (cardsUnit.hasCardClass())] class="[cardsUnit.cardClass()/]"[/if]>
+ <div id="[unit.templateName()/]-{{ page }}-{{ loop.index }}"[if (cardsUnit.hasCardClass())] class="[cardsUnit.cardClass()/]"[/if] data-live-ignore="true">
 [if (cardsUnit.badges->notEmpty())]
   [cardsUnit.header(variable)/]
 [/if]
@@ -98,13 +87,16 @@
 [/if]
  </div>
 {% endfor %}
+{% if this.[unit.instanceParameter()/].hasNextPage %}
+{% for i in 1..pageSize %}
+ <div id="[unit.templateName()/]-{{ page + 1 }}-{{ i }}"[if (cardsUnit.hasCardClass())] class="[cardsUnit.cardClass()/]"[/if]{% if loop.first %}
+  data-appear-target="loader" data-action="appear->live#action" data-live-action-param="debounce(750)|more"{% endif %}>
+ </div>
+{% endfor %}
+ </div>
+{% endif %}
 </div>
-[if (cardsUnit.hasPagination()
-	and not cardsUnit.selection.oclIsUndefined())]
- {% if [cardsUnit.instanceParameter()/].hasNextPage %}
- <turbo-frame id="[unit.templateName()/]-{{ [cardsUnit.instanceParameter()/].nextPage }}" src="{{ pagerfanta_page_url([cardsUnit.instanceParameter()/], [cardsUnit.instanceParameter()/].nextPage) }}" target="_top" loading="lazy"></turbo-frame>
- {% endif %}
-[/if]
+[/let]
 [/let]
 [/let]
 [/template]

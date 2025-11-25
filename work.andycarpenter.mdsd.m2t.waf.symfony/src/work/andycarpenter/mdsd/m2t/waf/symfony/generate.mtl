@@ -6,6 +6,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::authentication::generate/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::components::components/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::config::attributes/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::config::framework/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::config::imagine/]
@@ -17,7 +18,6 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::multiPageController/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::singlePageController/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::extensions::extensions/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::filters::unitFilters/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::formTypes::autocompleteType/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::formTypes::formType/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::javascript::generate/]
@@ -45,7 +45,7 @@
 
 [model.autocompleteTypes()/]
 [model.formTypes()/]
-[model.unitFilters()/]
+[model.components()/]
 [model.controllers
 	->select(c | c.hasUnits())
 	->select(c | c.isSinglePage()).oclAsType(SinglePageController)

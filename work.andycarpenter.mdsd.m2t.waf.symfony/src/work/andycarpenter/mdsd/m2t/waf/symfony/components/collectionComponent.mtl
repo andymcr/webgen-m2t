@@ -1,0 +1,142 @@
+[comment encoding = UTF-8 /]
+[module collectionComponent(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::types/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controllers::commonMethods/]
+
+
+[template public collectionComponent(unit : CollectionUnit)]
+[file(unit.componentSourceFilename(), false)]
+<?php
+namespace [unit.twigComponentsNamespace()/];
+
+use [unit.repositoriesNamespace()/]\[unit.contentType.repository.repositoryClassName()/];
+[if (unit.hasPagination())]
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
+[/if]
+use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+use Symfony\UX\LiveComponent\Attribute\LiveAction;
+use Symfony\UX\LiveComponent\Attribute\LiveProp;
+use Symfony\UX\LiveComponent\DefaultActionTrait;
+
+
+#['['/]AsLiveComponent[']'/]
+class [unit.componentClassName()/]
+{
+    use DefaultActionTrait;
+
+[if (unit.hasPagination())]
+    private const [unit.pageSizeConstant()/] = [unit.defaultPaginationSize/];
+
+    #['['/]LiveProp[']'/]
+    public int $pageSize = self::[unit.pageSizeConstant()/];
+
+    #['['/]LiveProp[']'/]
+    public int $page = 1;
+
+[/if]
+[for (filter : CollectionFilter | unit.filters)]
+    [filter.filterVariable()/]
+
+[/for]
+    /**
+     * @var [unit.contentType.repository.repositoryClassName()/] $[unit.contentType.repository.repositoryInstanceName()/]
+     */
+    protected [unit.contentType.repository.repositoryClassName()/] $[unit.contentType.repository.repositoryInstanceName()/];
+
+    public function __construct([unit.contentType.repository.repositoryClassName()/] $[unit.contentType.repository.repositoryInstanceName()/])
+    {
+        $this->[unit.contentType.repository.repositoryInstanceName()/] = $[unit.contentType.repository.repositoryInstanceName()/];
+    }
+
+    [unit.getMethod()/]
+
+    [unit.moreMethod()/]
+}
+[/file]
+[/template]
+
+[template private filterVariable(filter : CollectionFilter) post(trim())]
+/**
+ * @var [filter.attribute.documentationType()/]|null $[filter.fieldPropertyName()/]
+ */
+#['['/]LiveProp(writable: true)[']'/]
+public [filter.attribute.implementationType()/] $[filter.fieldPropertyName()/] = [filter.attribute.defaultValue()/];
+[/template]
+
+[template private defaultValue(attribute : Attribute) post(trim())]
+[if (attribute.isBooleanFeature)]
+false
+[elseif (attribute.isDateFeature)]
+new \DateTimeImmutable()
+[elseif (attribute.isEmailFeature)]
+'a@b.c'
+[elseif (attribute.isEnumerationFeature)]
+0
+[elseif (attribute.isFloatFeature)]
+0.0
+[elseif (attribute.isIntegerFeature)]
+0
+[else]
+''
+[/if]
+[/template]
+
+[template private getMethod(unit : CollectionUnit) post(trim())]
+/**
+ *
+ *
+ * @return [if (unit.hasPagination())]Pagerfanta[else]array<[unit.contentType/]>[/if]
+ */
+public function get[unit.contentType.pluralisedName/](): [if (unit.hasPagination())]Pagerfanta[else]array[/if]
+{
+[if (not unit.selection.oclIsUndefined())]
+	[if (unit.filter.oclIsUndefined())]
+[unit.builderInstanceVariable()/] = [unit.getContentRepository()/]->[unit.builderMethodName(selection)/]();
+	[else]
+[unit.builderInstanceVariable()/] = [unit.getContentRepository()/]->[unit.builderMethodName(filter)/]();
+	[/if]
+[else]
+[unit.builderInstanceVariable()/] = [unit.getContentRepository()/]->findAll[unit.builderSuffix()/]();
+[/if]
+[for (filter : CollectionFilter | unit.filters)]
+[filter.filterCode(unit)/]
+[/for]
+return [if (unit.hasPagination())]
+Pagerfanta::createForCurrentPageWithMaxPerPage(
+    new QueryAdapter([unit.builderInstanceVariable()/]),
+    $this->page, $this->pageSize);
+[else]
+[unit.builderInstanceVariable()/]->getQuery()->getResult();
+[/if]
+}
+[/template]
+
+[template private filterCode(filter : CollectionFilter)
+	?(filter.oclIsKindOf(NumericFilter)) post(trim())]
+[/template]
+
+[template private filterCode(filter : CollectionFilter, unit : CollectionUnit)
+	?(filter.oclIsKindOf(TextFilter)) post(trim())]
+if (trim($this->[filter.fieldPropertyName()/]) !== '') {
+    [unit.builderInstanceVariable()/]->andWhere([unit.builderInstanceVariable()/]->expr()->like('[filter.attribute.partOf.selectName()/].[filter.attribute.modelPropertyName()/]', ':[filter.fieldPropertyName()/]'));
+    [unit.builderInstanceVariable()/]->setParameter('[filter.fieldPropertyName()/]', strpos($this->[filter.fieldPropertyName()/], '%') ? $this->[filter.fieldPropertyName()/] : '%' . $this->[filter.fieldPropertyName()/] . '%');
+}
+[/template]
+
+[template private moreMethod(unit : CollectionUnit) post(trim())]
+/**
+ * 
+ */
+#['['/]LiveAction[']'/]
+public function more(): void
+{
+    ++$this->page;
+}
+[/template]

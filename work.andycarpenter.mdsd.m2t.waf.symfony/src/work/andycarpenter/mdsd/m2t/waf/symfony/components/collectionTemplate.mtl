@@ -1,37 +1,25 @@
 [comment encoding = UTF-8 /]
-[module collection(
-	'http://andycarpenter.work/metamodel/base',
+[module collectionTemplate(
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
-[import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::units/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::action/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::cards/]
 
 
-[template public unitFilters(unit : CollectionUnit) post(trim())]
+[template public collectionTemplate(unit : CollectionUnit)]
+[file(unit.componentTemplateFilename(), false)]
+{% trans_default_domain "entity" %}
+<div { {{ attributes }}>
 [if (unit.hasCollectionFilters())]
-<div[if (unit.hasFiltersClass())] class="[unit.filtersClass()/]"[/if]>
- {{ form_start([unit.filterFormInstanceParameter()/], {
-    attr: {
-        id: 'filters',
-        'data-turbo-action': 'replace',
-        'data-turbo-permanent': '',
-	[if (unit.filtersUseAutoSubmit)]
-        'data-controller': 'auto-submit'
-	[/if]
-    }}) }}
-  {{ form_errors([unit.filterFormInstanceParameter()/]) }}
+ <div[if (unit.hasFiltersClass())] class="[unit.filtersClass()/]"[/if]>
 	[if (unit.hasFiltersBodyClass())] 
   <div class="[unit.filtersBodyClass()/]">
 	[/if]
 	[for(filter : CollectionFilter | unit.filters)]
-  {{ form_row([unit.filterFormInstanceParameter()/].[filter.fieldPropertyName()/][if (unit.filtersUseAutoSubmit)]
-, { attr: { 'data-action': 'auto-submit#submit' }}[/if]) }}
+   <input [filter.filterAttributes()/]></input>
 	[/for]
 	[if (unit.hasFiltersBodyClass())]
   </div>
@@ -44,8 +32,20 @@
  class="[unit.filtersActionClass()/]"[/if][if (unit.hasClearTitle())]
  [unit.clearTitleAttribute()/][/if]>[unit.clearContent()/]</button>
   </div>
- {{ form_end([unit.filterFormInstanceParameter()/], {'render_rest': false}) }}
+ </div>
+[/if]
+ [unit.unitContent()/]
 </div>
+[/file]
+[/template]
+
+[template private filterAttributes(filter : CollectionFilter) post(trim())]
+type="search" data-model="[filter.fieldPropertyName()/]" title="[if (filter.hasCustomisedTitle())]
+{{ '[filter.titleContainedId()/]' | trans({}, '[filter.affects.translationDomain()/]') }}[else]
+{{ '[filter.attribute.captionContainedId()/]' | trans() }}[/if]" placeholder="[if (filter.hasCustomisedPlaceholder())]
+{{ '[filter.placeholderContainedId()/]' | trans({}, '[filter.affects.translationDomain()/]') }}[else]
+{{ '[filter.attribute.captionContainedId()/]' | trans() }}[/if]"[if (filter.hasHelp())]
+ help="{{ '[filter.helpContainedId()/]' | trans({}, '[filter.affects.translationDomain()/]') }}"
 [/if]
 [/template]
 
@@ -93,9 +93,4 @@ title="{{ [if (unit.hasCustomSearchTitle())]
 '[unit.searchTitleContainedId()/]'[else]
 '[unit.controller.rootController.searchTitleContainedId()/]'[/if]
  | trans({}, '[unit.translationDomain()/]') }}"
-[/template]
-
-
-[template public pagination(unit : CollectionUnit, accessor : String) post(trim())]
-{{ pagerfanta([accessor/]) }}
 [/template]
