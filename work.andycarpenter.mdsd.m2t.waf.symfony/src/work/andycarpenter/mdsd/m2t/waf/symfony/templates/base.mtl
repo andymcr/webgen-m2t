@@ -40,16 +40,16 @@
  <picture>
   <source media="(max-width: 659px)"
   	srcset=",
-  		/images/logo/HeatherLogo-600.png 600w"
+  		{{ asset('images/logo/HeatherLogo-600.png') }} 600w"
  	sizes="(max-width: 599px) 400px,
  		600px">
   <source media="(min-width: 660px)"
-  	srcset="/images/logo/HeatherLogo-660.png 660w,
- 		/images/logo/HeatherLogo-990.png 990w,
- 		/images/logo/HeatherLogo-1320.png 1320w"
+  	srcset="/{{ asset('images/logo/HeatherLogo-660.png') }} 660w,
+ 		{{ asset('images/logo/HeatherLogo-990.png') }} 990w,
+ 		{{ asset('images/logo/HeatherLogo-1320.png') }} 1320w"
  	sizes="(max-width: 989px) 660px,
  		990px">
-  <img src="/images/logo/HeatherLogo-1400.png" alt="Logo">
+  <img src="{{ asset('images/logo/HeatherLogo-400.png') }}" alt="Logo">
  </picture>
 </div>
 {% block navigation %}
