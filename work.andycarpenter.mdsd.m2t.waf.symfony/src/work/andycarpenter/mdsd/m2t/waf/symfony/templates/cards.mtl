@@ -18,7 +18,6 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::action/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::badge/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::base/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::collection/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::fields/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::image/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::titles/]
@@ -60,7 +59,7 @@
 [else]
 <div[if (cardsUnit.hasContentClass())] class="[cardsUnit.contentClass()/]"[/if] data-controller="appear">
 [/if]
-{% if page > 1 %}
+{% if page > 1 and false %}
  <div id="[unit.templateName()/]-{{ page - 1 }}-{{ pageSize }}"[if (cardsUnit.hasCardClass())] class="[cardsUnit.cardClass()/]"[/if]>
  </div>
 {% endif %}
@@ -75,7 +74,7 @@
 <div[if (cardsUnit.hasContentClass())] class="[cardsUnit.contentClass()/]"[/if]" data-controller="appear">
 {% endif%}
 [/if]
- <div id="[unit.templateName()/]-{{ page }}-{{ loop.index }}"[if (cardsUnit.hasCardClass())] class="[cardsUnit.cardClass()/]"[/if] data-live-ignore="true">
+ <div id="[unit.templateName()/]-{{ page }}-{{ loop.index }}"[if (cardsUnit.hasCardClass())] class="[cardsUnit.cardClass()/]"[/if][comment data-live-ignore="true"/]>
 [if (cardsUnit.badges->notEmpty())]
   [cardsUnit.header(variable)/]
 [/if]
@@ -87,15 +86,25 @@
 [/if]
  </div>
 {% endfor %}
-{% if this.[unit.instanceParameter()/].hasNextPage %}
+{% if this.[unit.instanceParameter()/].hasNextPage and false %}
 {% for i in 1..pageSize %}
  <div id="[unit.templateName()/]-{{ page + 1 }}-{{ i }}"[if (cardsUnit.hasCardClass())] class="[cardsUnit.cardClass()/]"[/if]{% if loop.first %}
   data-appear-target="loader" data-action="appear->live#action" data-live-action-param="debounce(750)|more"{% endif %}>
  </div>
 {% endfor %}
- </div>
 {% endif %}
 </div>
+<div class="pagination">
+{% if page > 1 %}
+ <button data-action="live#action" data-live-action-param="previous" [if (cardsUnit.hasFiltersControlClass())]
+ class="[cardsUnit.filtersControlClass()/]"[/if] title="Previous"><i class="bi bi-arrow-left"></i></button>
+{% endif %}
+{% if this.[unit.instanceParameter()/].hasNextPage %}
+ <button data-action="live#action" data-live-action-param="more" [if (cardsUnit.hasFiltersControlClass())]
+ class="[cardsUnit.filtersControlClass()/]"[/if] title="Next"><i class="bi bi-arrow-right"></i></button>
+{% endif %}
+</div>
+ </div>
 [/let]
 [/let]
 [/let]

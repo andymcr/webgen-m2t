@@ -51,12 +51,15 @@
 		and filter1.titleOverride = filter2.titleOverride
 /]
 
-[query public hasConstructorCode(unit : ContentUnit) : Boolean
-	= if unit.oclIsKindOf(CollectionUnit) then
-			unit.oclAsType(CollectionUnit).hasCollectionFilters() and unit.controller.isSinglePage()
-		else
-			false
-		endif
+[query public hasInlineSelectCode(unit : ContentUnit) : Boolean
+	= unit.isFormUnit
+		or unit.oclIsTypeOf(DetailsUnit)
+		or if unit.oclIsKindOf(CollectionUnit) then
+				let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)
+				in collectionUnit.isContained() and collectionUnit.loadContainingType()
+			else
+				false
+			endif
 /]
 
 [query public loadContainingType(unit : CollectionUnit) : Boolean

@@ -29,14 +29,6 @@ namespace [controller.controllersNamespace()/];
 
 class [controller.controllerClassName()/] extends [controller.baseControllerClassName()/]
 {
-[if (controller.hasCollectionFilters())]
-    use [controller.filterTraitName()/];
-
-[/if]
-[if (controller.hasPagination())]
-    [controller.constants()/]
-
-[/if]
     [controller.properties()/]
 
     [controller.constructor()/]
@@ -68,8 +60,5 @@ public function __construct([for (repository : Repository | controller.repositor
 [if (controller.hasSuccessMessages() or controller.hasActionsWithDisabledMessage())]
     $this->translationService = $translator;
 [/if]
-[for (unit : ContentUnit | controller.units->select(u | u.hasConstructorCode()))]
-    [unit.constructorCode()/]
-[/for]
 }
 [/template]

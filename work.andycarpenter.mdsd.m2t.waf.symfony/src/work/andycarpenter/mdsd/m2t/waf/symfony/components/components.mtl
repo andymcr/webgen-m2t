@@ -7,6 +7,6 @@
 
 
 [template public components(model : WafModel)]
-[model.distinctCollectionFilters().collectionComponent()/]
-[model.distinctCollectionFilters().collectionTemplate()/]
+[model.distinctCollections().collectionComponent()/]
+[model.distinctCollections().collectionTemplate()/]
 [/template]

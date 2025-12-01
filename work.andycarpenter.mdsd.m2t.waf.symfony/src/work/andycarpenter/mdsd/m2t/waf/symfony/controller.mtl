@@ -15,29 +15,24 @@
 /]
 
 [query public repositoriesUsed(controller : Controller) : Sequence(Repository)
-	= controller.dynamicUnits()
+	= controller.units->select(u | u.oclIsKindOf(SingletonUnit)).oclAsType(SingletonUnit)
 			->collect(u | u.contentType.repository)
 			->asSet()
-		->union(controller.collectionUnits()
-			->select(u | u.isContained() and u.loadContainingType())
-			->collect(u | u.containingType().repository)
-			->asSet())
 		->union(controller.editUnits()
 			->select(u | u.oclIsTypeOf(CreateUnit) or u.oclIsTypeOf(CreateUpdateUnit))
 			->select(u | not u.hasExplicitlyEditedContainer)
 			->select(u | not u.containingType().oclIsUndefined())
 			->collect(u | u.containingType().repository)
 			->asSet())
+		->union(controller.collectionUnits()
+			->select(u | u.isContained() and u.loadContainingType())
+			->collect(u | u.containingType().repository)
+			->asSet())
 		->asSequence()
 /]
 
-
-[query public hasSelectionMethod(unit : ContentUnit) : Boolean
-	= if unit.oclIsKindOf(CollectionUnit) then
-			not unit.oclAsType(CollectionUnit).inlineSelectCode()
-		else
-			false
-		endif
+[query public hasInlineSelectCode(controller : Controller) : Boolean
+	= controller.units->exists(u | u.hasInlineSelectCode())
 /]
 
 [query public hasSingleActionMethod(controller : Controller) : Boolean
@@ -47,32 +42,20 @@
 		and controller.hasCommonUnitAuthorisation()
 /]
 
-[query public hasSupportMethods(controller : Controller) : Boolean
-	= controller.units->select(u | u.hasSupportMethods())->notEmpty()
-/]
-
-[query public hasSupportMethods(unit : ContentUnit) : Boolean
-	= unit.oclIsKindOf(CollectionUnit) and not unit.oclAsType(CollectionUnit).inlineSelectCode()
-/]
-
-[query public inlineSelectCode(unit : CollectionUnit) : Boolean
-	= unit.controller.isMultiPage() or unit.controller.hasSingleActionMethod()
-/]
-
-[query public distinctCollectionFilters(controller : Controller) : Sequence(CollectionUnit)
-	= controller.collectionUnitsWithFilters()->iterate(u; 
+[query public distinctCollections(controller : Controller) : Sequence(CollectionUnit)
+	= controller.collectionUnits()->iterate(u; 
 		distinct : Sequence(CollectionUnit) = Sequence{} 
-		| if distinct->exists(j | j.filtersSame(u)) then
+		| if distinct->exists(j | j.filtersSame(u) and u.selection = j.selection and u.filter = j.filter) then
 				distinct
 			else
 				distinct->append(u)
 			endif)
 /]
 
-[query public distinctCollectionFilters(model : WafModel) : Sequence(CollectionUnit)
-	= model.collectionUnitsWithFilters->iterate(u; 
+[query public distinctCollections(model : WafModel) : Sequence(CollectionUnit)
+	= model.collectionUnits->iterate(u; 
 		distinct : Sequence(CollectionUnit) = Sequence{} 
-		| if distinct->exists(j | j.filtersSame(u)) then
+		| if distinct->exists(j | j.filtersSame(u) and u.selection = j.selection and u.filter = j.filter) then
 				distinct
 			else
 				distinct->append(u)

@@ -13,7 +13,6 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::accessor/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::action/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::base/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::templates::collection/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::fields/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::titles/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::value/]
@@ -33,18 +32,7 @@
 <section [if (tabularUnit.hasSectionClass())] class="[tabularUnit.sectionClass()/]" [/if]id="[tabularUnit.instanceParameter()/]">
  <h4[if (tabularUnit.hasCaptionClass() or tabularUnit.omitCaption)]
  class="[if (tabularUnit.hasCaptionClass())][tabularUnit.captionClass()/][/if] [if (tabularUnit.omitCaption)] hidden[/if]"[/if]>[tabularUnit.unitTitle()/]</h4>
-[if (tabularUnit.hasCollectionFilters())]
- [tabularUnit.unitFilters()/]
-[/if]
-[if (tabularUnit.hasPagination()
-	and not tabularUnit.selection.oclIsUndefined())]
- [tabularUnit.pagination(accessor)/]
-[/if]
- [tabularUnit.unitContent(null, accessor)/]
-[if (tabularUnit.hasPagination()
-	and not tabularUnit.selection.oclIsUndefined())]
- [tabularUnit.pagination(accessor)/]
-[/if]
+ {{ component('[tabularUnit.componentClassName()/]') }}
 </section>
 [if (unit.controller.isMultiPage())]
 {% endblock %}

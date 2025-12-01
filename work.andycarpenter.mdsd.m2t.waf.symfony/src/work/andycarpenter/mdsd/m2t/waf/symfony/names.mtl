@@ -68,6 +68,10 @@
 	= 'Filter'
 /]
 
+[query public listSuffix(eObject : EObject) : String
+	= 'List'
+/]
+
 [query public searchSuffix(eObject : EObject) : String
 	= 'Search'
 /]
@@ -105,13 +109,23 @@
 
 
 [query public componentClassName(unit : CollectionUnit) : String
-	= if unit.uiModel().distinctCollectionFilters()
+	= if unit.uiModel().distinctCollections()
 				->select(u  | u.contentType = unit.contentType)
 				->size() = 1 then
 			unit.contentType.pluralisedName
-		else
+		else if unit.controller.units->size() = 1 then
+			unit.controllerName()
+		else if unit.controller.distinctCollections()
+				->select(u  | u.contentType = unit.contentType)
+				->size() = 1 then
 			unit.controllerName().concat(unit.contentType.pluralisedName.toUpperFirst())
-		endif.concat(unit.searchSuffix())
+		else 
+			unit.controllerName().concat(unit.name)
+		endif endif endif.concat(if unit.hasCollectionFilters() then
+				unit.searchSuffix()
+			else 
+				unit.listSuffix()
+			endif)
 /]
 
 [query public controllerName(resource : Resource) : String
@@ -125,38 +139,6 @@
 
 [query public authenticatorName(authentication : LocalAuthenticationSystem) : String
 	= 'LoginFormAuthenticator'
-/]
-
-[query public filterEntityClassName(unit : CollectionUnit) : String
-	= if unit.uiModel().distinctCollectionFilters()
-				->select(u  | u.contentType = unit.contentType)
-				->size() = 1 then
-			unit.contentType.pluralisedName
-		else
-			unit.controllerName().concat(unit.contentType.pluralisedName.toUpperFirst())
-		endif.concat(unit.searchSuffix())
-/]
-
-[query public filterFormClassName(unit : CollectionUnit) : String
-	= if unit.uiModel().distinctCollectionFilters()
-				->select(u  | u.contentType = unit.contentType)
-				->size() = 1 then
-			unit.contentType.name
-		else
-			unit.controllerName().concat(unit.contentType.name.toUpperFirst())
-		endif.concat(unit.searchSuffix()).concat(unit.typeSuffix())
-/]
-
-[query public filterBaseClassName(object : EObject) : String
-	= 'AbstractFilter'
-/]
-
-[query public filterInterfaceClassName(object : EObject) : String
-	= 'FilterInterface'
-/]
-
-[query public filterClassName(object : EObject, filterName : String) : String
-	= filterName.concat(object.filterSuffix())
 /]
 
 [query public className(filter : CollectionFilter) : String

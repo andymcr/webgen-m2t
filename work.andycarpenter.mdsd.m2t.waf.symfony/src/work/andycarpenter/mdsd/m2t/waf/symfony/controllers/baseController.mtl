@@ -19,23 +19,8 @@
 [for (entity : Entity | controller.entitiesUsed()->sortedBy(e | e.name))]
 use [entity.modelsNamespace()/]\[entity.modelClassName()/];
 [/for]
-[for (unit : CollectionUnit | controller.distinctCollectionFilters()->sortedBy(u | u.contentType.name))]
-use [unit.filterEntityNamespace()/]\[unit.filterEntityClassName()/];
-[/for]
-[if (controller.collectionUnits()->exists(u | u.hasCollectionFilters()))]
-use [controller.filterNamespace()/]\[controller.filterTraitName()/];
-[/if]
-[if (controller.hasNumericFilters())]
-use [controller.filterNamespace()/]\[controller.filterClassName('Numeric')/];
-[/if]
-[if (controller.hasTextFilters())]
-use [controller.filterNamespace()/]\[controller.filterClassName('Text')/];
-[/if]
 [for (form : SingletonUnit | controller.formUnits()->sortedBy(u | u.name))]
 use [form.formNamespace()/]\[form.typeClassName()/];
-[/for]
-[for (unit : CollectionUnit | controller.distinctCollectionFilters()->sortedBy(u | u.contentType.name))]
-use [unit.filterFormNamespace()/]\[unit.filterFormClassName()/];
 [/for]
 [for (repository : Repository | controller.repositoriesUsed()->sortedBy(r | r.name))]
 use [repository.repositoriesNamespace()/]\[repository.repositoryClassName()/];
@@ -45,12 +30,6 @@ use [service.serviceNamespace()/]\[service.serviceClassName()/];
 [/for]
 [if (controller.editUnits()->collect(u | u.formFields)->select(f | f.isContains())->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
-[/if]
-[if (controller.hasCollectionUnits())]
-	[if (controller.collectionUnits()->exists(u | u.hasPagination()))]
-use Pagerfanta\Doctrine\ORM\QueryAdapter;
-use Pagerfanta\Pagerfanta;
-	[/if]
 [/if]
 use Symfony\Bundle\FrameworkBundle\Controller\[controller.baseControllerClassName()/];
 [if (controller.isSinglePage() and not controller.hasSingleActionMethod() and controller.hasFormUnits())]
@@ -73,13 +52,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 [if (controller.hasImageFields())]
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 [/if]
-[/template]
-
-[template public constants(controller : Controller) post(trim())]
-[for (unit : CollectionUnit | controller.collectionUnits()->select(u | u.hasPagination()))]
-private const [unit.pageSizeConstant()/] = [unit.defaultPaginationSize/];
-
-[/for]
 [/template]
 
 [template public properties(controller : Controller) post(trim())]

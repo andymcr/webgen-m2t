@@ -1,5 +1,6 @@
 [comment encoding = UTF-8 /]
 [module collectionComponent(
+	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
@@ -55,9 +56,15 @@ class [unit.componentClassName()/]
         $this->[unit.contentType.repository.repositoryInstanceName()/] = $[unit.contentType.repository.repositoryInstanceName()/];
     }
 
-    [unit.getMethod()/]
+    [unit.resetQueryMethod()/]
+
+    [unit.onUpdatedMethod()/]
+
+    [unit.previousMethod()/]
 
     [unit.moreMethod()/]
+
+    [unit.getMethod()/]
 }
 [/file]
 [/template]
@@ -66,7 +73,7 @@ class [unit.componentClassName()/]
 /**
  * @var [filter.attribute.documentationType()/]|null $[filter.fieldPropertyName()/]
  */
-#['['/]LiveProp(writable: true)[']'/]
+#['['/]LiveProp(writable: true, onUpdated: '[filter.onUpdatedMetodName()/]')[']'/]
 public [filter.attribute.implementationType()/] $[filter.fieldPropertyName()/] = [filter.attribute.defaultValue()/];
 [/template]
 
@@ -86,6 +93,55 @@ new \DateTimeImmutable()
 [else]
 ''
 [/if]
+[/template]
+
+[template private resetQueryMethod(unit : CollectionUnit) post(trim())]
+/**
+ * 
+ */
+#['['/]LiveAction[']'/]
+public function resetQuery(): void
+{
+[for (filter : CollectionFilter | unit.filters)]
+    $this->[filter.fieldPropertyName()/] = [filter.attribute.defaultValue()/];
+[/for]
+}
+[/template]
+
+[template private onUpdatedMethod(unit : CollectionUnit) post(trim())]
+/**
+ * 
+ */
+public function [unit.onUpdatedMetodName()/](): void
+{
+    $this->page = 1;
+}
+[/template]
+
+[query private onUpdatedMetodName(eObject : EObject) : String
+	= 'onQueryUpdate'
+/]
+
+[template private previousMethod(unit : CollectionUnit) post(trim())]
+/**
+ * 
+ */
+#['['/]LiveAction[']'/]
+public function previous(): void
+{
+    --$this->page;
+}
+[/template]
+
+[template private moreMethod(unit : CollectionUnit) post(trim())]
+/**
+ * 
+ */
+#['['/]LiveAction[']'/]
+public function more(): void
+{
+    ++$this->page;
+}
 [/template]
 
 [template private getMethod(unit : CollectionUnit) post(trim())]
@@ -127,16 +183,5 @@ Pagerfanta::createForCurrentPageWithMaxPerPage(
 if (trim($this->[filter.fieldPropertyName()/]) !== '') {
     [unit.builderInstanceVariable()/]->andWhere([unit.builderInstanceVariable()/]->expr()->like('[filter.attribute.partOf.selectName()/].[filter.attribute.modelPropertyName()/]', ':[filter.fieldPropertyName()/]'));
     [unit.builderInstanceVariable()/]->setParameter('[filter.fieldPropertyName()/]', strpos($this->[filter.fieldPropertyName()/], '%') ? $this->[filter.fieldPropertyName()/] : '%' . $this->[filter.fieldPropertyName()/] . '%');
-}
-[/template]
-
-[template private moreMethod(unit : CollectionUnit) post(trim())]
-/**
- * 
- */
-#['['/]LiveAction[']'/]
-public function more(): void
-{
-    ++$this->page;
 }
 [/template]

@@ -15,23 +15,12 @@
 <div { {{ attributes }}>
 [if (unit.hasCollectionFilters())]
  <div[if (unit.hasFiltersClass())] class="[unit.filtersClass()/]"[/if]>
-	[if (unit.hasFiltersBodyClass())] 
-  <div class="[unit.filtersBodyClass()/]">
-	[/if]
 	[for(filter : CollectionFilter | unit.filters)]
-   <input [filter.filterAttributes()/]></input>
+  <input [filter.filterAttributes()/]></input>
 	[/for]
-	[if (unit.hasFiltersBodyClass())]
-  </div>
-	[/if]
-  <div[if (unit.hasFiltersControlClass())] class="[unit.filtersControlClass()/]"[/if]>
-   <button type="submit" name="[unit.searchId()/]"[if (unit.hasFiltersActionClass())]
- class="[unit.filtersActionClass()/]"[/if][if (unit.hasSearchTitle())]
- [unit.searchTitleAttribute()/][/if]>[unit.searchContent()/]</button>
-   <button type="submit" name="[unit.clearId()/]"[if (unit.hasFiltersActionClass())]
- class="[unit.filtersActionClass()/]"[/if][if (unit.hasClearTitle())]
+   <button data-action="live#action" data-live-action-param="debounce(150)|resetQuery" name="[unit.clearId()/]"[if (unit.hasFiltersControlClass())]
+ class="[unit.filtersControlClass()/]"[/if][if (unit.hasClearTitle())]
  [unit.clearTitleAttribute()/][/if]>[unit.clearContent()/]</button>
-  </div>
  </div>
 [/if]
  [unit.unitContent()/]
@@ -69,28 +58,5 @@ type="search" data-model="[filter.fieldPropertyName()/]" title="[if (filter.hasC
 title="{{ [if (unit.hasCustomClearTitle())]
 '[unit.clearTitleContainedId()/]'[else]
 '[unit.controller.rootController.clearTitleContainedId()/]'[/if]
- | trans({}, '[unit.translationDomain()/]') }}"
-[/template]
-
-[template private searchContent(unit : CollectionUnit) post(trim())]
-[if (unit.hasSearchIcon())]
-<i class="[unit.searchIcon()/]"></i>
-[else]
-{{ '[unit.searchLabelId()/]' | trans({}, '[unit.translationDomain()/]') }}
-[/if]
-[/template]
-
-[template private searchLabelId(unit : CollectionUnit) post(trim())]
-[if (unit.hasCustomSearchLabel())]
-[unit.searchLabelContainedId()/]
-[else]
-[unit.controller.rootController.searchLabelContainedId()/]
-[/if]
-[/template]
-
-[template private searchTitleAttribute(unit : CollectionUnit) post(trim())]
-title="{{ [if (unit.hasCustomSearchTitle())]
-'[unit.searchTitleContainedId()/]'[else]
-'[unit.controller.rootController.searchTitleContainedId()/]'[/if]
  | trans({}, '[unit.translationDomain()/]') }}"
 [/template]

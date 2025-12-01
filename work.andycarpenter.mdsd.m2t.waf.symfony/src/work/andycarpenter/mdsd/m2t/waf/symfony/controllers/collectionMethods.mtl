@@ -18,20 +18,9 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::expression::controller/]
 
 
-[template public constructorCode(unit : ContentUnit)
-	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
-[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-[collectionUnit.addFilters()/]
-[/let]
-[/template]
-
 [template public unitMethods(unit : DynamicUnit)
 	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
 [let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-[if (not collectionUnit.inlineSelectCode())]
-[collectionUnit.actionSupportMethods()/]
-
-[/if]
 [collectionUnit.actionMethod()/]
 [/let]
 [/template]
@@ -45,50 +34,13 @@
 [unit.routeAttribute()/]
 public function [unit.actionName()/]([unit.actionMethodFormals()/]): Response
 {
-[if (unit.contentType.name = 'Talk')]
-    return $this->render('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]');
-[else]
-[if (unit.controller.isMultiPage())]
-	[if (unit.isConditionallyDisplayed())]
-    $parameters = ['['/][']'/];
-	[/if]
-	[if (unit.isContained() or unit.inlineSelectCode())]
-    [unit.renderCode()/]
-	[/if]
-    return $this->render('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]', [if (unit.isConditionallyDisplayed())]
-$parameters[else]['['/]
-		[if (unit.isContained() and unit.loadContainingType())]
+[if (unit.isContained() and unit.loadContainingType())]
+    [unit.loadContainer()/]
+[/if]
+    return $this->render('[unit.controller.controllerTemplateDirectory()/]/[unit.templateName()/][unit.htmlExtension()/][unit.twigExtension()/]'[if (unit.isContained() and unit.loadContainingType())], ['['/]
         '[unit.containerParameter()/]' => [unit.containerInstanceVariable()/],
-		[/if]
-		[if (unit.inlineSelectCode())]
-        '[unit.instanceParameter()/]' => [unit.instanceVariable()/],
-		[else]
-        '[unit.instanceParameter()/]' => $this->[unit.selectName()/]([unit.selectMethodParameters()/]),
-		[/if]
-		[if (unit.hasCollectionFilters())]
-        '[unit.filterFormInstanceParameter()/]' => [unit.filterFormInstanceVariable()/],
-		[/if]
     [']'/][/if]);
-[else]
-[if (unit.isDislayedOnlyOnExplicitRoute())]
-    [unit.selectCode()/]
-[/if]
-    return $this->renderPage([unit.renderMethodActuals()/]);
-[/if]
-[/if]
 }
-[/template]
-
-[template public actionSupportMethods(unit : ContentUnit)
-	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
-[let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)]
-[if (not collectionUnit.inlineSelectCode())]
-private function [collectionUnit.selectName()/]([collectionUnit.selectMethodParameters(true)/]): Pagerfanta
-{
-    [collectionUnit.selectCode()/]
-}
-[/if]
-[/let]
 [/template]
 
 [template public renderCode(unit : ContentUnit)
@@ -100,115 +52,5 @@ private function [collectionUnit.selectName()/]([collectionUnit.selectMethodPara
 $parameters['['/]'[collectionUnit.containerParameter()/]'[']'/] = [collectionUnit.containerInstanceVariable()/];
 	[/if]
 [/if]
-[if (collectionUnit.isDislayedOnlyOnExplicitRoute() and unit.controller.isSinglePage())]
-if (isset([unit.instanceVariable()/])) {
-    [collectionUnit.renderCode2()/]
-}
-[elseif (collectionUnit.isConditionallyDisplayed())]
-if (!([collectionUnit.hideWhen.controllerExpression(collectionUnit.containerInstanceVariable(), collectionUnit.containerInstanceVariable())/])) {
-    [collectionUnit.renderCode2()/]
-}
-[else]
-[collectionUnit.renderCode2()/]
-[/if]
-[/let]
-[/template]
-
-[template private renderCode2(unit : CollectionUnit) post(trim())]
-[if (unit.inlineSelectCode())]
-[unit.selectCode()/]
-[elseif (unit.isConditionallyDisplayed() or unit.controller.isSinglePage())]
-$parameters['['/]'[unit.instanceParameter()/]'[']'/] = $this->[unit.selectName()/]([unit.selectMethodParameters()/]);
-[/if]
-[/template]
-
-[template private selectMethodParameters(unit : CollectionUnit) post(trim())]
-[unit.selectMethodParameters(false)/]
-[/template]
-
-[template private selectMethodParameters(unit : CollectionUnit, formal : Boolean) post(trim())]
-[if (unit.hasCollectionFilters() or unit.hasPagination())][if (formal)]
-Request [/if]$request[if (unit.hasRouteParameters())]
-, [/if][/if]
-[unit.routeParameterList(formal)/]
-[/template]
-
-[template private selectionParameters(unit : CollectionUnit) post(trim())]
-[if (unit.hasRouteParameters())]
-[unit.routeParameterList(false)/][/if]
-[/template]
-
-[template private selectCode(unit : CollectionUnit)
-	 ? (not unit.hasPagination() and not unit.hasCollectionFilters())  post(trim())]
-[if (unit.inlineSelectCode())]
-[unit.resultsInstanceVariable()/] = [else]
-return [/if][if (not unit.selection.oclIsUndefined())]
-	[if (unit.filter.oclIsUndefined())]
-$this->[unit.selection.definedBy.repositoryInstanceName()/]->[unit.findMethodName(selection)/]([unit.selectionParameters()/]);
-	[else]
-$this->[unit.filter.selection.definedBy.repositoryInstanceName()/]->[unit.findMethodName(filter)/]([unit.selectionParameters()/]);
-	[/if]
-[else]
-[unit.getContentRepository()/]->findAll();
-[/if]
-[/template]
-
-[template private selectCode(unit : CollectionUnit)
-	 ? ((unit.hasPagination() or unit.hasCollectionFilters())) post(trim())]
-[if (not unit.selection.oclIsUndefined())]
-	[if (unit.filter.oclIsUndefined())]
-[unit.builderInstanceVariable()/] = [unit.getContentRepository()/]->[unit.builderMethodName(selection)/]([unit.selectionParameters()/]);
-	[else]
-[unit.builderInstanceVariable()/] = [unit.getContentRepository()/]->[unit.builderMethodName(filter)/]([unit.selectionParameters()/]);
-	[/if]
-[else]
-[unit.builderInstanceVariable()/] = [unit.getContentRepository()/]->findAll[unit.builderSuffix()/]();
-[/if]
-[if (unit.hasCollectionFilters())]
-	[if (unit.hasCollectionFilters())]
-[unit.addFilters()/]
-	[/if]
-[unit.filterEntityInstanceVariable()/] = new [unit.filterEntityClassName()/]();
-[unit.filterFormInstanceVariable()/] = [unit.createFilterForm(unit.routeParameters())/];
-if ($request->query->has('[unit.clearId()/]')) {
-    [unit.filterFormInstanceVariable()/]->handleRequest($request);
-}
-$this->applyFilters([unit.builderInstanceVariable()/], [unit.filterEntityInstanceVariable()/]);
-[/if]
-[if (unit.inlineSelectCode())]
-[unit.resultsInstanceVariable()/] =[else]
-return[/if] [if (unit.hasPagination())]
-Pagerfanta::createForCurrentPageWithMaxPerPage(
-    new QueryAdapter([unit.builderInstanceVariable()/]),
-    $request->query->getInt('page', 1),
-    self::[unit.pageSizeConstant()/]);
-[else]
- [unit.builderInstanceVariable()/]->getQuery()->getResult();
-[/if]
-[/template]
-
-[template public addFilters(unit : CollectionUnit) post(trim())]
-[for  (filter : CollectionFilter | unit.filters)]
-$this->addFilter(new [filter.className()/]('[filter.name/]', '[filter.attribute.partOf.selectName()/]', '[filter.attribute.modelPropertyName()/]', [unit.filterEntityClassName()/]::class));
-[/for]
-[/template]
-
-[template private createFilterForm(unit : CollectionUnit, sourceParameters : Sequence(Attribute)) post(trim())]
-[let controller : Controller = unit.controller]
-$this->createForm([unit.filterFormClassName()/]::class, [unit.filterEntityInstanceVariable()/], ['['/]
-    'action' => $this->generateUrl('[unit.routeName()/]'[if (controller.hasCollectionFilters() or controller.hasPagination())], [if (not unit.hasRouteParameters())]
-$request->query->all()[else]
-array_merge(
-        $request->query->all(), ['['/]
-            [unit.routeActualParameters(sourceParameters)/]
-    [']'/])[/if]
-[else]
-	[if (unit.hasRouteParameters())]
-, ['['/]
-        [unit.routeActualParameters(sourceParameters)/]
-    [']'/][/if]
-[/if]),
-    'method' => 'GET',
-[']'/])
 [/let]
 [/template]

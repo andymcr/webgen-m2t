@@ -33,14 +33,6 @@ namespace [controller.controllersNamespace()/];
 
 class [controller.controllerClassName()/] extends [controller.baseControllerClassName()/]
 {
-[if (controller.hasCollectionFilters())]
-    use [controller.filterTraitName()/];
-
-[/if]
-[if (controller.hasPagination())]
-    [controller.constants()/]
-
-[/if]
     [controller.properties()/]
 
     [controller.constructor()/]
@@ -48,12 +40,6 @@ class [controller.controllerClassName()/] extends [controller.baseControllerClas
 [if (controller.hasSingleActionMethod())]
     [controller.actionMethod()/]
 
-	[if (controller.hasSupportMethods())]
-		[for (unit : ContentUnit | controller.units->select(u | u.hasSupportMethods()))]
-    [unit.actionSupportMethods()/]
-
-		[/for]
-	[/if]
 	[for (action : Action | controller.actionsWithoutTarget)]
     [action.actionMethod()/]
 
@@ -84,9 +70,6 @@ public function __construct([for (repository : Repository | controller.repositor
 [if (controller.hasSuccessMessages() or controller.hasActionsWithDisabledMessage())]
     $this->translationService = $translator;
 [/if]
-[for (unit : ContentUnit | controller.units->select(u | u.hasConstructorCode()))]
-    [unit.constructorCode()/]
-[/for]
 }
 [/template]
 
@@ -114,11 +97,14 @@ string $[key.routeParameterName(controller.routeParameters())/][/for]): Response
 [/template]
 
 [template private renderCode(controller : Controller) post(trim())]
+[if (controller.hasInlineSelectCode())]
 $parameters = ['['/][']'/];
 
-[for (unit : ContentUnit | controller.units)]
+[/if]
+[for (unit : ContentUnit | controller.units->select(u | u.hasInlineSelectCode()))]
 [unit.renderCode()/]
 
 [/for]
-return $this->render('[controller.controllerTemplateDirectory()/]/index[controller.htmlExtension()/][controller.twigExtension()/]', $parameters);
+return $this->render('[controller.controllerTemplateDirectory()/]/index[controller.htmlExtension()/][controller.twigExtension()/]'[if (controller.hasInlineSelectCode())]
+, $parameters[/if]);
 [/template]
