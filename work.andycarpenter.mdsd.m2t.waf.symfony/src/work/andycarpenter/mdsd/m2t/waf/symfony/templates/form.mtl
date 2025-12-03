@@ -33,7 +33,7 @@
 [/template]
 
 [template private formFields(unit : EditUnit, accessor : String) post(trim())]
-[for (field : UnitField | unit.formFields)]
+[for (field : UnitField | unit.formFields())]
 	[if (field.isAuthorised)]
 {% if [field.authorisation.authorisationExpression()/] -%}
 	[/if]

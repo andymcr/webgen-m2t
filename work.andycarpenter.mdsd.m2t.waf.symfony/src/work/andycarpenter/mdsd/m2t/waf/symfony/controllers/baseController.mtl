@@ -28,7 +28,7 @@ use [repository.repositoriesNamespace()/]\[repository.repositoryClassName()/];
 [for (service : Service | controller.servicesUsed->sortedBy(s | s.name))]
 use [service.serviceNamespace()/]\[service.serviceClassName()/];
 [/for]
-[if (controller.editUnits()->collect(u | u.formFields)->select(f | f.isContains())->notEmpty())]
+[if (controller.editUnits()->collect(u | u.formFields())->select(f | f.isContains())->notEmpty())]
 use Doctrine\Common\Collections\ArrayCollection;
 [/if]
 use Symfony\Bundle\FrameworkBundle\Controller\[controller.baseControllerClassName()/];
@@ -64,7 +64,7 @@ private [repository.repositoryClassName()/] $[repository.repositoryInstanceName(
 [/for]
 [if (controller.isSinglePage() and not controller.hasSingleActionMethod())]
 	[for (unit : ContentUnit | controller.units->sortedBy(u | u.name))]
-		[if (unit.isFormUnit)]
+		[if (unit.isFormUnit())]
 /**
  * @var FormInterface<string> $[unit.oclAsType(EditUnit).formName()/]
  */

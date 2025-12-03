@@ -40,7 +40,9 @@
 [if ((cardsUnit.hasGeneralActions() or cardsUnit.hasTargetActions() or cardsUnit.hasContainerActions()) and cardsUnit.containerActionsPlacement <> ContainerActionsPlacement::Below)]
  [cardsUnit.unitActions()/]
 [/if]
- {{ component('[cardsUnit.componentClassName()/]') }}
+ {{ component('[cardsUnit.componentClassName()/]'[if (cardsUnit.hasSelectPath())], {
+  [cardsUnit.selection.selectionType().instanceName()/]: [cardsUnit.containerParameter()/]
+ }[/if]) }}
 </section>
 [if (unit.controller.isMultiPage())]
 {% endblock %}

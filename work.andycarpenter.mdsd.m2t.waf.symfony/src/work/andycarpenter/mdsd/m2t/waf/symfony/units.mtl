@@ -52,7 +52,7 @@
 /]
 
 [query public hasInlineSelectCode(unit : ContentUnit) : Boolean
-	= unit.isFormUnit
+	= unit.isFormUnit()
 		or unit.oclIsTypeOf(DetailsUnit)
 		or if unit.oclIsKindOf(CollectionUnit) then
 				let collectionUnit : CollectionUnit = unit.oclAsType(CollectionUnit)
@@ -60,6 +60,14 @@
 			else
 				false
 			endif
+/]
+
+[query public hasSelectPath(unit : CollectionUnit) : Boolean
+	= if unit.selection.oclIsUndefined() then
+			false
+		else
+			unit.selection.hasSelectPath()
+		endif
 /]
 
 [query public loadContainingType(unit : CollectionUnit) : Boolean

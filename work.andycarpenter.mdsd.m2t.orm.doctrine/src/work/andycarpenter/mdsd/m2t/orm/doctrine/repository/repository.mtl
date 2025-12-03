@@ -161,16 +161,9 @@ class [repository.repositoryClassName()/] extends [repository.baseRepositoryClas
 [/template]
 
 [template private useStatements(repository : Repository, security : SecurityModel) post(trim())]
-[if (security.authentication.userModel.repository = repository)]
-	[if (security.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
-	[let localAuthentication : LocalAuthenticationSystem = security.authentication.oclAsType(LocalAuthenticationSystem)]
-use [repository.modelsNamespace()/]\[localAuthentication.authenticationModel.modelClassName()/];
-	[/let]
-	[/if]
-[/if]
-[if (repository.serves.attributes->notEmpty())]
-use [repository.modelsNamespace()/]\[repository.serves.modelClassName()/];
-[/if]
+[for (entity : Entity | entitiesUsed(repository, security))]
+use [entity.modelsNamespace()/]\[entity.modelClassName()/];
+[/for]
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
@@ -187,6 +180,31 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\ResetPasswordReques
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 [/if]
 [/template]
+
+[query private entitiesUsed(repository : Repository, security : SecurityModel) : Sequence(Entity)
+	= if security.authentication.userModel.repository = repository then
+				if security.authentication.oclIsTypeOf(LocalAuthenticationSystem) then
+					let localAuthentication : LocalAuthenticationSystem
+						= security.authentication.oclAsType(LocalAuthenticationSystem)
+						in Set{localAuthentication.authenticationModel}
+				else
+					Set{}
+				endif
+			else
+				Set{}
+			endif
+		->union(if repository.serves.attributes->notEmpty() then
+				Set{repository.serves}
+			else
+				Set{}
+			endif)
+		->union(repository.selections
+			->select(s | s.hasSelectPath())
+			->collect(s | s.selectionType())
+			->asSet())
+		->asSequence()
+		->sortedBy(e | e.modelClassName())
+/]
 
 [template private getCurrentUserMethod(repository : Repository, security : SecurityModel)
 	?(security.authentication.oclIsTypeOf(LocalAuthenticationSystem)) post(trim())]
@@ -496,14 +514,8 @@ public function [selection.builderMethodName()/]([selection.formals()/]): QueryB
 [if (selection.distinct)]
 ->distinct()
 [/if]
-[if (selection.hasSelectPath() or selection.hasFormals())]
-	[if (selection.uriPathKeys()->notEmpty())]
-	[let routingEntity : Entity = selection.selectionType()]
-		[for (key : Attribute | selection.uriPathKeys())]
-->setParameter('[key.routeParameterName(routingEntity)/]', $[key.routeParameterName(routingEntity)/])
-		[/for]
-	[/let]
-	[/if]
+[if (selection.hasSelectPath())]
+->setParameter('[selection.selectionType().instanceName()/]', $[selection.selectionType().instanceName()/])
 [/if]
 [if (selection.hasConditionParameters())]
 [selection.condition.queryParameter(security)/]
@@ -588,9 +600,9 @@ array<int, [selection.definedBy.serves.modelClassName()/]>
 [/template]
 
 [template private documentSelectionParameters(selection : Selection) post(trim())]
-[for (key : Attribute | selection.uriPathKeys())]
-* @param [key.implementationType()/] $[key.routeParameterName(selection.selectionType())/]
-[/for]
+[if (selection.hasSelectPath())]
+* @param [selection.selectionType().modelClassName()/] $[selection.selectionType().instanceName()/]
+[/if]
 [for (parameter : FormalParameter | selection.parameters)]
 * @param [parameter.implementationType()/] $[parameter.name/]
 [/for]
@@ -618,10 +630,10 @@ array<int, [selection.definedBy.serves.modelClassName()/]>
 [/template]
 
 [template private selectionFormals(selection : Selection) post(trim())]
-[for (key : Attribute | selection.uriPathKeys()) separator(', ')]
-$[key.routeParameterName(selection.selectionType())/][/for]
-[if (selection.uriPathKeys()->notEmpty() and selection.hasFormals())]
+[if (selection.hasSelectPath())]
+[selection.selectionType().modelClassName()/] $[selection.selectionType().instanceName()/][if (selection.hasFormals())]
 , [/if]
+[/if]
 [for (parameter : FormalParameter | selection.parameters) separator(', ')]
 [parameter.implementationType()/] $[parameter.name/][if (not parameter.defaultValue.oclIsUndefined())]
  = [parameter.defaultValue/][/if][/for]
@@ -651,9 +663,7 @@ $[key.routeParameterName(selection.selectionType())/][/for]
 
 [template private selectionActuals(selection : Selection) post(trim())]
 [if (selection.hasSelectPath())]
-	[for (key : Attribute | selection.uriPathKeys()) separator(', ')]
-$[key.routeParameterName(selection.selectionType())/][/for]
-[if (selection.hasFormals())]
+$[selection.selectionType().instanceName()/][if (selection.hasFormals())]
 , [/if]
 [/if]
 [for (parameter : FormalParameter | selection.parameters) separator(', ')]
@@ -696,18 +706,14 @@ $[parameter.name/][/for]
 [query private selectPathAssociatins(pathElement : AssociationPathElement) : Sequence(Association)
 	= if pathElement.oclIsUndefined() then
 			Sequence{}
+		else if pathElement.childFeature.oclIsUndefined() then
+			Sequence{}
+		else if pathElement.childFeature.oclIsKindOf(AttributePathElement) then
+			Sequence{}
 		else
 			Sequence{pathElement.association}
-				->union(if pathElement.childFeature.oclIsUndefined() then
-						Sequence{}
-					else
-						if pathElement.childFeature.oclIsKindOf(AssociationPathElement) then
-							pathElement.childFeature.oclAsType(AssociationPathElement).selectPathAssociatins()
-						else
-							Sequence{}
-						endif
-					endif)
-		endif
+				->union(pathElement.childFeature.oclAsType(AssociationPathElement).selectPathAssociatins())
+		endif endif endif
 /]
 
 [query private containerAssociatins(selection : Selection) : Sequence(Association)
@@ -734,19 +740,16 @@ $[parameter.name/][/for]
 /]
 
 [template private condition(selection : Selection) post(trim())]
-[if (selection.uriPathKeys()->notEmpty())]
-[let routingEntity : Entity = selection.selectionType()]
-	[if (selection.uriPathKeys()->size() = 1)]
-	[let key : Attribute = selection.uriPathKeys()->first()]
-->where($queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.modelPropertyName()/]', ':[key.routeParameterName(routingEntity)/]'))
-	[/let]
-	[else]
-->where($queryBuilder->expr()->andX(
-		[for (key : Attribute | selection.uriPathKeys())]
-    $queryBuilder->expr()->eq('[key.partOf.selectName()/].[key.modelPropertyName()/]', ':[key.routeParameterName(routingEntity)/]')[if (i <> selection.uriPathKeys()->size())],[/if]
-		[/for]
-))
-	[/if]
+[if (selection.hasSelectPath())]
+[let path : Sequence(Association) = selection.selectPath.selectPathAssociatins()]
+[let association : Association
+	= if path->size() = 0 then
+			selection.selectPath.association
+		else
+			path->last()
+		endif]
+->where($queryBuilder->expr()->eq('[association.partOf.selectName()/].[association.modelPropertyName()/]', ':[selection.selectionType().instanceName()/]'))
+[/let]
 [/let]
 [/if]
 [if (selection.hasCondition())]
@@ -761,7 +764,4 @@ $[parameter.name/][/for]
 ->addOrderBy([order.attribute.queryExpression()/], [order.order()/])
 	[/for]
 [/if]
-[/template]
-
-[template private setParametersCode(selection : Selection, security : SecurityModel) post(trim())]
 [/template]
