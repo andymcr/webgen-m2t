@@ -168,7 +168,7 @@ public function more(): void
 /**
  *
  *
- * @return [if (unit.hasPagination())]Pagerfanta[else]array<[unit.contentType/]>[/if]
+ * @return [if (unit.hasPagination())]Pagerfanta[else]array<[unit.contentType.modelClassName()/]>[/if]
  */
 public function get[unit.contentType.pluralisedName/](): [if (unit.hasPagination())]Pagerfanta[else]array[/if]
 {
