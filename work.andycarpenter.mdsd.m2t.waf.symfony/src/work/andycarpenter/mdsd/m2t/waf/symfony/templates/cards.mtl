@@ -40,7 +40,7 @@
 [if ((cardsUnit.hasGeneralActions() or cardsUnit.hasTargetActions() or cardsUnit.hasContainerActions()) and cardsUnit.containerActionsPlacement <> ContainerActionsPlacement::Below)]
  [cardsUnit.unitActions()/]
 [/if]
- {{ component('[cardsUnit.componentClassName()/]'[if (cardsUnit.hasSelectPath())], {
+ {{ component('[cardsUnit.twigTemplatesNamespace()/][cardsUnit.componentClassName()/]'[if (cardsUnit.hasSelectPath())], {
   [cardsUnit.selection.selectionType().instanceName()/]: [cardsUnit.containerParameter()/]
  }[/if]) }}
 </section>

@@ -57,12 +57,32 @@
 	= authentication.templatesDirectory().concat('/').concat(authentication.authenticationTemplate())
 /]
 
-[query public componentSourceDirectory(eObject : EObject) : String
-	= eObject.twigSourceDirectory().concat('/').concat('Components')
+[query public componentSourceDirectory(controller :Controller) : String
+	= if controller.parentController.oclIsUndefined() then
+			controller.twigSourceDirectory()
+				.concat('/').concat('Components')
+				.concat('/').concat(controller.name)
+		else
+			controller.parentController.componentSourceDirectory()
+		endif
 /]
 
-[query public componentTemplateDirectory(eObject : EObject) : String
-	= eObject.templatesDirectory().concat('/').concat('components')
+[query public componentSourceDirectory(unit :ContentUnit) : String
+	= unit.controller.componentSourceDirectory()
+/]
+
+[query public componentTemplateDirectory(controller :Controller) : String
+	= if controller.parentController.oclIsUndefined() then
+			controller.templatesDirectory()
+				.concat('/').concat('components')
+				.concat('/').concat(controller.name)
+		else
+			controller.parentController.componentTemplateDirectory()
+		endif
+/]
+
+[query public componentTemplateDirectory(unit :ContentUnit) : String
+	= unit.controller.componentTemplateDirectory()
 /]
 
 [query public configDirectory(eObject : EObject) : String
@@ -245,12 +265,34 @@
 	= eObject.appNamespace().concat('\\').concat('Twig')
 /]
 
-[query public twigComponentsNamespace(eObject : EObject) : String
-	= eObject.twigNamespace().concat('\\').concat('Components')
+[query private twigComponentsNamespace(controller :Controller) : String
+	= if controller.parentController.oclIsUndefined() then
+			controller.name
+		else
+			controller.parentController.twigComponentsNamespace()
+		endif
+/]
+
+[query public twigComponentsNamespace(unit : ContentUnit) : String
+	=  unit.twigNamespace()
+		.concat('\\').concat('Components')
+		.concat('\\').concat(unit.controller.twigComponentsNamespace())
 /]
 
 [query public twigExtensionsNamespace(eObject : EObject) : String
 	= eObject.extensionsNamespace().concat('\\').concat('Twig')
+/]
+
+[query private twigTemplatesNamespace(controller :Controller) : String
+	= if controller.parentController.oclIsUndefined() then
+			controller.name.concat(':')
+		else
+			controller.parentController.twigTemplatesNamespace()
+		endif
+/]
+
+[query public twigTemplatesNamespace(unit : ContentUnit) : String
+	=  unit.controller.twigTemplatesNamespace()
 /]
 
 [query public webControllersNamespace(eObject : EObject) : String

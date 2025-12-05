@@ -106,3 +106,15 @@
 			selection.fields->isEmpty()
 		endif
 /]
+
+[query public templatePrefix(controller :Controller) : String
+	= if controller.parentController.oclIsUndefined() then
+			controller.name.concat('::')
+		else
+			controller.parentController.templatePrefix()
+		endif
+/]
+
+[query public templatePrefix(unit :ContentUnit) : String
+	= unit.controller.templatePrefix()
+/]
