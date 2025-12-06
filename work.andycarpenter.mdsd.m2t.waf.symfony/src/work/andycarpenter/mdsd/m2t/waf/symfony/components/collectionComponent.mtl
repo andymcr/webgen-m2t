@@ -26,6 +26,9 @@ use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 [/if]
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+[if (unit.hasPagination())]
+use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
+[/if]
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -170,6 +173,9 @@ public function more(): void
  *
  * @return [if (unit.hasPagination())]Pagerfanta[else]array<[unit.contentType.modelClassName()/]>[/if]
  */
+[if (unit.hasPagination())]
+#['['/]ExposeInTemplate[']'/]
+[/if]
 public function get[unit.contentType.pluralisedName/](): [if (unit.hasPagination())]Pagerfanta[else]array[/if]
 {
 [if (not unit.selection.oclIsUndefined())]

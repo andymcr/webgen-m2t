@@ -58,13 +58,15 @@
 [if (cardsUnit.hasGroupedResults())]
 {% set [cardsUnit.selection.grouping->first().name/] = null %}
 [else]
-<div[if (cardsUnit.hasContentClass())] class="[cardsUnit.contentClass()/]"[/if] data-controller="appear">
+<div[if (cardsUnit.hasContentClass())] class="[cardsUnit.contentClass()/]"[/if][comment  data-controller="appear"/]>
 [/if]
-{% if page > 1 and false %}
+[if (cardsUnit.hasPagination() and false)]
+{% if page > 1 %}
  <div id="[unit.templateName()/]-{{ page - 1 }}-{{ pageSize }}"[if (cardsUnit.hasCardClass())] class="[cardsUnit.cardClass()/]"[/if]>
  </div>
 {% endif %}
-{% for [variable/] in this.[accessor/] %}
+[/if]
+{% for [variable/] in [if (not cardsUnit.hasPagination())]this.[/if][accessor/] %}
 [if (cardsUnit.hasGroupedResults())]
 {% if [cardsUnit.selection.grouping->first().name/] != [variable/].enteredIn.title %}
  {% if [cardsUnit.selection.grouping->first().name/] is not null %}
@@ -72,7 +74,7 @@
  {% endif %}
 {% set [cardsUnit.selection.grouping->first().name/] = [variable/].enteredIn.title %}
 <h5>{{ [variable/].enteredIn.title }}</h5>
-<div[if (cardsUnit.hasContentClass())] class="[cardsUnit.contentClass()/]"[/if]" data-controller="appear">
+<div[if (cardsUnit.hasContentClass())] class="[cardsUnit.contentClass()/]"[/if]"[comment data-controller="appear"/]>
 {% endif%}
 [/if]
  <div id="[unit.templateName()/]-{{ page }}-{{ loop.index }}"[if (cardsUnit.hasCardClass())] class="[cardsUnit.cardClass()/]"[/if][comment data-live-ignore="true"/]>
@@ -87,25 +89,28 @@
 [/if]
  </div>
 {% endfor %}
-{% if this.[unit.instanceParameter()/].hasNextPage and false %}
+[if (cardsUnit.hasPagination() and false)]
+{% if [unit.instanceParameter()/].hasNextPage %}
 {% for i in 1..pageSize %}
  <div id="[unit.templateName()/]-{{ page + 1 }}-{{ i }}"[if (cardsUnit.hasCardClass())] class="[cardsUnit.cardClass()/]"[/if]{% if loop.first %}
   data-appear-target="loader" data-action="appear->live#action" data-live-action-param="debounce(750)|more"{% endif %}>
  </div>
 {% endfor %}
 {% endif %}
+[/if]
 </div>
+[if (cardsUnit.hasPagination())]
 <div class="pagination">
 {% if page > 1 %}
  <button data-action="live#action" data-live-action-param="previous" [if (cardsUnit.hasFiltersControlClass())]
  class="[cardsUnit.filtersControlClass()/]"[/if] title="Previous"><i class="bi bi-arrow-left"></i></button>
 {% endif %}
-{% if this.[unit.instanceParameter()/].hasNextPage %}
+{% if [unit.instanceParameter()/].hasNextPage %}
  <button data-action="live#action" data-live-action-param="more" [if (cardsUnit.hasFiltersControlClass())]
  class="[cardsUnit.filtersControlClass()/]"[/if] title="Next"><i class="bi bi-arrow-right"></i></button>
 {% endif %}
 </div>
- </div>
+[/if]
 [/let]
 [/let]
 [/let]
