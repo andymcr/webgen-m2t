@@ -53,7 +53,7 @@
 [template public unitContent(unit : ContentUnit)
 	?(unit.oclIsKindOf(CardsUnit)) post(trim())]
 [let cardsUnit : CardsUnit = unit.oclAsType(CardsUnit)]
-[let accessor : String = cardsUnit.instanceParameter()]
+[let accessor : String = cardsUnit.contentType.pluralisedName.toLowerFirst()]
 [let variable : String = cardsUnit.contentType.instanceName()]
 [if (cardsUnit.hasGroupedResults())]
 {% set [cardsUnit.selection.grouping->first().name/] = null %}
@@ -105,7 +105,7 @@
  <button data-action="live#action" data-live-action-param="previous" [if (cardsUnit.hasFiltersControlClass())]
  class="[cardsUnit.filtersControlClass()/]"[/if] title="Previous"><i class="bi bi-arrow-left"></i></button>
 {% endif %}
-{% if [unit.instanceParameter()/].hasNextPage %}
+{% if [accessor/].hasNextPage %}
  <button data-action="live#action" data-live-action-param="more" [if (cardsUnit.hasFiltersControlClass())]
  class="[cardsUnit.filtersControlClass()/]"[/if] title="Next"><i class="bi bi-arrow-right"></i></button>
 {% endif %}
