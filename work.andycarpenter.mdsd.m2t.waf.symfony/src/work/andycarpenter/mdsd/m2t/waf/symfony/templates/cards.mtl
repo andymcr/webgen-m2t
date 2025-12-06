@@ -103,11 +103,11 @@
 <div class="pagination">
 {% if page > 1 %}
  <button data-action="live#action" data-live-action-param="previous" [if (cardsUnit.hasFiltersControlClass())]
- class="[cardsUnit.filtersControlClass()/]"[/if] title="Previous"><i class="bi bi-arrow-left"></i></button>
+ class="[cardsUnit.filtersControlClass()/]"[/if] title="Previous" aria-label="Previous page"><i class="bi bi-arrow-left"></i></button>
 {% endif %}
 {% if [accessor/].hasNextPage %}
  <button data-action="live#action" data-live-action-param="more" [if (cardsUnit.hasFiltersControlClass())]
- class="[cardsUnit.filtersControlClass()/]"[/if] title="Next"><i class="bi bi-arrow-right"></i></button>
+ class="[cardsUnit.filtersControlClass()/]"[/if] title="Next" aria-label="Next page"><i cl ass="bi bi-arrow-right"></i></button>
 {% endif %}
 </div>
 [/if]

@@ -58,5 +58,8 @@ type="search" data-model="[filter.fieldPropertyName()/]" title="[if (filter.hasC
 title="{{ [if (unit.hasCustomClearTitle())]
 '[unit.clearTitleContainedId()/]'[else]
 '[unit.controller.rootController.clearTitleContainedId()/]'[/if]
+ | trans({}, '[unit.translationDomain()/]') }}" aria-label="{{ [if (unit.hasCustomClearTitle())]
+'[unit.clearTitleContainedId()/]'[else]
+'[unit.controller.rootController.clearTitleContainedId()/]'[/if]
  | trans({}, '[unit.translationDomain()/]') }}"
 [/template]
