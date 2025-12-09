@@ -30,9 +30,6 @@ framework:
     #esi: true
     #fragments: true
 
-    property_info:
-        with_constructor_extractor: true
-
     php_errors:
         log: true
 
