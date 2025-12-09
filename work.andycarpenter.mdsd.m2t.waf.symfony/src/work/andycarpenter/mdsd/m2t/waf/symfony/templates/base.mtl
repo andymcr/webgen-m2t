@@ -17,10 +17,14 @@
 [/if]
  {% block metas %}{% endblock %}
  <title>{{ site_title }}: {% block page_title %}{% endblock %}</title>
-{% block importmap %}
- {{ importmap('app') }}
-{% endblock %}
-
+{#
+ Those two blocks defines frontend entrypoint for CSS and JavaScript assets
+ See https://symfony.com/doc/current/frontend.html
+#}
+ {% block stylesheets %}{% endblock %}
+ {% block javascripts %}
+  {% block importmap %}{{ importmap('app') }}{% endblock %}
+ {% endblock %}
 [if (not siteProperties.textEditorURL.oclIsUndefined())]
  <script src="[siteProperties.textEditorURL/]"></script>
 [/if]
