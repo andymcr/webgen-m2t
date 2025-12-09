@@ -166,7 +166,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
 	[if (entity.resourceFeatures->exists(f | f.oclIsTypeOf(ImageResource)))]
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 	[/if]
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Vich\UploaderBundle\Mapping\Attribute as Vich;
 [/if]
 [if (entity.implementsForumUser)]
 use \Yosimitso\WorkingForumBundle\Entity\UserInterface as ForumUserInterface;
