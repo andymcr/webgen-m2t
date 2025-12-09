@@ -269,10 +269,6 @@
 	= controller.controllerName().concat('Controller').toUpperFirst()
 /]
 
-[query public controllerTestClassName(controller : Controller) : String
-	= controller.controllerClassName().concat(controller.testClassSuffix())
-/]
-
 [query public instanceName(controller : Controller) : String
 	= controller.name.toLowerFirst()
 /]
@@ -313,14 +309,6 @@
 
 [query public actionFilterName(unit : CollectionUnit) : String
 	= unit.actionName().concat('Filter')
-/]
-
-[query public actionTestName(unit : ContentUnit) : String
-	= unit.actionTestName(false)
-/]
-
-[query public actionTestName(unit : ContentUnit, update : Boolean) : String
-	= 'test'.concat(unit.actionName(update).toUpperFirst())
 /]
 
 [query public captchaActionName(unit : ContentUnit) : String

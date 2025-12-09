@@ -32,7 +32,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::slider/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::staticView/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::templates::tabular/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::tests::controllerTests/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::tests::tests/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translations::entity/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translations::section/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translations::navigation/]
@@ -77,7 +77,7 @@
 
 [model.extensions()/]
 
-[comment model.controllers->select(p | p.hasUnits).controllerTests(model)/]
+[model.tests()/]
 [/template]
 
 [template private symfonyConfig(genModel : WafModel)]

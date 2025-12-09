@@ -1,0 +1,32 @@
+[comment encoding = UTF-8 /]
+[module files(
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::tests::names/]
+
+
+[query public controllerTestsDirectory(controller : Controller) : String
+	= controller.testsDirectory().concat('/').concat(controller.controllerDirectory())
+/]
+
+
+[query public controllerTestsNamespace(controller : Controller) : String
+	= controller.testsNamespace().concat('\\').concat(controller.controllerDirectory())
+/]
+
+
+[query public applicationTestFilename(model : WafModel) : String
+	= model.testsDirectory()
+			.concat('/')
+			.concat(model.applicationTestClassName())
+			.concat(model.executableExtension())
+/]
+
+[query public controllerTestFilename(controller : Controller, model : WafModel) : String
+	= controller.controllerTestsDirectory()
+			.concat('/')
+			.concat(controller.controllerTestClassName())
+			.concat(controller.executableExtension())
+/]

@@ -97,16 +97,12 @@
 	= eObject.configDirectory().concat('/').concat('routes')
 /]
 
-[query private controllerDirectory(eObject : EObject) : String
+[query public controllerDirectory(eObject : EObject) : String
 	= 'Controller'
 /]
 
 [query public controllersDirectory(eObject : EObject) : String
 	= eObject.sourceDirectory().concat('/').concat(eObject.controllerDirectory())
-/]
-
-[query public controllerTestsDirectory(controller : Controller) : String
-	= controller.testsDirectory().concat('/').concat(controller.controllerDirectory())
 /]
 
 [query public cssDirectory(eObject : EObject) : String
@@ -233,10 +229,6 @@
 	= eObject.appNamespace().concat('\\').concat(eObject.controllerDirectory())
 /]
 
-[query public controllerTestsNamespace(controller : Controller) : String
-	= controller.testsNamespace().concat('\\').concat(controller.controllerDirectory())
-/]
-
 [query public extensionsNamespace(eObject : EObject) : String
 	= eObject.appNamespace().concat('\\').concat('Extensions')
 /]
@@ -336,13 +328,6 @@
 			controller.controllersDirectory()
 		endif.concat('/')
 			.concat(controller.controllerClassName())
-			.concat(controller.executableExtension())
-/]
-
-[query public controllerTestFilename(controller : Controller, model : WafModel) : String
-	= controller.controllerTestsDirectory()
-			.concat('/')
-			.concat(controller.controllerTestClassName())
 			.concat(controller.executableExtension())
 /]
 

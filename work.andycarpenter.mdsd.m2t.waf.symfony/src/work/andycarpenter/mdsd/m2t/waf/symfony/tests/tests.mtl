@@ -1,0 +1,12 @@
+[comment encoding = UTF-8 /]
+[module tests(
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::tests::applicationTests/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::tests::controllerTests/]
+
+
+[template public tests(model : WafModel)]
+[model.applicationTests()/]
+
+[comment model.controllers->select(p | p.hasUnits).controllerTests(model)/]
+[/template]
