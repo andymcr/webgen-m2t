@@ -18,7 +18,6 @@ security:
 
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
                 class: [authentication.modelsNamespace()/]\[authentication.authenticationModel.modelClassName()/]
@@ -26,14 +25,15 @@ security:
 
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            # Ensure dev tools and static assets are always allowed
+            pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
 
         main:
             lazy: true
 #            login_throttling: null
 
-            # activate different ways to authenticate
+            # Activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
             custom_authenticator: [authentication.authenticationNamespace()/]\[authentication.authenticatorName()/]
             logout:
@@ -58,8 +58,7 @@ security:
 
     # [/protected]
 
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
+    # Note: Only the *first* matching rule is applied
     access_control:
         - { path: ^[authentication.loginElement.uriPath()/]$, roles: PUBLIC_ACCESS, requires_channel: https }
 [if (authentication.allowSelfRegistration)]
@@ -74,10 +73,8 @@ security:
 when@test:
     security:
         password_hashers:
-            # By default, password hashers are resource intensive and take time. This is
-            # important to generate secure password hashes. In tests however, secure hashes
-            # are not important, waste resources and increase test times. The following
-            # reduces the work factor to the lowest possible values.
+            # Password hashers are resource-intensive by design to ensure security.
+            # In tests, it's safe to reduce their cost to improve performance.
             Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
                 algorithm: auto
                 cost: 4 # Lowest possible value for bcrypt
