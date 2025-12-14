@@ -1,0 +1,52 @@
+[comment encoding = UTF-8 /]
+[module randomValues(
+	'http://andycarpenter.work/metamodel/base',
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/security')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::expression/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::names/]
+
+
+[template public randomSingletonValue(feature : Feature) post(trim())]
+[if (feature.isAssociationFeature)]
+[let association : Association = feature.oclAsType(Association)]
+new [association.opposite.partOf.modelClassName()/]()
+[/let]
+[else]
+	[if (feature.isBooleanFeature)]
+$this->faker->boolean()
+	[elseif (feature.isDateFeature)]
+$this->faker->dateTime()
+	[elseif (feature.isEmailFeature)]
+$this->faker->email()
+	[elseif (feature.isEnumerationFeature)]
+	[let type : EnumerationType = feature.dataType.oclAsType(EnumerationType)]
+$this->faker->numberBetween(0, [type.enumerations->size() - 1/])
+	[/let]
+	[elseif (feature.isFloatFeature)]
+$this->faker->randomFloat()
+	[elseif (feature.isIntegerFeature)]
+$this->faker->randomNumber()
+	[elseif (feature.isLocationFeature)]
+	[elseif (feature.isResourceFeature)]
+	[elseif (feature.isStringFeature)]
+		[if (feature.name = 'name' or feature.name = 'username')]
+$this->faker->word()
+		[elseif (feature.name = 'title')]
+$this->faker->sentence()
+		[else]
+$this->faker->text()
+		[/if]
+	[elseif (feature.isTextareaFeature)]
+$this->faker->paragraph()
+	[elseif (feature.isUrlFeature)]
+$this->faker->url()
+	[else]
+$this->faker->paragraph()
+	[/if]
+[/if]
+[/template]
+

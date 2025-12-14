@@ -60,5 +60,12 @@ when@dev:
                 $imagePrefix: 'https://comps.salephoto.org.uk'
 
 [/for]
+
+when@test:
+    services:
+        App\Tests\Factory\:
+            resource: '%kernel.project_dir%/tests/Factory/'
+            autowire: true
+            autoconfigure: true
 [/file]
 [/template]

@@ -3,6 +3,9 @@
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::randomValues/]
 
 
 [template public factory(entity : Entity)]
@@ -11,7 +14,9 @@
 namespace [entity.factoriesNamespace()/];
 
 use [entity.modelsNamespace()/]\[entity.modelClassName()/];
+use [entity.repositoriesNamespace()/]\[entity.repository.repositoryClassName()/];
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
+use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
 
 
 /**
@@ -19,73 +24,47 @@ use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
  */
 class [entity.factoryClassName()/] extends PersistentObjectFactory
 {
-    [comment entity.constructorMethod()/]
+    [entity.constructorMethod()/]
 
     [entity.classMethod()/]
 
     [entity.defaultsMethod()/]
 
-    [comment entity.initializeMethod()/]
+    [entity.initializeMethod()/]
 }
 [/file]
 [/template]
 
 [template private constructorMethod(entity : Entity) post(trim())]
+/**
+ * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
+ */
 public function __construct()
 {
-    parent::__construct()
 }
 [/template]
 
 [template private classMethod(entity : Entity) post(trim())]
-    public static function class(): string
-    {
-        return [entity.modelClassName()/]::class;
-    }
+public static function class(): string
+{
+    return [entity.modelClassName()/]::class;
+}
 [/template]
 
 [template private defaultsMethod(entity : Entity) post(trim())]
 /**
  * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories
- *
- * @todo add your default values here
  */
 protected function defaults(): array|callable
 {
     return ['['/]
-[for (attribute : Attribute | entity.attributes)]
-	[if (attribute.isRequired)]
-        '[attribute.modelPropertyName()/]' => [attribute.fakeValue()/],
-	[/if]
+[for (attribute : Attribute | entity.attributes
+			->select(f | not f.isLocationFeature and not f.isResourceFeature)
+			->select(f | f.isRequired))]
+        '[attribute.modelPropertyName()/]' => self::[attribute.randomSingletonValue()/],
 [/for]
     [']'/];
 }
-[/template]
-
-[template private fakeValue(attribute : Attribute) post(trim())]
-[if (attribute.isBooleanFeature)]
-self::faker()->boolean()
-[elseif (attribute.isDateFeature)]
-new \DateTimeImmutable(self::faker()->iso8601('+2 years'))
-[elseif (attribute.isEmailFeature)]
-self::faker()->email()
-[elseif (attribute.isEnumerationFeature)]
-self::faker()->randomNumber()
-[elseif (attribute.isFloatFeature)]
-self::faker()->randomFloat()
-[elseif (attribute.isIntegerFeature)]
-self::faker()->randomNumber()
-[elseif (attribute.isLocationFeature)]
-[elseif (attribute.isResourceFeature)]
-[elseif (attribute.isStringFeature)]
-self::faker()->text()
-[elseif (attribute.isTextareaFeature)]
-self::faker()->paragraph()
-[elseif (attribute.isUrlFeature)]
-self::faker()->url()
-[else]
-self::faker()->text()
-[/if]
 [/template]
 
 [template private initializeMethod(entity : Entity) post(trim())]
