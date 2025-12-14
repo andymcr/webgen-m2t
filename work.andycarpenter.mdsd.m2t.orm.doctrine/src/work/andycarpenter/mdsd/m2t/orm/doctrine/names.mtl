@@ -27,20 +27,8 @@
 	= 'Builder'
 /]
 
-[query public factoryClassSuffix(eObject : EObject) : String
-	= 'Factory'
-/]
-
 [query private findPrefix(eObject : EObject) : String
 	= 'find'
-/]
-
-[query public fixtureClassSuffix(eObject : EObject) : String
-	= 'Fixture'
-/]
-
-[query public testClassSuffix(eObject : EObject) : String
-	= 'Test'
 /]
 
 [query public validatorClassSuffix(model : OrmModel) : String
@@ -58,24 +46,12 @@
 /]
 
 
-[query public factoryClassName(entity : Entity) : String
-	= entity.modelClassName().concat(entity.factoryClassSuffix())
-/]
-
-[query public fixtureClassName(entity : Entity) : String
-	= entity.modelClassName().concat(entity.fixtureClassSuffix())
-/]
-
 [query public findMethodName(entity : Entity) : String
 	= 'findOne'
 /]
 
 [query public modelClassName(entity : Entity) : String
 	= entity.name
-/]
-
-[query public modelTestClassName(entity : Entity) : String
-	= entity.modelClassName().concat(entity.testClassSuffix())
 /]
 
 [query public routeName(entity : Entity) : String
@@ -194,10 +170,6 @@
 
 [query public repositoryClassName(repository : Repository) : String
 	= repository.name.concat('Repository')
-/]
-
-[query public repositoryTestClassName(repository : Repository) : String
-	= repository.repositoryClassName().concat(repository.testClassSuffix())
 /]
 
 

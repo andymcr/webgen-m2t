@@ -1,0 +1,84 @@
+[comment encoding = UTF-8 /]
+[module files(
+	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://andycarpenter.work/metamodel/base',
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::names/]
+
+
+[query private factoryDirectory(eObject : EObject) : String
+	= 'Factory'
+/]
+
+[query private fixtureDirectory(eObject : EObject) : String
+	= 'DataFixtures'
+/]
+
+
+[query public factoriesDirectory(entity : Entity) : String
+	= entity.testsDirectory().concat('/').concat(entity.factoryDirectory())
+/]
+
+[query public fixturesDirectory(entity : Entity) : String
+	= entity.sourceDirectory().concat('/').concat(entity.fixtureDirectory())
+/]
+
+[query public testModelsDirectory(entity : Entity) : String
+	= entity.testsDirectory().concat('/').concat(entity.modelDirectory())
+/]
+
+[query public testRepositoriesDirectory(repository : Repository) : String
+	= repository.testsDirectory().concat('/').concat(repository.repositoryDirectory())
+/]
+
+[query public testsDirectory(eObject : EObject) : String
+	= 'tests'
+/]
+
+
+[query public factoriesNamespace(entity : Entity) : String
+	= entity.appNamespace().concat('\\').concat(entity.factoryDirectory())
+/]
+
+[query public fixturesNamespace(entity : Entity) : String
+	= entity.appNamespace().concat('\\').concat(entity.fixtureDirectory())
+/]
+
+[query public testModelsNamespace(eObject : EObject) : String
+	= eObject.testsNamespace().concat('\\').concat(eObject.modelDirectory())
+/]
+
+[query public testRepositoriesNamespace(eObject : EObject) : String
+	= eObject.testsNamespace().concat('\\').concat(eObject.repositoryDirectory())
+/]
+
+[query public testsNamespace(eObject : EObject) : String
+	= eObject.appNamespace().concat('\\').concat('Tests')
+/]
+
+
+[query public factoryFilename(entity : Entity) : String
+	= entity.factoriesDirectory().concat('/')
+		.concat(entity.factoryClassName())
+		.concat(entity.executableExtension())
+/]
+
+[query public fixtureFilename(entity : Entity) : String
+	= entity.fixturesDirectory().concat('/')
+		.concat(entity.fixtureClassName())
+		.concat(entity.executableExtension())
+/]
+
+[query public testModelFilename(entity : Entity) : String
+	= entity.testModelsDirectory().concat('/')
+		.concat(entity.testModelClassName())
+		.concat(entity.executableExtension())
+/]
+
+[query public testRepositoryFilename(repository : Repository) : String
+	= repository.testRepositoriesDirectory().concat('/')
+		.concat(repository.testRepositoryClassName())
+		.concat(repository.executableExtension())
+/]

@@ -1,0 +1,36 @@
+[comment encoding = UTF-8 /]
+[module names(
+	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://andycarpenter.work/metamodel/base',
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+
+
+[query public factoryClassSuffix(eObject : EObject) : String
+	= 'Factory'
+/]
+
+[query public fixtureClassSuffix(eObject : EObject) : String
+	= 'Fixture'
+/]
+
+[query public testClassSuffix(eObject : EObject) : String
+	= 'Test'
+/]
+
+
+[query public factoryClassName(entity : Entity) : String
+	= entity.modelClassName().concat(entity.factoryClassSuffix())
+/]
+
+[query public fixtureClassName(entity : Entity) : String
+	= entity.modelClassName().concat(entity.fixtureClassSuffix())
+/]
+
+[query public testModelClassName(entity : Entity) : String
+	= entity.modelClassName().concat(entity.testClassSuffix())
+/]
+
+[query public testRepositoryClassName(repository : Repository) : String
+	= repository.repositoryClassName().concat(repository.testClassSuffix())
+/]
