@@ -13,14 +13,38 @@
 <?php
 namespace [entity.modelTestsNamespace()/];
 
-use [entity.modelsNamespace()/]\[entity.modelClassName()/];
+[for (type : Entity | entity.features
+		->select(f | f.isAssociationFeature).oclAsType(Association)
+		->collect(a | a.opposite.partOf)
+		->asSet()
+		->union(Set{entity})
+		->sortedBy(modelClassName()))]
+use [type.modelsNamespace()/]\[type.modelClassName()/];
+[/for]
 use PHPUnit\Framework\TestCase;
 
 
 class [entity.modelTestClassName()/] extends TestCase
 {
-[for (feature : Feature | entity.features->select(f | not f.isResourceFeature))]
+    private $faker;
+
+    protected function setUp(): void
+    {
+        $this->faker = \Faker\Factory::create();
+    }
+
+[for (feature : Feature | entity.features->select(f | not f.isLocationFeature and not f.isResourceFeature))]
     [feature.testMethodDefault()/]
+
+	[if (feature.isSingleton)]
+    [feature.testMethodSetValue()/]
+
+    [feature.testMethodChangeValue()/]
+	[else]
+    [feature.testMethodCollectionAdd()/]
+
+    [feature.testMethodCollectionRemove()/]
+	[/if]
 
 [/for]
 }
@@ -70,6 +94,152 @@ $this->assertEquals([attribute.oclAsType(Attribute).defaultSingletonValue()/], $
 [/let]
 [/template]
 
+[template private testMethodCoreDefault(feature : Feature)
+	?(feature.isAttributeFeature and not feature.isSingleton) post(trim())]
+[let attribute : Attribute = feature.oclAsType(Attribute)]
+[if (attribute.partOf.implementsUserInterface and attribute.name = 'roles')]
+$this->assertCount(1, $[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
+[else]
+$this->assertCount(0, $[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
+[/if]
+[/let]
+[/template]
+
+[template private testMethodCoreDefault(feature : Feature)
+	?(feature.isAssociationFeature) post(trim())]
+[let association : Association = feature.oclAsType(Association)]
+[if (association.isSingleton)]
+	[if (association.associationContainer or association.isRequired)]
+$this->expectException(\Error::class);
+	[/if]
+$this->assertNull($[association.partOf.instanceName()/]->[association.getMethodName()/]());
+[else]
+$this->assertCount(0, $[association.partOf.instanceName()/]->[association.getMethodName()/]());
+[/if]
+[/let]
+[/template]
+
+[template private testMethodSetValue(feature : Feature) post(trim())]
+public function test[feature.modelPropertyName().toUpperFirst()/]SetValue(): void
+{
+	$[feature.partOf.instanceName()/] = new [feature.partOf.modelClassName()/]();
+    $value = [feature.randomSingletonValue()/];
+    $[feature.partOf.instanceName()/]->[feature.setMethodName()/]($value);
+    $this->assertEquals([if (feature.isCaseInsensitive)]
+strtolower($value)[else]$value[/if], $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+}
+[/template]
+
+[template private testMethodChangeValue(feature : Feature) post(trim())]
+public function test[feature.modelPropertyName().toUpperFirst()/]ChangeValue(): void
+{
+	$[feature.partOf.instanceName()/] = new [feature.partOf.modelClassName()/]();
+    $value1 = [feature.randomSingletonValue()/];
+    $[feature.partOf.instanceName()/]->[feature.setMethodName()/]($value1);
+    $value2 = [feature.randomSingletonValue()/];
+    $[feature.partOf.instanceName()/]->[feature.setMethodName()/]($value2);
+    $this->assertEquals($value2, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+}
+[/template]
+
+[template private testMethodCollectionAdd(feature : Feature) post(trim())]
+public function test[feature.modelPropertyName().toUpperFirst()/]CollectionAdd(): void
+{
+	$[feature.partOf.instanceName()/] = new [feature.partOf.modelClassName()/]();
+    $value1 = [feature.randomSingletonValue()/];
+[if (feature.collectionOrmAllowAdd)]
+    $[feature.partOf.instanceName()/]->[feature.addMethodName()/]($value1);
+[else]
+    $[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->add($value1);
+[/if]
+[if (feature.partOf.implementsUserInterface and feature.name = 'roles')]
+    $this->assertCount(2, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+[else]
+    $this->assertCount(1, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+[/if]
+    $value2 = [feature.randomSingletonValue()/];
+[if (feature.collectionOrmAllowAdd)]
+    $[feature.partOf.instanceName()/]->[feature.addMethodName()/]($value2);
+[else]
+    $[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->add($value2);
+[/if]
+[if (feature.partOf.implementsUserInterface and feature.name = 'roles')]
+    $this->assertCount(3, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+[else]
+    $this->assertCount(2, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+[/if]
+    $value3 = [feature.randomSingletonValue()/];
+[if (feature.collectionOrmAllowAdd)]
+    $[feature.partOf.instanceName()/]->[feature.addMethodName()/]($value3);
+[else]
+    $[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->add($value3);
+[/if]
+[if (feature.partOf.implementsUserInterface and feature.name = 'roles')]
+    $this->assertCount(4, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+[else]
+    $this->assertCount(3, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+[/if]
+[if (feature.isAttributeFeature)]
+    $this->assertTrue(in_array($value1, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]()));
+    $this->assertTrue(in_array($value2, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]()));
+    $this->assertTrue(in_array($value3, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]()));
+[else]
+    $this->assertTrue($[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->contains($value1));
+    $this->assertTrue($[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->contains($value2));
+    $this->assertTrue($[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->contains($value3));
+[/if]
+}
+[/template]
+
+[template private testMethodCollectionRemove(feature : Feature) post(trim())]
+public function test[feature.modelPropertyName().toUpperFirst()/]CollectionRemove(): void
+{
+	$[feature.partOf.instanceName()/] = new [feature.partOf.modelClassName()/]();
+    $value1 = [feature.randomSingletonValue()/];
+    $value2 = [feature.randomSingletonValue()/];
+    $value3 = [feature.randomSingletonValue()/];
+[if (feature.collectionOrmAllowAdd)]
+    $[feature.partOf.instanceName()/]->[feature.addMethodName()/]($value1);
+    $[feature.partOf.instanceName()/]->[feature.addMethodName()/]($value2);
+    $[feature.partOf.instanceName()/]->[feature.addMethodName()/]($value3);
+[else]
+    $[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->add($value1);
+    $[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->add($value2);
+    $[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->add($value3);
+[/if]
+[if (feature.collectionOrmAllowRemove)]
+    $[feature.partOf.instanceName()/]->[feature.removeMethodName()/]($value1);
+[else]
+    $[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->remove($[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->indexOf($value1));
+[/if]
+[if (feature.partOf.implementsUserInterface and feature.name = 'roles')]
+    $this->assertCount(3, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+[else]
+    $this->assertCount(2, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+[/if]
+[if (feature.collectionOrmAllowRemove)]
+    $[feature.partOf.instanceName()/]->[feature.removeMethodName()/]($value2);
+[else]
+    $[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->remove($[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->indexOf($value2));
+[/if]
+[if (feature.partOf.implementsUserInterface and feature.name = 'roles')]
+    $this->assertCount(2, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+[else]
+    $this->assertCount(1, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+[/if]
+[if (feature.collectionOrmAllowRemove)]
+    $[feature.partOf.instanceName()/]->[feature.removeMethodName()/]($value3);
+[else]
+    $[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->remove($[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->indexOf($value3));
+[/if]
+[if (feature.partOf.implementsUserInterface and feature.name = 'roles')]
+    $this->assertCount(1, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+[else]
+    $this->assertCount(0, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+[/if]
+}
+[/template]
+
 [template private defaultSingletonValue(attribute : Attribute) post(trim())]
 [if (attribute.hasDefaultValue)]
 [attribute.defaultValue.defaultExpression()/]
@@ -79,7 +249,7 @@ false
 	[elseif (attribute.isDateFeature)]
 new \DateTimeImmutable()
 	[elseif (attribute.isEmailFeature)]
-''
+'a@b.c'
 	[elseif (attribute.isEnumerationFeature)]
 0
 	[elseif (attribute.isFloatFeature)]
@@ -100,37 +270,43 @@ new \DateTimeImmutable()
 [/if]
 [/template]
 
-[template private testMethodCoreDefault(feature : Feature)
-	?(feature.isAttributeFeature and not feature.isSingleton) post(trim())]
-[let attribute : Attribute = feature.oclAsType(Attribute)]
-[if (attribute.partOf.implementsUserInterface and attribute.name = 'roles')]
-$this->assertCount(1, $[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
-[else]
-$this->assertCount(0, $[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
-[/if]
-[/let]
-[/template]
-
-[template private testMethodCoreDefault(feature : Feature)
-	?(feature.isAssociationFeature) post(trim())]
+[template private randomSingletonValue(feature : Feature) post(trim())]
+[if (feature.isAssociationFeature)]
 [let association : Association = feature.oclAsType(Association)]
-[if (association.isSingleton)]
-	[if (association.associationContainer or association.isRequired)]
-$this->expectError();
-	[/if]
-$this->assertNull($[association.partOf.instanceName()/]->[association.getMethodName()/]());
-[else]
-$this->assertCount(0, $[association.partOf.instanceName()/]->[association.getMethodName()/]());
-[/if]
+new [association.opposite.partOf.modelClassName()/]()
 [/let]
+[else]
+	[if (feature.isBooleanFeature)]
+$this->faker->boolean()
+	[elseif (feature.isDateFeature)]
+$this->faker->dateTime()
+	[elseif (feature.isEmailFeature)]
+$this->faker->email()
+	[elseif (feature.isEnumerationFeature)]
+	[let type : EnumerationType = feature.dataType.oclAsType(EnumerationType)]
+$this->faker->numberBetween(0, [type.enumerations->size() - 1/])
+	[/let]
+	[elseif (feature.isFloatFeature)]
+$this->faker->randomFloat()
+	[elseif (feature.isIntegerFeature)]
+$this->faker->randomNumber()
+	[elseif (feature.isLocationFeature)]
+	[elseif (feature.isResourceFeature)]
+	[elseif (feature.isStringFeature)]
+		[if (feature.name = 'name' or feature.name = 'username')]
+$this->faker->word()
+		[elseif (feature.name = 'title')]
+$this->faker->sentence()
+		[else]
+$this->faker->text()
+		[/if]
+	[elseif (feature.isTextareaFeature)]
+$this->faker->paragraph()
+	[elseif (feature.isUrlFeature)]
+$this->faker->url()
+	[else]
+$this->faker->paragraph()
+	[/if]
+[/if]
 [/template]
 
-[template private createUserInstance(security : SecurityModel) post(trim())]
-[if (security.authentication.oclIsTypeOf(LocalAuthenticationSystem))]
-[let localAuthentication : LocalAuthenticationSystem = security.authentication.oclAsType(LocalAuthenticationSystem)]
-new [localAuthentication.authenticationModel.modelClassName()/]()
-[/let]
-[else]
-new [security.authentication.userModel.modelClassName()/]()
-[/if]
-[/template]
