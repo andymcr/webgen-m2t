@@ -13,8 +13,8 @@
 /]
 
 
-[query public testApplicationsDirectory(controller : Controller) : String
-	= controller.testsDirectory().concat('/').concat(controller.applicationDirectory())
+[query public testApplicationsDirectory(eObject : EObject) : String
+	= eObject.testsDirectory().concat('/').concat(eObject.applicationDirectory())
 /]
 
 [query public testControllersDirectory(controller : Controller) : String
@@ -22,8 +22,8 @@
 /]
 
 
-[query public testApplicationNamespace(controller : Controller) : String
-	= controller.testsNamespace().concat('\\').concat(controller.applicationDirectory())
+[query public testApplicationNamespace(eObject : EObject) : String
+	= eObject.testsNamespace().concat('\\').concat(eObject.applicationDirectory())
 /]
 
 [query public testControllersNamespace(controller : Controller) : String
@@ -31,11 +31,11 @@
 /]
 
 
-[query public testApplicationFilename(model : WafModel) : String
-	= model.testApplicationsDirectory()
+[query public testApplicationFilename(eObject : EObject) : String
+	= eObject.testApplicationsDirectory()
 			.concat('/')
-			.concat(model.testApplicationClassName())
-			.concat(model.executableExtension())
+			.concat(eObject.testApplicationClassName())
+			.concat(eObject.executableExtension())
 /]
 
 [query public testControllerFilename(controller : Controller, model : WafModel) : String

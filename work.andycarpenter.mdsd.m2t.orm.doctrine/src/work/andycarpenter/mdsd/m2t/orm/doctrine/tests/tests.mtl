@@ -1,0 +1,17 @@
+[comment encoding = UTF-8 /]
+[module tests(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::dataFixtures::dataFixtures/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::factory/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::entityTests/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::repositoryStories/]
+
+
+[template public tests(model : OrmModel)]
+[model.entities->select(e | not e.implementsResetPasswordInterface).factory()/]
+[comment model.entities->select(e | not e.implementsResetPasswordInterface).fixture(wafModel)/]
+[model.entities->select(e | not e.isContained).repositoryStories()/]
+
+[model.entities->select(e | not e.implementsResetPasswordInterface).modelTests()/]
+[/template]

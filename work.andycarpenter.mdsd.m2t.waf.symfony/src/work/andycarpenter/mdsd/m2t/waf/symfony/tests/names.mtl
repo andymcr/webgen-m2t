@@ -1,7 +1,8 @@
 [comment encoding = UTF-8 /]
 [module names(
+	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
-[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 
 
@@ -10,11 +11,11 @@
 /]
 
 
-[query public applicationTestClassName(model : WafModel) : String
-	= 'Smoke'.concat(model.testClassSuffix())
+[query public testApplicationClassName(eObject : EObject) : String
+	= 'Smoke'.concat(eObject.testClassSuffix())
 /]
 
-[query publictTestControllerClassName(controller : Controller) : String
+[query public testControllerClassName(controller : Controller) : String
 	= controller.controllerClassName().concat(controller.testClassSuffix())
 /]
 
