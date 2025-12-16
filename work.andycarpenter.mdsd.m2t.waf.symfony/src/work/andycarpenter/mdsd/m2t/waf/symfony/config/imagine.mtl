@@ -53,6 +53,13 @@ when@dev:
             entries.loader:
                 stream:
                     wrapper: https://comps.salephoto.org.uk/
+
+
+when@test:
+    liip_imagine:
+        resolvers:
+            entries.cache:
+                web_path: ~
 [/file]
 [/template]
 
