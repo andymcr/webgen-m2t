@@ -16,12 +16,7 @@
 <?php
 namespace [entity.testModelsNamespace()/];
 
-[for (type : Entity | entity.features
-		->select(f | f.isAssociationFeature).oclAsType(Association)
-		->collect(a | a.opposite.partOf)
-		->asSet()
-		->union(Set{entity})
-		->sortedBy(modelClassName()))]
+[for (type : Entity | entity.modelsUsed())]
 use [type.modelsNamespace()/]\[type.modelClassName()/];
 [/for]
 use PHPUnit\Framework\TestCase;
@@ -38,103 +33,81 @@ class [entity.testModelClassName()/] extends TestCase
 
 [for (feature : Feature | entity.features
 		->select(f | not f.isLocationFeature and not f.isResourceFeature))]
-    [feature.testMethodDefault()/]
-
+[let getValue : String
+	= '$'.concat(feature.partOf.instanceName())
+		.concat('->').concat(feature.getMethodName()).concat('()')]
 	[if (feature.isSingleton)]
-    [feature.testMethodSetValue()/]
+    [feature.testMethodSingletonDefault(getValue)/]
 
-    [feature.testMethodChangeValue()/]
+    [feature.testMethodSetValue(getValue)/]
+
+    [feature.testMethodChangeValue(getValue)/]
 	[else]
-    [feature.testMethodCollectionAdd()/]
+    [feature.testMethodCollectionDefault(getValue)/]
 
-    [feature.testMethodCollectionRemove()/]
+    [feature.testMethodCollectionAdd(getValue)/]
+
+    [feature.testMethodCollectionRemove(getValue)/]
 	[/if]
 
+[/let]
 [/for]
 }
 [/file]
 [/template]
 
-[template private testMethodDefault(feature : Feature) post(trim())]
+
+[query private modelsUsed(entity : Entity) : OrderedSet(Entity)
+	= Set{entity}
+		->union(entity.associations
+			->collect(a | a.opposite.partOf)
+			->asSet())
+		->sortedBy(modelClassName())
+/]
+
+[template private testMethodSingletonDefault(feature : Feature, getValue : String) post(trim())]
 public function test[feature.modelPropertyName().toUpperFirst()/]Default(): void
 {
 	$[feature.partOf.instanceName()/] = new [feature.partOf.modelClassName()/]();
-    [feature.testMethodCoreDefault()/]
+[if (feature.defaultSingletonValue() = 'true')]
+    $this->assertTrue([getValue/]);
+[elseif (feature.defaultSingletonValue() = 'false')]
+    $this->assertFalse([getValue/]);
+[elseif (feature.isDateFeature)]
+	[if (feature.hasDefaultValue)]
+		[if (feature.defaultValue.oclIsTypeOf(CurrentTime))]
+    $this->assertEqualsWithDelta([feature.defaultSingletonValue()/], [getValue/], 5);
+		[else]
+    $this->assertEquals([feature.defaultSingletonValue()/], [getValue/]);
+		[/if]
+	[elseif (feature.isRequired)]
+    $this->assertEqualsWithDelta([feature.defaultSingletonValue()/], [getValue/], 5);
+	[else]
+    $this->assertNull([getValue/]);
+	[/if]
+[elseif (feature.isAssociationFeature)]
+	[if (feature.isRequired)]
+    $this->expectException(\Error::class);
+	[/if]
+    $this->assertNull([getValue/]);
+[else]
+    $this->assertEquals([feature.defaultSingletonValue()/], [getValue/]);
+[/if]
 }
 [/template]
 
-[template private testMethodCoreDefault(feature : Feature)
-	?(feature.isBooleanFeature and feature.isSingleton) post(trim())]
-[let attribute : Attribute = feature.oclAsType(Attribute)]
-[if (attribute.defaultSingletonValue() = 'true')]
-$this->assertTrue($[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
-	[else]
-$this->assertFalse($[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
-	[/if]
-[/let]
-[/template]
-
-[template private testMethodCoreDefault(feature : Feature)
-	?(feature.isDateFeature and feature.isSingleton) post(trim())]
-[let attribute : Attribute = feature.oclAsType(Attribute)]
-[if (attribute.hasDefaultValue)]
-	[if (attribute.defaultValue.oclIsTypeOf(CurrentTime))]
-$this->assertEqualsWithDelta([attribute.oclAsType(Attribute).defaultSingletonValue()/], $[attribute.partOf.instanceName()/]->[feature.getMethodName()/](), 5);
-	[else]
-$this->assertEquals([attribute.oclAsType(Attribute).defaultSingletonValue()/], $[attribute.partOf.instanceName()/]->[feature.getMethodName()/]());
-	[/if]
-[elseif (attribute.isRequired)]
-$this->assertEqualsWithDelta([attribute.oclAsType(Attribute).defaultSingletonValue()/], $[attribute.partOf.instanceName()/]->[feature.getMethodName()/](), 5);
-[else]
-$this->assertNull($[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
-[/if]
-[/let]
-[/template]
-
-[template private testMethodCoreDefault(feature : Feature)
-	?(feature.isAttributeFeature and feature.isSingleton and not feature.isBooleanFeature and not feature.isDateFeature) post(trim())]
-[let attribute : Attribute = feature.oclAsType(Attribute)]
-$this->assertEquals([attribute.oclAsType(Attribute).defaultSingletonValue()/], $[attribute.partOf.instanceName()/]->[feature.getMethodName()/]());
-[/let]
-[/template]
-
-[template private testMethodCoreDefault(feature : Feature)
-	?(feature.isAttributeFeature and not feature.isSingleton) post(trim())]
-[let attribute : Attribute = feature.oclAsType(Attribute)]
-[if (attribute.partOf.implementsUserInterface and attribute.name = 'roles')]
-$this->assertCount(1, $[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
-[else]
-$this->assertCount(0, $[attribute.partOf.instanceName()/]->[attribute.getMethodName()/]());
-[/if]
-[/let]
-[/template]
-
-[template private testMethodCoreDefault(feature : Feature)
-	?(feature.isAssociationFeature) post(trim())]
-[let association : Association = feature.oclAsType(Association)]
-[if (association.isSingleton)]
-	[if (association.associationContainer or association.isRequired)]
-$this->expectException(\Error::class);
-	[/if]
-$this->assertNull($[association.partOf.instanceName()/]->[association.getMethodName()/]());
-[else]
-$this->assertCount(0, $[association.partOf.instanceName()/]->[association.getMethodName()/]());
-[/if]
-[/let]
-[/template]
-
-[template private testMethodSetValue(feature : Feature) post(trim())]
+[template private testMethodSetValue(feature : Feature, getValue : String) post(trim())]
 public function test[feature.modelPropertyName().toUpperFirst()/]SetValue(): void
 {
 	$[feature.partOf.instanceName()/] = new [feature.partOf.modelClassName()/]();
     $value = [feature.randomSingletonValue()/];
     $[feature.partOf.instanceName()/]->[feature.setMethodName()/]($value);
     $this->assertEquals([if (feature.isCaseInsensitive)]
-strtolower($value)[else]$value[/if], $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+strtolower($value)[else]$value[/if], [getValue/]);
 }
 [/template]
 
-[template private testMethodChangeValue(feature : Feature) post(trim())]
+[template private testMethodChangeValue(feature : Feature, getValue : String) post(trim())]
 public function test[feature.modelPropertyName().toUpperFirst()/]ChangeValue(): void
 {
 	$[feature.partOf.instanceName()/] = new [feature.partOf.modelClassName()/]();
@@ -142,11 +115,23 @@ public function test[feature.modelPropertyName().toUpperFirst()/]ChangeValue(): 
     $[feature.partOf.instanceName()/]->[feature.setMethodName()/]($value1);
     $value2 = [feature.randomSingletonValue()/];
     $[feature.partOf.instanceName()/]->[feature.setMethodName()/]($value2);
-    $this->assertEquals($value2, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+    $this->assertEquals($value2, [getValue/]);
 }
 [/template]
 
-[template private testMethodCollectionAdd(feature : Feature) post(trim())]
+[template private testMethodCollectionDefault(feature : Feature, getValue : String) post(trim())]
+public function test[feature.modelPropertyName().toUpperFirst()/]Default(): void
+{
+	$[feature.partOf.instanceName()/] = new [feature.partOf.modelClassName()/]();
+[if (feature.partOf.implementsUserInterface and feature.name = 'roles')]
+    $this->assertCount(1, [getValue/]);
+[else]
+    $this->assertCount(0, [getValue/]);
+[/if]
+}
+[/template]
+
+[template private testMethodCollectionAdd(feature : Feature, getValue : String) post(trim())]
 public function test[feature.modelPropertyName().toUpperFirst()/]CollectionAdd(): void
 {
 	$[feature.partOf.instanceName()/] = new [feature.partOf.modelClassName()/]();
@@ -157,9 +142,9 @@ public function test[feature.modelPropertyName().toUpperFirst()/]CollectionAdd()
     $[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->add($value1);
 [/if]
 [if (feature.partOf.implementsUserInterface and feature.name = 'roles')]
-    $this->assertCount(2, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+    $this->assertCount(2, [getValue/]);
 [else]
-    $this->assertCount(1, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+    $this->assertCount(1, [getValue/]);
 [/if]
     $value2 = [feature.randomSingletonValue()/];
 [if (feature.collectionOrmAllowAdd)]
@@ -168,9 +153,9 @@ public function test[feature.modelPropertyName().toUpperFirst()/]CollectionAdd()
     $[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->add($value2);
 [/if]
 [if (feature.partOf.implementsUserInterface and feature.name = 'roles')]
-    $this->assertCount(3, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+    $this->assertCount(3, [getValue/]);
 [else]
-    $this->assertCount(2, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+    $this->assertCount(2, [getValue/]);
 [/if]
     $value3 = [feature.randomSingletonValue()/];
 [if (feature.collectionOrmAllowAdd)]
@@ -179,9 +164,9 @@ public function test[feature.modelPropertyName().toUpperFirst()/]CollectionAdd()
     $[feature.partOf.instanceName()/]->[feature.getMethodName()/]()->add($value3);
 [/if]
 [if (feature.partOf.implementsUserInterface and feature.name = 'roles')]
-    $this->assertCount(4, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+    $this->assertCount(4, [getValue/]);
 [else]
-    $this->assertCount(3, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]());
+    $this->assertCount(3, [getValue/]);
 [/if]
 [if (feature.isAttributeFeature)]
     $this->assertTrue(in_array($value1, $[feature.partOf.instanceName()/]->[feature.getMethodName()/]()));
@@ -195,7 +180,7 @@ public function test[feature.modelPropertyName().toUpperFirst()/]CollectionAdd()
 }
 [/template]
 
-[template private testMethodCollectionRemove(feature : Feature) post(trim())]
+[template private testMethodCollectionRemove(feature : Feature, getValue : String) post(trim())]
 public function test[feature.modelPropertyName().toUpperFirst()/]CollectionRemove(): void
 {
 	$[feature.partOf.instanceName()/] = new [feature.partOf.modelClassName()/]();
@@ -244,32 +229,32 @@ public function test[feature.modelPropertyName().toUpperFirst()/]CollectionRemov
 }
 [/template]
 
-[template private defaultSingletonValue(attribute : Attribute) post(trim())]
-[if (attribute.hasDefaultValue)]
-[attribute.defaultValue.defaultExpression()/]
-[else]
-	[if (attribute.isBooleanFeature)]
+[template private defaultSingletonValue(feature : Feature) post(trim())]
+[if (feature.hasDefaultValue)]
+[feature.defaultValue.defaultExpression()/]
+[elseif (feature.isAssociationFeature)]
+null
+[elseif (feature.isBooleanFeature)]
 false
-	[elseif (attribute.isDateFeature)]
+[elseif (feature.isDateFeature)]
 new \DateTimeImmutable()
-	[elseif (attribute.isEmailFeature)]
+[elseif (feature.isEmailFeature)]
 'a@b.c'
-	[elseif (attribute.isEnumerationFeature)]
+[elseif (feature.isEnumerationFeature)]
 0
-	[elseif (attribute.isFloatFeature)]
+[elseif (feature.isFloatFeature)]
 0.0
-	[elseif (attribute.isIntegerFeature)]
+[elseif (feature.isIntegerFeature)]
 0
-	[elseif (attribute.isLocationFeature)]
-	[elseif (attribute.isResourceFeature)]
-	[elseif (attribute.isStringFeature)]
+[elseif (feature.isLocationFeature)]
+[elseif (feature.isResourceFeature)]
+[elseif (feature.isStringFeature)]
 ''
-	[elseif (attribute.isTextareaFeature)]
+[elseif (feature.isTextareaFeature)]
 ''
-	[elseif (attribute.isUrlFeature)]
+[elseif (feature.isUrlFeature)]
 ''
-	[else]
+[else]
 ''
-	[/if]
 [/if]
 [/template]
