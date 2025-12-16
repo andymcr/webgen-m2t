@@ -5,7 +5,7 @@
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
-[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::names/]
 
 
 [query private factoryDirectory(eObject : EObject) : String
@@ -16,6 +16,10 @@
 	= 'DataFixtures'
 /]
 
+[query private storyDirectory(eObject : EObject) : String
+	= 'Story'
+/]
+
 
 [query public factoriesDirectory(entity : Entity) : String
 	= entity.testsDirectory().concat('/').concat(entity.factoryDirectory())
@@ -23,6 +27,10 @@
 
 [query public fixturesDirectory(entity : Entity) : String
 	= entity.sourceDirectory().concat('/').concat(entity.fixtureDirectory())
+/]
+
+[query public storiesDirectory(entity : Entity) : String
+	= entity.testsDirectory().concat('/').concat(entity.storyDirectory())
 /]
 
 [query public testModelsDirectory(entity : Entity) : String
@@ -39,11 +47,15 @@
 
 
 [query public factoriesNamespace(entity : Entity) : String
-	= entity.appNamespace().concat('\\').concat(entity.factoryDirectory())
+	= entity.testsNamespace().concat('\\').concat(entity.factoryDirectory())
 /]
 
 [query public fixturesNamespace(entity : Entity) : String
 	= entity.appNamespace().concat('\\').concat(entity.fixtureDirectory())
+/]
+
+[query public storiesNamespace(entity : Entity) : String
+	= entity.testsNamespace().concat('\\').concat(entity.storyDirectory())
 /]
 
 [query public testModelsNamespace(eObject : EObject) : String
@@ -59,15 +71,21 @@
 /]
 
 
-[query public factoryFilename(entity : Entity) : String
+[query public factoryClassFilename(entity : Entity) : String
 	= entity.factoriesDirectory().concat('/')
 		.concat(entity.factoryClassName())
 		.concat(entity.executableExtension())
 /]
 
-[query public fixtureFilename(entity : Entity) : String
+[query public fixtureClassFilename(entity : Entity) : String
 	= entity.fixturesDirectory().concat('/')
 		.concat(entity.fixtureClassName())
+		.concat(entity.executableExtension())
+/]
+
+[query public storyClassFilename(entity : Entity) : String
+	= entity.storiesDirectory().concat('/')
+		.concat(entity.storyClassName())
 		.concat(entity.executableExtension())
 /]
 

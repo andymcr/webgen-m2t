@@ -6,14 +6,11 @@
 	'http://andycarpenter.work/metamodel/security',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::config::stofDoctrineExtensions/]
-[import work::andycarpenter::mdsd::m2t::orm::doctrine::dataFixtures::dataFixtures/]
-[import work::andycarpenter::mdsd::m2t::orm::doctrine::factories::factory/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::models::entity/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::models::enumeration/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::repository::repository/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::serialize::normalize/]
-[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::entityTests/]
-[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::repositoryTests/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::tests/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::validation::UniqueCollectionConstraint/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::validation::UniqueCollectionValidator/]
 
@@ -27,13 +24,8 @@
 
 [model.repositories.repository(wafModel.security)/]
 
-[model.entities->select(e | not e.implementsResetPasswordInterface).factory()/]
-[comment model.entities->select(e | not e.implementsResetPasswordInterface).fixture(wafModel)/]
-
-[model.entities->select(e | not e.implementsResetPasswordInterface).modelTests()/]
-[comment model.repositories.repositoryTests(wafModel.security)/]
-
 [model.uniqueCollectionConstraint()/]
 [model.uniqueCollectionValidator()/]
 
+[model.tests()/]
 [/template]

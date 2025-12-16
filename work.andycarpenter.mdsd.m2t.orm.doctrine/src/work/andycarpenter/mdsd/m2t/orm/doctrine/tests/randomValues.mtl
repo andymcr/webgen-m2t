@@ -1,13 +1,8 @@
 [comment encoding = UTF-8 /]
 [module randomValues(
 	'http://andycarpenter.work/metamodel/base',
-	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
-	'http://andycarpenter.work/metamodel/security')]
-[import work::andycarpenter::mdsd::m2t::orm::doctrine::expression/]
-[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
-[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::files/]
-[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::names/]
 
 
 [template public randomSingletonValue(feature : Feature) post(trim())]

@@ -1,32 +1,46 @@
 [comment encoding = UTF-8 /]
 [module files(
+	'http://www.eclipse.org/emf/2002/Ecore',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
-[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
-[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::tests::names/]
 
 
-[query public controllerTestsDirectory(controller : Controller) : String
+[query private applicationDirectory(eObject : EObject) : String
+	= 'Application'
+/]
+
+
+[query public testApplicationsDirectory(controller : Controller) : String
+	= controller.testsDirectory().concat('/').concat(controller.applicationDirectory())
+/]
+
+[query public testControllersDirectory(controller : Controller) : String
 	= controller.testsDirectory().concat('/').concat(controller.controllerDirectory())
 /]
 
 
-[query public controllerTestsNamespace(controller : Controller) : String
+[query public testApplicationNamespace(controller : Controller) : String
+	= controller.testsNamespace().concat('\\').concat(controller.applicationDirectory())
+/]
+
+[query public testControllersNamespace(controller : Controller) : String
 	= controller.testsNamespace().concat('\\').concat(controller.controllerDirectory())
 /]
 
 
-[query public applicationTestFilename(model : WafModel) : String
-	= model.testsDirectory()
+[query public testApplicationFilename(model : WafModel) : String
+	= model.testApplicationsDirectory()
 			.concat('/')
-			.concat(model.applicationTestClassName())
+			.concat(model.testApplicationClassName())
 			.concat(model.executableExtension())
 /]
 
-[query public controllerTestFilename(controller : Controller, model : WafModel) : String
-	= controller.controllerTestsDirectory()
+[query public testControllerFilename(controller : Controller, model : WafModel) : String
+	= controller.testControllersDirectory()
 			.concat('/')
-			.concat(controller.controllerTestClassName())
+			.concat(controller.testControllerClassName())
 			.concat(controller.executableExtension())
 /]

@@ -3,9 +3,9 @@
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
-[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::files/]
-[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::names/]
-[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::randomValues/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::randomValues/]
 
 
 [template public factory(entity : Entity)]

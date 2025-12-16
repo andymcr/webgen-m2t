@@ -6,16 +6,16 @@
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::files/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
-[import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::tests::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::tests::names/]
 
 
 [template public controllerTests(controller : Controller, wafModel : WafModel)]
-[file(controller.controllerTestFilename(wafModel), false)]
+[file(controller.testControllerFilename(wafModel), false)]
 <?php
-namespace [controller.controllerTestsNamespace()/];
+namespace [controller.testControllersNamespace()/];
 [if (controller.isAuthorised())]
 [let authentication : LocalAuthenticationSystem = wafModel.security.authentication.oclAsType(LocalAuthenticationSystem)]
 use [controller.repositoriesNamespace()/]\[authentication.authenticationModel.repository.repositoryClassName()/];
@@ -24,7 +24,7 @@ use [controller.repositoriesNamespace()/]\[authentication.authenticationModel.re
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 
-class [controller.controllerTestClassName()/] extends WebTestCase
+class [controller.testControllerClassName()/] extends WebTestCase
 {
 [if (controller.hasSingleActionMethod())]
 	[controller.units->first().unitTests(wafModel)/]

@@ -1,20 +1,21 @@
 [comment encoding = UTF-8 /]
 [module names(
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
-[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::test::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
+
+
+[query public actionTestName(unit : ContentUnit) : String
+	= unit.actionTestName(false)
+/]
 
 
 [query public applicationTestClassName(model : WafModel) : String
 	= 'Smoke'.concat(model.testClassSuffix())
 /]
 
-[query public controllerTestClassName(controller : Controller) : String
+[query publictTestControllerClassName(controller : Controller) : String
 	= controller.controllerClassName().concat(controller.testClassSuffix())
-/]
-
-[query public actionTestName(unit : ContentUnit) : String
-	= unit.actionTestName(false)
 /]
 
 [query public actionTestName(unit : ContentUnit, update : Boolean) : String
