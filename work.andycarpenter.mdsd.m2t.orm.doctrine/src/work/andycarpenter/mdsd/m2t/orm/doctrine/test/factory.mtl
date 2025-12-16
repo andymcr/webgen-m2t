@@ -9,7 +9,7 @@
 
 
 [template public factory(entity : Entity)]
-[file(entity.factoryFilename(), false)]
+[file(entity.factoryClassFilename(), false)]
 <?php
 namespace [entity.factoriesNamespace()/];
 
