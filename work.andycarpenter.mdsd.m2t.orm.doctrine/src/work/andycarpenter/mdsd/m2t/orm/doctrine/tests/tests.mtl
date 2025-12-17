@@ -6,6 +6,7 @@
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::factory/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::entityTests/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::repositoryStories/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::repositoryTests/]
 
 
 [template public tests(model : OrmModel)]
@@ -14,4 +15,5 @@
 [model.entities->select(e | not e.isContained).repositoryStories()/]
 
 [model.entities->select(e | not e.implementsResetPasswordInterface).modelTests()/]
+[model.repositories.repositoryTests()/]
 [/template]

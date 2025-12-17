@@ -1,29 +1,41 @@
 [comment encoding = UTF-8 /]
 [module repositoryTests(
-	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
-	'http://andycarpenter.work/metamodel/security')]
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::randomValues/]
 
 
-[template public repositoryTests(repository : Repository, security : SecurityModel)]
-[file(repository.repositoryTestFilename(), false)]
+[template public repositoryTests(repository : Repository)]
+[file(repository.testRepositoryFilename(), false)]
 <?php
-namespace [repository.repositoryTestsNamespace()/];
+namespace [repository.testRepositoriesNamespace()/];
 
 use [repository.modelsNamespace()/]\[repository.serves.modelClassName()/];
 use [repository.repositoriesNamespace()/]\[repository.repositoryClassName()/];
+use [repository.serves.factoriesNamespace()/]\[repository.serves.factoryClassName()/];
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-[if (not security.oclIsUndefined())]
-	[if (security.authentication.userModel.repository = repository)]
-use Symfony\Component\Security\Core\Security;
-	[/if]
-[/if]
+use Zenstruck\Foundry\Test\ResetDatabase;
 
 
-class [repository.repositoryTestClassName()/] extends KernelTestCase
+class [repository.testRepositoryClassName()/] extends KernelTestCase
 {
+    use ResetDatabase;
+
+    /**
+     * @var [repository.repositoryClassName()/] $repository
+     */
+    private [repository.repositoryClassName()/] $repository;
+
+    [repository.setUpMethod()/]
+
+    [repository.tearDownMethod()/]
+
+    [repository.testInsertMethod()/]
+
 [if (repository.findOne.oclIsUndefined() and repository.serves.hasRouteParameters())]
     [repository.findOneTestMethod()/]
 
@@ -39,11 +51,39 @@ class [repository.repositoryTestClassName()/] extends KernelTestCase
 [/file]
 [/template]
 
-[template private findOneTestMethod(repository : Repository) post(trim())]
-public function testFindOne(): void
+[template private setUpMethod(repository : Repository) post(trim())]
+protected function setUp(): void
 {
-    self::bootKernel();
+    $kernel = self::bootKernel();
 
+	$this->repository = self::getContainer()->get([repository.repositoryClassName()/]::class);
+}
+[/template]
+
+[template private tearDownMethod(repository : Repository) post(trim())]
+protected function tearDown(): void
+{
+    parent::tearDown();
+
+    // doing this is recommended to avoid memory leaks
+//        $this->entityManager->close();
+//        $this->entityManager = null;
+}
+[/template]
+
+[template private testInsertMethod(repository : Repository) post(trim())]
+public function testInsert(): void
+{
+	$[repository.serves.instanceName()/] = [repository.serves.factoryClassName()/]::new()->withoutPersisting()->create();
+    $count = [repository.serves.factoryClassName()/]::count();
+    $this->repository->save($[repository.serves.instanceName()/], true);
+    [repository.serves.factoryClassName()/]::assert()->Count($count + 1);
+}
+[/template]
+
+[template private findOneTestMethod(repository : Repository) post(trim())]
+public function estFindOne(): void
+{
     $[repository.repositoryInstanceName()/] = static::getContainer()
         ->get([repository.repositoryClassName()/]::class);
     $result = $[repository.repositoryInstanceName()/]->[repository.serves.findMethodName()/]([for (key : Attribute | repository.serves.uriPathKeys()) separator(', ')]
@@ -63,23 +103,10 @@ public function testFindOne(): void
 
 
 [template private testMethod(selection : Selection) post(trim())]
-public function test[selection.methodName.toUpperFirst()/](): void
+public function est[selection.methodName.toUpperFirst()/](): void
 {
-    self::bootKernel();
     $[selection.definedBy.repositoryInstanceName()/] = static::getContainer()
         ->get([selection.definedBy.repositoryClassName()/]::class);
-
-    [selection.testMethodTests()/]
-}
-[/template]
-
-[template private testMethod(selection : Selection, security : SecurityModel) post(trim())]
-public function test[selection.methodName.toUpperFirst()/](): void
-{
-    self::bootKernel();
-    $container = static::getContainer();
-    $[selection.definedBy.repositoryInstanceName()/] = 
-        $container->get([selection.definedBy.repositoryClassName()/]::class);
 
     [selection.testMethodTests()/]
 }
@@ -88,4 +115,8 @@ public function test[selection.methodName.toUpperFirst()/](): void
 [template private testMethodTests(selection : Selection) post(trim())]
 $result = $[selection.definedBy.repositoryInstanceName()/]->[selection.methodName/]();
 $this->assertCount(0, $result);
+[/template]
+
+[template private randomSingletonValue(feature : Feature) post(trim())]
+[feature.randomSingletonValue('self::faker()')/]
 [/template]
