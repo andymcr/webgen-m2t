@@ -258,3 +258,7 @@ new \DateTimeImmutable()
 ''
 [/if]
 [/template]
+
+[template private randomSingletonValue(feature : Feature) post(trim())]
+[feature.randomSingletonValue('$this->faker')/]
+[/template]

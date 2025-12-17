@@ -5,42 +5,42 @@
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
 
 
-[template public randomSingletonValue(feature : Feature) post(trim())]
+[template public randomSingletonValue(feature : Feature, faker : String) post(trim())]
 [if (feature.isAssociationFeature)]
 [let association : Association = feature.oclAsType(Association)]
 new [association.opposite.partOf.modelClassName()/]()
 [/let]
 [else]
 	[if (feature.isBooleanFeature)]
-$this->faker->boolean()
+[faker/]->boolean()
 	[elseif (feature.isDateFeature)]
-$this->faker->dateTime()
+[faker/]->dateTime()
 	[elseif (feature.isEmailFeature)]
-$this->faker->email()
+[faker/]->email()
 	[elseif (feature.isEnumerationFeature)]
 	[let type : EnumerationType = feature.dataType.oclAsType(EnumerationType)]
-$this->faker->numberBetween(0, [type.enumerations->size() - 1/])
+[faker/]->numberBetween(0, [type.enumerations->size() - 1/])
 	[/let]
 	[elseif (feature.isFloatFeature)]
-$this->faker->randomFloat()
+[faker/]->randomFloat()
 	[elseif (feature.isIntegerFeature)]
-$this->faker->randomNumber()
+faker->randomNumber()
 	[elseif (feature.isLocationFeature)]
 	[elseif (feature.isResourceFeature)]
 	[elseif (feature.isStringFeature)]
 		[if (feature.name = 'name' or feature.name = 'username')]
-$this->faker->word()
+[faker/]->word()
 		[elseif (feature.name = 'title')]
-$this->faker->sentence()
+[faker/]->sentence()
 		[else]
-$this->faker->text()
+[faker/]->text()
 		[/if]
 	[elseif (feature.isTextareaFeature)]
-$this->faker->paragraph()
+[faker/]->paragraph()
 	[elseif (feature.isUrlFeature)]
-$this->faker->url()
+[faker/]->url()
 	[else]
-$this->faker->paragraph()
+[faker/]->paragraph()
 	[/if]
 [/if]
 [/template]

@@ -61,7 +61,7 @@ protected function defaults(): array|callable
 [for (attribute : Attribute | entity.attributes
 			->select(f | not f.isLocationFeature and not f.isResourceFeature)
 			->select(f | f.isRequired))]
-        '[attribute.modelPropertyName()/]' => self::[attribute.randomSingletonValue()/],
+        '[attribute.modelPropertyName()/]' => [attribute.randomSingletonValue('self::faker()')/],
 [/for]
     [']'/];
 }
