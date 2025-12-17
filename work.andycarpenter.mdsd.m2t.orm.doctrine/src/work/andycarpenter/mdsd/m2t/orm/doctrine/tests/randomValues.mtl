@@ -24,7 +24,7 @@ new [association.opposite.partOf.modelClassName()/]()
 	[elseif (feature.isFloatFeature)]
 [faker/]->randomFloat()
 	[elseif (feature.isIntegerFeature)]
-faker->randomNumber()
+[faker/]->randomNumber()
 	[elseif (feature.isLocationFeature)]
 	[elseif (feature.isResourceFeature)]
 	[elseif (feature.isStringFeature)]

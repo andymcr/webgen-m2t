@@ -15,6 +15,13 @@ namespace [entity.factoriesNamespace()/];
 
 use [entity.modelsNamespace()/]\[entity.modelClassName()/];
 use [entity.repositoriesNamespace()/]\[entity.repository.repositoryClassName()/];
+[for (type : Entity | entity.associations
+			->select(f | f.isRequired)
+			->collect(a | a.opposite.partOf)
+			->asSet()
+			->sortedBy(e | e.factoryClassName()))]
+use [type.factoriesNamespace()/]\[type.factoryClassName()/];
+[/for]
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
 
@@ -62,6 +69,10 @@ protected function defaults(): array|callable
 			->select(f | not f.isLocationFeature and not f.isResourceFeature)
 			->select(f | f.isRequired))]
         '[attribute.modelPropertyName()/]' => [attribute.randomSingletonValue('self::faker()')/],
+[/for]
+[for (association : Association | entity.associations
+			->select(f | f.isRequired))]
+        '[association.modelPropertyName()/]' => [association.opposite.partOf.factoryClassName()/]::createOne(),
 [/for]
     [']'/];
 }
