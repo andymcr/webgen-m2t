@@ -45,7 +45,7 @@ class [ormModel.collectionUniqueClassName()/] extends Constraint
     #['['/]HasNamedArguments[']'/]
     public function __construct(array $fields, string $parentProperty, string $collectionProperty, array|null $groups = null, mixed $payload = null)
     {
-        parent::__construct(['['/][']'/], $groups, $payload);
+        parent::__construct(null, $groups, $payload);
         $this->fields = $fields;
         $this->parentProperty = $parentProperty;
         $this->collectionProperty = $collectionProperty;
