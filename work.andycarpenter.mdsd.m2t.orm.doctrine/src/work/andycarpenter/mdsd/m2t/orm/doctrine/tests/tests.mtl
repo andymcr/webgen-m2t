@@ -10,7 +10,7 @@
 
 
 [template public tests(model : OrmModel)]
-[model.entities->select(e | not e.implementsResetPasswordInterface).factory()/]
+[model.entities.factory()/]
 [comment model.entities->select(e | not e.implementsResetPasswordInterface).fixture(wafModel)/]
 [model.entities->select(e | not e.isContained).repositoryStories()/]
 
