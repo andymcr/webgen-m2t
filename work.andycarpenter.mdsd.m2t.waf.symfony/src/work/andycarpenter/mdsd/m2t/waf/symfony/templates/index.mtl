@@ -7,6 +7,7 @@
 [import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::names/]
 [import work::andycarpenter::mdsd::m2t::waf::symfony::translation/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::expression::twig/]
 
 
 [template public indexTemplate(controller : Controller) post(trim())]
@@ -36,8 +37,8 @@
 [unit.unitContent(controller)/]
 	[else]
 	[let dynamicUnit : DynamicUnit = unit.oclAsType(DynamicUnit)]
-		[if (dynamicUnit.isConditionallyDisplayed() or dynamicUnit.isDislayedOnlyOnExplicitRoute())]
-{% if [dynamicUnit.instanceParameter()/] is defined %}
+		[if (dynamicUnit.isConditionallyDisplayed() )]
+{% if not ([dynamicUnit.hideWhen.twigExpression(dynamicUnit.containerParameter())/]) %}
 [dynamicUnit.unitContent(controller)/]
 			[if (dynamicUnit.hasHiddenMessage())]
 {% else %}
