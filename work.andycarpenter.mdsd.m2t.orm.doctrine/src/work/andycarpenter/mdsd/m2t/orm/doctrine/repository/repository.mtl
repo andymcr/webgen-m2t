@@ -748,7 +748,11 @@ $[parameter.name/][/for]
 		else
 			path->last()
 		endif]
+	[if (association.isSingleton)]
 ->where($queryBuilder->expr()->eq('[association.partOf.selectName()/].[association.modelPropertyName()/]', ':[selection.selectionType().instanceName()/]'))
+	[else]
+->where($queryBuilder->expr()->isMemberOf(':[selection.selectionType().instanceName()/]', '[association.partOf.selectName()/].[association.modelPropertyName()/]'))
+	[/if]
 [/let]
 [/let]
 [/if]
