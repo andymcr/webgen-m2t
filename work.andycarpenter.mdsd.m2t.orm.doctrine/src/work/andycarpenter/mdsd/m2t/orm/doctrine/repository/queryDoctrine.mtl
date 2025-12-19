@@ -75,6 +75,13 @@ $queryBuilder->expr()->[predicate.operator()/]([if (predicate.predicates->any(e 
 [/template]
 
 [template public queryExpression(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
+[let predicate : PredicateComparisonOperator = expression.oclAsType(PredicateComparisonOperator)]
+$queryBuilder->expr()->[predicate.operator()/]([predicate.left.queryExpression()/], [predicate.right.queryExpression()/])
+[/let]
+[/template]
+
+[template public queryExpression(expression : Expression)
 	? (expression.oclIsTypeOf(PredicateEqualityOperator)) post(trim())]
 [let predicate : PredicateEqualityOperator = expression.oclAsType(PredicateEqualityOperator)]
 $queryBuilder->expr()->[predicate.operator()/]([if (predicate.left.oclIsKindOf(Predicate) or predicate.right.oclIsKindOf(Predicate))]
@@ -89,13 +96,6 @@ $queryBuilder->expr()->[predicate.operator()/]([if (predicate.left.oclIsKindOf(P
 [/template]
 
 [template public queryExpression(expression : Expression)
-	? (expression.oclIsTypeOf(PredicateComparisonOperator)) post(trim())]
-[let predicate : PredicateComparisonOperator = expression.oclAsType(PredicateComparisonOperator)]
-$queryBuilder->expr()->[predicate.operator()/]([predicate.left.queryExpression()/], [predicate.right.queryExpression()/])
-[/let]
-[/template]
-
-[template public queryExpression(expression : Expression)
 	? (expression.oclIsTypeOf(PredicateInOperator)) post(trim())]
 [let predicate : PredicateInOperator = expression.oclAsType(PredicateInOperator)]
 $queryBuilder->expr()->[predicate.operator()/]([predicate.left.queryExpression()/], [predicate.right.queryExpression()/])
@@ -103,9 +103,16 @@ $queryBuilder->expr()->[predicate.operator()/]([predicate.left.queryExpression()
 [/template]
 
 [template public queryExpression(expression : Expression)
-	? (expression.oclIsTypeOf(PredicateLikeOperator)) post(trim())]
-[let predicate : PredicateLikeOperator = expression.oclAsType(PredicateLikeOperator)]
-$queryBuilder->expr()->[predicate.operator()/]([predicate.left.queryExpression()/], [predicate.right.queryExpression()/])
+	? (expression.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
+[let predicate : PredicateIsEmpty = expression.oclAsType(PredicateIsEmpty)]
+$queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.value.queryExpression()/], '0')
+[/let]
+[/template]
+
+[template public queryExpression(expression : Expression)
+	? (expression.oclIsTypeOf(PredicateIsMemberOfOperator)) post(trim())]
+[let predicate : PredicateIsMemberOfOperator = expression.oclAsType(PredicateIsMemberOfOperator)]
+$queryBuilder->expr()->isMemberOf([predicate.left.queryExpression()/], [predicate.right.queryExpression()/])
 [/let]
 [/template]
 
@@ -117,11 +124,12 @@ $queryBuilder->expr()->[if (predicate.negated)]isNotNull[else]isNull[/if]([predi
 [/template]
 
 [template public queryExpression(expression : Expression)
-	? (expression.oclIsTypeOf(PredicateIsEmpty)) post(trim())]
-[let predicate : PredicateIsEmpty = expression.oclAsType(PredicateIsEmpty)]
-$queryBuilder->expr()->[if (predicate.negated)]gt[else]eq[/if]([predicate.value.queryExpression()/], '0')
+	? (expression.oclIsTypeOf(PredicateLikeOperator)) post(trim())]
+[let predicate : PredicateLikeOperator = expression.oclAsType(PredicateLikeOperator)]
+$queryBuilder->expr()->[predicate.operator()/]([predicate.left.queryExpression()/], [predicate.right.queryExpression()/])
 [/let]
 [/template]
+
 
 [query private operator(predicate : PredicateBooleanOperator) : String
 	= if predicate.operator = BooleanOperator::And then
