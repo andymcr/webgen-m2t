@@ -77,7 +77,7 @@
 <div[if (cardsUnit.hasContentClass())] class="[cardsUnit.contentClass()/]"[/if]"[comment data-controller="appear"/]>
 {% endif%}
 [/if]
- <div id="[unit.templateName()/]-{{ page }}-{{ loop.index }}"[if (cardsUnit.hasCardClass())] class="[cardsUnit.cardClass()/]"[/if][comment data-live-ignore="true"/]>
+ <div id="[cardsUnit.templateName()/][if (cardsUnit.hasPagination())]-{{ page }}[/if]-{{ loop.index }}"[if (cardsUnit.hasCardClass())] class="[cardsUnit.cardClass()/]"[/if][comment data-live-ignore="true"/]>
 [if (cardsUnit.badges->notEmpty())]
   [cardsUnit.header(variable)/]
 [/if]
