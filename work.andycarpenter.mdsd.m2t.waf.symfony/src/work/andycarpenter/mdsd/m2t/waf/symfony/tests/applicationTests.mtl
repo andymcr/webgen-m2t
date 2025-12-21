@@ -1,0 +1,74 @@
+[comment encoding = UTF-8 /]
+[module applicationTests(
+	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::waf::core::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::names/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::controller/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::interface/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::tests::files/]
+[import work::andycarpenter::mdsd::m2t::waf::symfony::tests::names/]
+
+
+[template public applicationTests(model : WafModel)]
+[file(model.testApplicationFilename(), false)]
+<?php
+namespace [model.testsNamespace()/];
+
+use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
+
+class [model.testApplicationClassName()/] extends WebTestCase
+{
+    #['['/]DataProvider('urlProvider')[']'/]
+    public function testPageIsSuccessful($url): void
+    {
+        $client = self::createClient();
+        $client->request('GET', $url);
+
+        $this->assertResponseIsSuccessful();
+    }
+
+    public static function urlProvider(): \Generator
+    {
+[for(controller : Controller | model.controllers)]
+	[for(unit : DynamicUnit | controller.dynamicUnits())]
+		[if (not unit.oclIsTypeOf(UpdateUnit))]
+			[if (not unit.isAuthorised() and unit.routeParameters()->isEmpty())]
+				[if (unit.isHomeUnit())]
+        yield ['['/]'https://localhost'[']'/]; // [controller.name/] [unit.name/]
+				[else]
+        yield ['['/]'https://localhost[unit.uriRoute()/]'[']'/]; // [controller.name/] [unit.name/]
+				[/if]
+			[/if]
+		[/if]
+	[/for]
+[/for]
+    }
+}
+[/file]
+[/template]
+
+[template public uriRoute(unit : ContentUnit)
+	? (unit.oclIsKindOf(CollectionUnit)) post(trim())]
+[unit.oclAsType(CollectionUnit).uriPath()/]
+[/template]
+
+[template public uriRoute(unit : ContentUnit)
+	? (unit.oclIsTypeOf(DetailsUnit)) post(trim())]
+[unit.oclAsType(DetailsUnit).uriPath()/]
+[/template]
+
+[template public uriRoute(unit : ContentUnit)
+	? (unit.oclIsKindOf(EditUnit)) post(trim())]
+[unit.oclAsType(EditUnit).uriCreatePath()/]
+[/template]
+
+[template public uriRoute(unit : ContentUnit)
+	? (unit.oclIsTypeOf(StaticUnit)) post(trim())]
+[unit.oclAsType(StaticUnit).uriPath()/]
+[/template]
