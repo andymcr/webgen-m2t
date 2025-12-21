@@ -34,10 +34,12 @@ class [repository.testRepositoryClassName()/] extends KernelTestCase
 
     [repository.tearDownMethod()/]
 
-    [repository.testInsertMethod()/]
+    [repository.testInsertOneMethod()/]
+
+    [repository.testInsertManyMethod()/]
 
 [if (repository.findOne.oclIsUndefined() and repository.serves.hasRouteParameters())]
-    [repository.findOneTestMethod()/]
+    [repository.testFindOneMethod()/]
 
 [/if]
 [if (not repository.findAll.oclIsUndefined())]
@@ -71,8 +73,8 @@ protected function tearDown(): void
 }
 [/template]
 
-[template private testInsertMethod(repository : Repository) post(trim())]
-public function testInsert(): void
+[template private testInsertOneMethod(repository : Repository) post(trim())]
+public function testInsertOne(): void
 {
 	$[repository.serves.instanceName()/] = [repository.serves.factoryClassName()/]::new()->withoutPersisting()->create();
     $count = [repository.serves.factoryClassName()/]::count();
@@ -81,17 +83,44 @@ public function testInsert(): void
 }
 [/template]
 
-[template private findOneTestMethod(repository : Repository) post(trim())]
-public function estFindOne(): void
+[template private testInsertManyMethod(repository : Repository) post(trim())]
+public function testInsertMany(): void
 {
-    $[repository.repositoryInstanceName()/] = static::getContainer()
-        ->get([repository.repositoryClassName()/]::class);
-    $result = $[repository.repositoryInstanceName()/]->[repository.serves.findMethodName()/]([for (key : Attribute | repository.serves.uriPathKeys()) separator(', ')]
-[key.keyValue()/][/for]);
-    $this->assertNull($result);
-
+    $addCount = 5;
+    $count = [repository.serves.factoryClassName()/]::count();
+    foreach ([repository.serves.factoryClassName()/]::new()
+            ->withoutPersisting()
+            ->many($addCount)
+            ->create() as $[repository.serves.instanceName()/]) {
+        $this->repository->save($[repository.serves.instanceName()/], true);
+    }
+    [repository.serves.factoryClassName()/]::assert()->Count($count + $addCount);
 }
 [/template]
+
+[template private testFindOneMethod(repository : Repository) post(trim())]
+public function testFindOne(): void
+{
+    [repository.serves.factoryClassName()/]::createMany([if (repository.serves.attributeKeys->isEmpty())]5[else]
+
+        5,
+        static function(int $i) {
+            return [if (repository.serves.attributeKeys->size() = 1)]['['/][for (key : Attribute | repository.serves.attributeKeys)]
+'[key.modelPropertyName()/]' => "[key.displayLabel/] $i"[/for][']'/];
+[else]['['/]
+[for (key : Attribute | repository.serves.attributeKeys)]
+                '[key.modelPropertyName()/]' => "[key.displayLabel/] $i",
+[/for]
+            ['['/]
+[/if]
+        }
+    [/if]);
+    $[repository.serves.instanceName()/] = $this->repository->findOne([for (key : Attribute | repository.serves.uriPathKeys()) separator(', ')]
+"[key.displayLabel/] 1"[/for]);
+    $this->assertNotNull($[repository.serves.instanceName()/]);
+}
+[/template]
+
 
 [template private keyValue(key : Attribute) post(trim())]
 [if (key.isIntegerFeature)]
