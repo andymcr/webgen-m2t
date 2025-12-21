@@ -490,7 +490,7 @@ public function [selection.builderMethodName()/]([selection.formals()/]): QueryB
 
 [query private selectElementCount(selection : Selection) : Integer
 	= selection.fields->size()
-		+ selection.selectPath.selectPathAssociatins()->size()
+		+ selection.selectPath.selectPathJoinAssociatins()->size()
 			+ selection.containerAssociatins()->size()
 			+ selection.joinAssociatins()->size()
 		+ (if selection.hasCondition() then 1 else 0 endif)
@@ -692,18 +692,21 @@ $[parameter.name/][/for]
 [/template]
 
 [template private selectionJoins(selection : Selection) post(trim())]
-[for (join : Association | selection.selectPath.selectPathAssociatins())]
+[if (selection.hasSelectPath())]
+	[for (join : Association | selection.selectPath.selectPathJoinAssociatins())]
 ->join('[join.partOf.selectName()/].[join.modelPropertyName()/]', '[join.targetType.selectName()/]')
-[/for]
-[for (join : Association | selection.containerAssociatins())]
+	[/for]
+[else]
+	[for (join : Association | selection.containerAssociatins())]
 ->join('[join.partOf.selectName()/].[join.modelPropertyName()/]', '[join.targetType.selectName()/]')
-[/for]
+	[/for]
+[/if]
 [for (join : Association | selection.joinAssociatins())]
 ->join('[join.partOf.selectName()/].[join.modelPropertyName()/]', '[join.targetType.selectName()/]')
 [/for]
 [/template]
 
-[query private selectPathAssociatins(pathElement : AssociationPathElement) : Sequence(Association)
+[query private selectPathJoinAssociatins(pathElement : AssociationPathElement) : Sequence(Association)
 	= if pathElement.oclIsUndefined() then
 			Sequence{}
 		else if pathElement.childFeature.oclIsUndefined() then
@@ -712,7 +715,19 @@ $[parameter.name/][/for]
 			Sequence{}
 		else
 			Sequence{pathElement.association}
-				->union(pathElement.childFeature.oclAsType(AssociationPathElement).selectPathAssociatins())
+				->union(pathElement.childFeature.oclAsType(AssociationPathElement).selectPathJoinAssociatins())
+		endif endif endif
+/]
+
+[query private selectPathSelectAssociation(pathElement : AssociationPathElement) : Association
+	= if pathElement.oclIsUndefined() then
+			null
+		else if pathElement.childFeature.oclIsUndefined() then
+			pathElement.association
+		else if pathElement.childFeature.oclIsKindOf(AttributePathElement) then
+			pathElement.association
+		else
+			pathElement.childFeature.oclAsType(AssociationPathElement).selectPathSelectAssociation()
 		endif endif endif
 /]
 
@@ -735,25 +750,18 @@ $[parameter.name/][/for]
 
 [query private joinAssociatins(selection : Selection) : OrderedSet(Association)
 	= selection.joins
-		->select(j | selection.selectPath.selectPathAssociatins()->excludes(j))
+		->select(j | selection.selectPath.selectPathJoinAssociatins()->excludes(j))
 		->select(j | selection.containerAssociatins()->excludes(j))
 /]
 
 [template private condition(selection : Selection) post(trim())]
 [if (selection.hasSelectPath())]
-[let path : Sequence(Association) = selection.selectPath.selectPathAssociatins()]
-[let association : Association
-	= if path->size() = 0 then
-			selection.selectPath.association
-		else
-			path->last()
-		endif]
+[let association : Association = selection.selectPath.selectPathSelectAssociation()]
 	[if (association.isSingleton)]
 ->where($queryBuilder->expr()->eq('[association.partOf.selectName()/].[association.modelPropertyName()/]', ':[selection.selectionType().instanceName()/]'))
 	[else]
 ->where($queryBuilder->expr()->isMemberOf(':[selection.selectionType().instanceName()/]', '[association.partOf.selectName()/].[association.modelPropertyName()/]'))
 	[/if]
-[/let]
 [/let]
 [/if]
 [if (selection.hasCondition())]
