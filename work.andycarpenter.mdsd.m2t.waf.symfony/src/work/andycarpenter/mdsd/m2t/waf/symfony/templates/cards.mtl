@@ -89,6 +89,10 @@
 [/if]
  </div>
 {% endfor %}
+{% for i in 3..1 %}
+ <div class="[if (cardsUnit.hasCardClass())][cardsUnit.cardClass()/] [/if]card-padding">
+ </div>
+{% endfor %}
 [if (cardsUnit.hasPagination() and false)]
 {% if [unit.instanceParameter()/].hasNextPage %}
 {% for i in 1..pageSize %}
@@ -107,7 +111,7 @@
 {% endif %}
 {% if [accessor/].hasNextPage %}
  <button data-action="live#action" data-live-action-param="more" [if (cardsUnit.hasFiltersControlClass())]
- class="[cardsUnit.filtersControlClass()/]"[/if] title="Next" aria-label="Next page"><i cl ass="bi bi-arrow-right"></i></button>
+ class="[cardsUnit.filtersControlClass()/]"[/if] title="Next" aria-label="Next page"><i class="bi bi-arrow-right"></i></button>
 {% endif %}
 </div>
 [/if]
