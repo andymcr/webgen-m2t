@@ -84,32 +84,32 @@ text-truncate [/if]
 [template public displayField(field : UnitField, parentAccessor : String)
 	?(not field.isSingletonField()) post(trim())]
 [let variable : String = 'value']
-{% for [variable/] in [field.accessor(parentAccessor)/] %}[if (field.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
+{% for [variable/] in [field.accessor(parentAccessor)/][if (field.hasFilters())]
+ [field.filters()/][/if] %}[if (field.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
 <div[if (field.truncate)] class="text-truncate"[/if]>[field.displaySingleton(field.accessor(variable, false), parentAccessor)/]</div>[else]
 <span[if (field.truncate)] class="text-truncate"[/if]>[field.displaySingleton(field.accessor(variable, false), parentAccessor)/]</span>[/if][if (field.hasEmptyCollectionDisplay())]
 {% else %}{{ '[field.emptyValueContainedId()/]' | trans({}, '[field.displayedOn.translationDomain()/]') }}[/if]{% endfor %}
 [/let]
 [/template]
 
-[template private displayCollectionx(field : UnitField, parentAccessor : String)
-	?(field.isAssociationField() and not field.isSingletonField()) post(trim())]
-[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
-[let variable : String = 'value']
-{% for [variable/] in [association.accessor(parentAccessor)/][if (not association.collectionSortBy.oclIsUndefined() or association.collectionMaximumValues > 0)]
- [association.filters()/][/if] %}[if (association.collectionDisplayOption = CollectionDisplayOptions::PageDirection)]
-<div[if (field.truncate)] class="text-truncate"[/if]>[association.displaySingleton(association.accessor(variable, false), parentAccessor)/]</div>[else]
-<span[if (field.truncate)] class="text-truncate"[/if]>[association.displaySingleton(association.accessor(variable, false), parentAccessor)/]</span>[/if][if (association.hasEmptyCollectionDisplay())]
-{% else %}{{ '[association.emptyValueContainedId()/]' | trans({}, '[association.displayedOn.translationDomain()/]') }}[/if]{% endfor %}
-[/let]
-[/let]
-[/template]
+[query private hasFilters(field : UnitField) : Boolean
+	= if field.isAssociationField() then
+		let association : UnitAssociation = field.oclAsType(UnitAssociation)
+			in association.collectionMaximumValues > 0
+				or not association.collectionSortBy.oclIsUndefined()
+		else
+			false
+		endif
+/]
 
-[template private filters(association : UnitAssociation) post(trim())]
+[template private filters(field : UnitField) post(trim())]
+[let association : UnitAssociation = field.oclAsType(UnitAssociation)]
 [if (not association.collectionSortBy.oclIsUndefined())]
 | sort((a, b) => a.[association.collectionSortBy.modelPropertyName()/] < b.[association.collectionSortBy.modelPropertyName()/])[/if]
 [if (association.collectionMaximumValues > 0)]
  | slice(0, [association.collectionMaximumValues/])
 [/if]
+[/let]
 [/template]
 
 [template private displaySingleton(field : UnitField, accessor : String, parentAccessor : String)
