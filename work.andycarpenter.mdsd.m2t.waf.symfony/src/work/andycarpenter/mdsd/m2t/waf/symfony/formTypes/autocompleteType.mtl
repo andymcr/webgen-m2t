@@ -76,7 +76,7 @@ class [association.autocompleteTypeClassName()/] extends AbstractType
 [/template]
 
 [query private searchPath(key : Attribute, searchType : Entity) : String
-	= if searchType.attributeKeys->includes(key) then
+	= if searchType.attributes->includes(key) then
 			key.modelPropertyName()
 		else if searchType.isContained then
 				searchType.containingAssociation.modelPropertyName()
