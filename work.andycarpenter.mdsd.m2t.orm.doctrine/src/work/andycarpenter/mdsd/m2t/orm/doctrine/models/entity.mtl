@@ -450,7 +450,7 @@ mappedBy[else]inversedBy[/if]: "[opposite.modelPropertyName()/]"[if (association
 [association.primaryKeysOwning()/]
 	[else]
 #['['/]ORM\JoinColumn(name: "[association.columnName/]"[if (association.sourceType.autoKeyName.toLowerCase() <> 'id')]
-, referencedColumnName: "[association.sourceType.autoKeyName.toLowerCase()/]"[/if], nullable: false)[']'/]
+, referencedColumnName: "[association.sourceType.autoKeyName.toLowerCase()/]"[/if])[']'/]
 	[/if]
 	[if (association.keys->notEmpty())]
 [association.explicitKeysInverse()/]
