@@ -10,18 +10,17 @@
 liip_imagine:
     # valid drivers options include "gd" or "gmagick" or "imagick"
     driver: gd
-    cache: entries.cache
-    data_loader: entries.loader
+    cache: awsS3.cache
     twig:
         mode: lazy
 
     loaders:
-       entries.loader:
-           filesystem:
-               data_root: "%kernel.project_dir%/public"
+        stream.loader:
+            stream:
+                wrapper: https://comps.salephoto.org.uk/
 
     resolvers:
-       entries.cache:
+       awsS3.cache:
           aws_s3:
               client_config:
                   credentials:
@@ -30,6 +29,7 @@ liip_imagine:
                   region:     '%env(resolve:AWS_S3_REGION)%'
                   version:    '%env(resolve:AWS_S3_VERSION)%'
               bucket:         '%env(resolve:AWS_S3_BUCKET)%'
+              acl: private
               get_options:
                   Scheme: 'https'
               put_options:
@@ -49,10 +49,7 @@ liip_imagine:
 
 when@dev:
     liip_imagine:
-        loaders:
-            entries.loader:
-                stream:
-                    wrapper: https://comps.salephoto.org.uk/
+        data_loader: stream.loader
 
 
 when@test:
