@@ -24,16 +24,17 @@ liip_imagine:
           aws_s3:
               client_config:
                   credentials:
-                      key:    '%env(resolve:AWS_S3_KEY)%'
+                      key: '%env(resolve:AWS_S3_KEY)%'
                       secret: '%env(resolve:AWS_S3_SECRET)%'
-                  region:     '%env(resolve:AWS_S3_REGION)%'
-                  version:    '%env(resolve:AWS_S3_VERSION)%'
-              bucket:         '%env(resolve:AWS_S3_BUCKET)%'
+                  region: '%env(resolve:AWS_S3_REGION)%'
+                  version: '%env(resolve:AWS_S3_VERSION)%'
+              bucket: '%env(resolve:AWS_S3_BUCKET)%'
               acl: private
               get_options:
                   Scheme: 'https'
               put_options:
                   CacheControl: 'max-age=31557600'
+              proxies: ['['/] '%env(resolve:AWS_CDN_HOST)%' [']'/]
 
     filter_sets:
 [for (manipulation : ImageManipulation | model.imageManipulations)]
