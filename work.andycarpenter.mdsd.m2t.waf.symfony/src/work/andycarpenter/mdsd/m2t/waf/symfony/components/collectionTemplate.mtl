@@ -15,10 +15,12 @@
 <div { {{ attributes }}>
 [if (unit.hasCollectionFilters())]
  <div[if (unit.hasFiltersClass())] class="[unit.filtersClass()/]"[/if]>
+  <div[if (unit.hasFiltersFieldsClass())] class="[unit.filtersFieldsClass()/]"[/if]>
 	[for(filter : CollectionFilter | unit.filters)]
-  <input [filter.filterAttributes()/]></input>
+   <input [filter.filterAttributes()/]></input>
 	[/for]
-   <button data-action="live#action" data-live-action-param="debounce(150)|resetQuery" name="[unit.clearId()/]"[if (unit.hasFiltersControlClass())]
+  </div>
+  <button data-action="live#action" data-live-action-param="debounce(150)|resetQuery" name="[unit.clearId()/]"[if (unit.hasFiltersControlClass())]
  class="[unit.filtersControlClass()/]"[/if][if (unit.hasClearTitle())]
  [unit.clearTitleAttribute()/][/if]>[unit.clearContent()/]</button>
  </div>
