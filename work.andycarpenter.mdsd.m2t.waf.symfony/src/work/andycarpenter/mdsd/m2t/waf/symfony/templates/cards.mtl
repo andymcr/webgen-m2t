@@ -89,10 +89,6 @@
 [/if]
  </div>
 {% endfor %}
-{% for i in 3..1 %}
- <div class="[if (cardsUnit.hasCardClass())][cardsUnit.cardClass()/] [/if]card-padding">
- </div>
-{% endfor %}
 [if (cardsUnit.hasPagination() and false)]
 {% if [unit.instanceParameter()/].hasNextPage %}
 {% for i in 1..pageSize %}
