@@ -28,6 +28,10 @@
 			->select(u | u.isContained() and u.loadContainingType())
 			->collect(u | u.containingType().repository)
 			->asSet())
+		->union(controller.collectionUnits()
+			->select(u | u.hasInstanceActions())
+			->collect(u | u.contentType.repository)
+			->asSet())
 		->asSequence()
 /]
 
