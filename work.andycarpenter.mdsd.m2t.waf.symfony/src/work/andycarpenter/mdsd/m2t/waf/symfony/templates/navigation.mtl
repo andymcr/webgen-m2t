@@ -21,7 +21,7 @@
 [navigation.authenticationBar()/]
 [/if]
 <nav[if (navigation.hasNavbarClass())] class="[navigation.navbarClass/]"[/if]>
- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+ <button name"navbar-toggler" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
   <i class="bi bi-list"></i>
  </button>
  <div class="navbar-menu" id="navbarMenu">
