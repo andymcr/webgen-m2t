@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module collectionComponent(
 	'http://www.eclipse.org/emf/2002/Ecore',
+	'http://andycarpenter.work/metamodel/base',
 	'http://andycarpenter.work/metamodel/ObjectRelationalMapping',
 	'http://andycarpenter.work/metamodel/WebApplicationFramework')]
 [import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
@@ -19,6 +20,11 @@ namespace [unit.twigComponentsNamespace()/];
 
 [if (unit.hasSelectPath())]
 use [unit.modelsNamespace()/]\[unit.selection.selectionType().modelClassName()/];
+[/if]
+[if (unit.oclIsKindOf(CollectionUnit) and not unit.selection.oclIsUndefined())]
+	[if (unit.isContained() and unit.selection.hasFormals())]
+use [unit.modelsNamespace()/]\[unit.contentType.containingType.modelClassName()/];
+	[/if]
 [/if]
 use [unit.repositoriesNamespace()/]\[unit.contentType.repository.repositoryClassName()/];
 [if (unit.hasPagination())]
@@ -50,6 +56,16 @@ class [unit.componentClassName()/]
     #['['/]LiveProp[']'/]
     public [unit.selection.selectionType().modelClassName()/] $[unit.selection.selectionType().instanceName()/];
 
+[/if]
+[if (unit.oclIsKindOf(CollectionUnit) and not unit.selection.oclIsUndefined())]
+	[if (unit.isContained() and unit.selection.hasFormals())]
+    /**
+     * @var [unit.contentType.containingType.modelClassName()/] $[unit.contentType.containingType.instanceName()/]
+     */
+    #['['/]LiveProp[']'/]
+    public [unit.contentType.containingType.modelClassName()/] $[unit.contentType.containingType.instanceName()/];
+
+	[/if]
 [/if]
 [if (unit.hasPagination())]
     /**
@@ -202,8 +218,11 @@ Pagerfanta::createForCurrentPageWithMaxPerPage(
 
 [template private selectActuals(unit : CollectionUnit) post(trim())]
 [if (unit.hasSelectPath())]
-$this->[unit.selection.selectionType().instanceName()/]
+$this->[unit.selection.selectionType().instanceName()/][if (unit.selection.hasFormals())]
+, [/if]
 [/if]
+[for (parameter : FormalParameter | unit.selection.parameters) separator(', ')]
+$[parameter.name/][/for]
 [/template]
 
 [template private filterCode(filter : CollectionFilter)
