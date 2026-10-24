@@ -545,7 +545,7 @@ public function __construct()
 false
 [elseif (attribute.isDateFeature)]
 	[if (attribute.isRequired)]
-new \DateTimeImmutable()
+new \DateTime()
 	[else]
 null
 	[/if]
@@ -738,7 +738,7 @@ $this->[element.modelPropertyName()/] = $[element.instanceName()/];
 	[/if]
 	[if (element.name.equalsIgnoreCase('password'))]
 		[if (element.partOf.features->select(f | f.name.equalsIgnoreCase('passwordChangedAt'))->notEmpty())]
-$this->[element.partOf.features->any(f | f.name.equalsIgnoreCase('passwordChangedAt')).setMethodName()/](new \DateTimeImmutable());
+$this->[element.partOf.features->any(f | f.name.equalsIgnoreCase('passwordChangedAt')).setMethodName()/](new \DateTime());
 		[/if]
 	[/if]
 [/let]
@@ -952,7 +952,7 @@ public function getPassword(): ?string
 public function setPassword(string $password): self
 {
     $this->password = $password;
-    $this->setPasswordChangedAt(new \DateTimeImmutable());
+    $this->setPasswordChangedAt(new \DateTime());
     return $this;
 }
 [/template]
