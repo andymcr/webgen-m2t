@@ -167,9 +167,7 @@ Response[else]BinaryFileResponse[/if]
 [else]
 [operationAction.routeGeneralAttribute()/]
 [/if]
-public function [operationAction.actionName()/]([if (action.oclIsTypeOf(ContainerOperationAction))]
-[action.actionMethodContainerFormals()/][else]
-[action.actionMethodFormals()/][/if]): [if (operationAction.operation.resultType = OperationResultTypes::None)]
+public function [operationAction.actionName()/]([action.actionMethodFormals()/]): [if (operationAction.operation.resultType = OperationResultTypes::None)]
 Response[else]BinaryFileResponse[/if]
 
 {
