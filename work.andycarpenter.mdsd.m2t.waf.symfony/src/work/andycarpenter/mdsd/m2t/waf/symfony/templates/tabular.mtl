@@ -33,7 +33,9 @@
  <h4[if (tabularUnit.hasCaptionClass() or tabularUnit.omitCaption)]
  class="[if (tabularUnit.hasCaptionClass())][tabularUnit.captionClass()/][/if] [if (tabularUnit.omitCaption)] hidden[/if]"[/if]>[tabularUnit.unitTitle()/]</h4>
  <twig:[tabularUnit.twigTemplatesNamespace()/][tabularUnit.componentClassName()/][if (tabularUnit.hasSelectPath())]
-  [tabularUnit.selection.selectionType().instanceName()/]="{{ [tabularUnit.containerParameter()/] }}"[/if]/>
+  [tabularUnit.selection.selectionType().instanceName()/]="{{ [tabularUnit.containerParameter()/] }}"[/if][if (tabularUnit.oclIsKindOf(CollectionUnit) and tabularUnit.selection.hasFormals())]
+[if (tabularUnit.isContained())]
+  [tabularUnit.contentType.containingType.instanceName()/]="{{ [tabularUnit.containerParameter()/] }}"[/if][/if]/>
 </section>
 [if (unit.controller.isMultiPage())]
 {% endblock %}
@@ -43,61 +45,62 @@
 [/let]
 [/template]
 
-[template public unitContent(unit : TabularUnit, nullDisplayValue : String, accessor : String) post(trim())]
-<table class="[unit.contentClass()/]">
-[if (not unit.hasOmittedFieldLabels())]
- <thead[if (unit.hasHeaderClass())] class="[unit.headerClass()/]"[/if]>
+[template public unitContent(unit : ContentUnit)
+	?(unit.oclIsKindOf(TabularUnit)) post(trim())]
+[let tabularUnit : TabularUnit = unit.oclAsType(TabularUnit)]
+[let accessor : String = tabularUnit.contentType.pluralisedName.toLowerFirst()]
+[let variable : String = tabularUnit.contentType.instanceName()]
+<table class="[tabularUnit.contentClass()/]">
+[if (not tabularUnit.hasOmittedFieldLabels())]
+ <thead[if (tabularUnit.hasHeaderClass())] class="[tabularUnit.headerClass()/]"[/if]>
   <tr>
- 	[for (field : UnitField | unit.displayFields)]
+ 	[for (field : UnitField | tabularUnit.displayFields)]
 		[if (field.isAuthorised)]
 {% if [field.authorisation.authorisationExpression()/] %}
 		[/if]
    <th>[if (field.hasCustomisedDisplayLabel)]
-{{ '[field.customisedCaptionContainedId()/]' | trans({}, '[unit.translationDomain()/]') }}[else]
+{{ '[field.customisedCaptionContainedId()/]' | trans({}, '[tabularUnit.translationDomain()/]') }}[else]
 {{ '[field.oclAsType(UnitFeature).defaultDisplayLabelContainedId()/]' | trans }}[/if]</th>
 		[if (field.isAuthorised)]
 {% endif %}
 		[/if]
  	[/for]
-	[if (unit.hasInstanceActions())]
+	[if (tabularUnit.hasInstanceActions())]
    <th>Actions</th>
 	[/if]
   </tr>
  </thead>
 [/if]
  <tbody>
-[let loopVariable : String = 'entry']
-{% for [loopVariable/] in [accessor/] %}
-  <tr class="{{ cycle(['['/][for (class : String | unit.rowClasses().trim().tokenize(',; ')) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
-   [unit.entry(loopVariable)/]
-[if (unit.hasInstanceActions())]
-   <td class="actions">[unit.instanceActions(loopVariable)/]</td>
+{% for [variable/] in [if (not tabularUnit.hasPagination())]this.[/if][accessor/] %}
+  <tr class="{{ cycle(['['/][for (class : String | tabularUnit.rowClasses().trim().tokenize(',; ')) separator (', ')]'[class/]'[/for][']'/], loop.index0) }}">
+   [tabularUnit.entry(variable)/]
+[if (tabularUnit.hasInstanceActions())]
+   <td class="actions">[tabularUnit.instanceActions(variable)/]</td>
 [/if]
   </tr>
-[if (not nullDisplayValue.oclIsUndefined() or unit.emptyMessage.trim() <> '')]
+[if (tabularUnit.emptyMessage.trim() <> '')]
 {% else %}
   <tr>
-	[if (not nullDisplayValue.oclIsUndefined())]
-   <td[if (unit.displayFields->size() > 1)] colspan="[unit.displayFields->size()/]"[/if]>[nullDisplayValue/]</td>
-	[else]
-   <td[if (unit.displayFields->size() > 1)] colspan="[unit.displayFields->size()/]"[/if]>[unit.emptyMessage/]</td>
-	[/if]
-	[if (unit.hasInstanceActions())]
+   <td[if (tabularUnit.displayFields->size() > 1)] colspan="[tabularUnit.displayFields->size()/]"[/if]>[tabularUnit.emptyMessage/]</td>
+	[if (tabularUnit.hasInstanceActions())]
    <td class="actions">&nbsp;</td>
 	[/if]
   </tr>
 [/if]
 {% endfor %}
-[/let]
  </tbody>
-[if (unit.hasContainerActions() and unit.isContained())]
+[if (tabularUnit.hasContainerActions() and tabularUnit.isContained())]
  <tfoot>
   <tr>
-   [unit.containerActions(unit.containerParameter())/]
+   [tabularUnit.containerActions(tabularUnit.containerParameter())/]
   </tr>
  </tfoot>
 [/if]
 </table>
+[/let]
+[/let]
+[/let]
 [/template]
 
 [template private entry(unit : TabularUnit, accessor : String) post(trim())]
