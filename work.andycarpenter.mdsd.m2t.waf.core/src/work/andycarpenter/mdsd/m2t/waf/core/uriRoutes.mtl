@@ -67,10 +67,6 @@
 	= unit.routeParameters(selection)->notEmpty()
 /]
 
-[query public hasRouteContainerParameters(unit : DynamicUnit) : Boolean
-	= unit.routeContainerParameters()->notEmpty()
-/]
-
 [query public hasRouteUpdateParameters(unit : EditUnit) : Boolean
 	= unit.routeUpdateParameters()->notEmpty()
 /]
@@ -137,12 +133,41 @@
 /]
 
 [query public routeParameters(action : Action) : Sequence(Attribute)
-	= if action.parentUnit().oclIsKindOf(CollectionUnit) then
+	=  if action.isGeneralAction() then
+			Sequence{}
+		else if action.isContainerAction() then
+			action.parentUnit().routeParameters(action.parentUnit().containingType(), null)
+				->select(p | action.parentUnit().routeParameters()->includes(p))
+		else if action.isInstanceAction() then
+			action.parentUnit().routeParameters()
+				->union(action.instanceRouteParameters())
+		else if action.isTargetAction() then
+			Sequence{}
+		else
 			action.parentUnit().routeParameters(
 				action.parentUnit().contentType,
 				action.parentUnit().oclAsType(CollectionUnit).findElementSelection)
+--			action.parentUnit().routeParameters()
+		endif endif endif endif
+/]
+
+[query public instanceRouteParameters(action : Action) : Sequence(Attribute)
+	= action.parentUnit().contentType.uriPathKeys()
+		->iterate(key;
+			keys : Sequence(Attribute) = Sequence{}
+			| if action.parentUnit().routeParameters()->includes(key)
+						or action.parentUnit().resolvedKeys()->includes(key) then
+					keys
+				else
+					keys->append(key)
+				endif)
+/]
+
+[query public resolvedKeys(unit : DynamicUnit) : Collection(Attribute)
+	= if unit.selection().oclIsUndefined() then
+			Sequence{}
 		else
-			action.parentUnit().routeParameters()
+			unit.selection().resolvedKeys()
 		endif
 /]
 

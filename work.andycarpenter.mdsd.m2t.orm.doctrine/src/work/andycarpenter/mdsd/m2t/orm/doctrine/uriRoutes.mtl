@@ -80,7 +80,7 @@
 		else
 			pathKeys->iterate(key;
 				keys : Sequence(Attribute) = Sequence{}
-				| if selection.condition.resolvedKeys()->includes(key) then
+				| if selection.resolvedKeys()->includes(key) then
 						keys
 					else
 						keys->append(key)
@@ -129,6 +129,16 @@
 			e : Predicate;
 			attributes : Set(Attribute) = Set{}
 			| attributes->union(e.selectionKeys()))
+/]
+
+[query public resolvedKeys(selection : Selection) : Collection(Attribute)
+	= if selection.selectPath->notEmpty() then
+			Set{}
+		else if selection.condition.oclIsUndefined() then
+			Set{}
+		else
+			selection.condition.resolvedKeys()
+		endif endif
 /]
 
 [query private resolvedKeys(predicate : Predicate) : Set(Attribute)
