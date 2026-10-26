@@ -1,0 +1,41 @@
+[comment encoding = UTF-8 /]
+[module repositoryStories(
+	'http://andycarpenter.work/metamodel/ObjectRelationalMapping')]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::names/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::uriRoutes/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::files/]
+[import work::andycarpenter::mdsd::m2t::orm::doctrine::tests::names/]
+
+
+[template public repositoryStories(entity : Entity)]
+[file(entity.storyClassFilename(), false)]
+<?php
+namespace [entity.storiesNamespace()/];
+
+[for (type : Entity | entity.entitiesUsed())]
+use [type.factoriesNamespace()/]\[type.factoryClassName()/];
+[/for]
+use Zenstruck\Foundry\Story;
+
+
+/**
+ * @extends Story
+ */
+class [entity.storyClassName()/] extends Story
+{
+    public function build(): void
+    {
+    }
+}
+[/file]
+[/template]
+
+[query private entitiesUsed(entity : Entity) : OrderedSet(Entity)
+	= Set{entity}
+		->union(entity.associations
+			->select(a | a.isContains)
+			->collect(a | a.opposite.partOf.entitiesUsed())
+			->asSet())
+		->sortedBy(e | e.modelClassName())
+/]
