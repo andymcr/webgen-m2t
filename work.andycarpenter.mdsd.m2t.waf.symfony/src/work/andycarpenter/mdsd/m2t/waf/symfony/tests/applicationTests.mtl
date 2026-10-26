@@ -16,7 +16,7 @@
 [template public applicationTests(model : WafModel)]
 [file(model.testApplicationFilename(), false)]
 <?php
-namespace [model.testsNamespace()/];
+namespace [model.testApplicationNamespace()/];
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
